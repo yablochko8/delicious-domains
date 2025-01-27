@@ -1,10 +1,17 @@
 // Example response:
 // {"status":[{"domain":"fmoaceioacmedafdoajcdioa.com","zone":"com","status":"undelegated inactive","summary":"inactive"}]}
 
+import { validTlds } from "../tlds";
+
 export const checkDomainAvailable = async (
   domain: string
 ): Promise<boolean> => {
   console.log("Checking domain availability for:", domain);
+  const tld = domain.split(".")[1];
+  if (!validTlds.includes(tld.toUpperCase())) {
+    return false;
+  }
+
   const url = `https://domainr.p.rapidapi.com/v2/status?domain=${domain}`;
   const apiKey = process.env.DOMAINR_RAPIDAPI_KEY || "API_KEY_NOT_FOUND";
   const options = {

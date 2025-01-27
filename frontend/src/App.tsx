@@ -6,6 +6,7 @@ import { getAvailableTlds, getRelevantTlds, sendInputsAndReturnDomains } from ".
 function App() {
   const [input1Purpose, setInput1Purpose] = useState("");
   const [input2Vibe, setInput2Vibe] = useState("");
+  const [input3Theme, setInput3Theme] = useState("");
   const [availableTlds, setAvailableTlds] = useState<string[]>([]);
   const [selectedTlds, setSelectedTlds] = useState<string[]>([]);
   const [domainOptions, setDomainOptions] = useState<string[]>([]);
@@ -15,6 +16,7 @@ function App() {
     const tlds = await getRelevantTlds({
       purpose: input1Purpose,
       vibe: input2Vibe,
+      theme: input3Theme,
     });
     setSelectedTlds(tlds);
   };
@@ -23,6 +25,7 @@ function App() {
     const domainList = await sendInputsAndReturnDomains({
       purpose: input1Purpose,
       vibe: input2Vibe,
+      theme: input3Theme,
     });
     setDomainOptions(domainList);
   };
@@ -51,6 +54,7 @@ function App() {
         <h1>Domain Finder</h1>
 
       </div>
+      <div>There are now over 1,000 top-level domains to choose from. So if you're building Strawberry Finance, why send users to getstrawberryfinance.com when you can delight them with strawberry.finance?</div>
       <div style={{
         display: 'flex',
         flexDirection: 'row',
@@ -59,9 +63,9 @@ function App() {
         justifyContent: 'center'
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
-          <div>What does your app do?</div>
+          <div>What are you building?</div>
           <textarea
-            placeholder='e.g. "linkedin for cattle trading"'
+            placeholder='e.g. "linkedin for cattle farms"'
             value={input1Purpose}
             onChange={(e) => {
               setInput1Purpose(e.target.value);
@@ -76,6 +80,17 @@ function App() {
             value={input2Vibe}
             onChange={(e) => {
               setInput2Vibe(e.target.value);
+            }}
+            rows={4}
+            style={{ width: '100%', maxWidth: '500px' }}
+          />
+          <br />
+          <div>Any theme or metaphor you're considering? (optional)</div>
+          <textarea
+            placeholder='e.g. "galactic space", "chefs and food", "gods and heaven"'
+            value={input3Theme}
+            onChange={(e) => {
+              setInput3Theme(e.target.value);
             }}
             rows={4}
             style={{ width: '100%', maxWidth: '500px' }}

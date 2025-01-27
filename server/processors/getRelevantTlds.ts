@@ -1,7 +1,17 @@
 import { validTlds } from "../tlds";
 import { openaiClient } from "../utils/openaiClient";
 
-const getRelevantTldsPrompt = (purpose: string, vibe: string) => {
+const getRelevantTldsPrompt = (
+  purpose: string,
+  vibe: string,
+  theme: string
+) => {
+  const themeInsertion = theme
+    ? `
+
+  Ideally choose examples relevant to this theme: ${theme}`
+    : "";
+
   const prompt = `You are a Top Level Domain suggestion engine. Your task is to choose the top 10-20 TLDs that are both practical and marketable for a brand.
 
 The brand is going to build a website with the purpose of ${purpose} and the vibe of ${vibe}.
@@ -9,6 +19,8 @@ The brand is going to build a website with the purpose of ${purpose} and the vib
 Please choose the top 10-20 TLDs that are both practical and marketable for a brand from the following list: ${validTlds.join(
     ", "
   )}
+
+${themeInsertion}
 
 Return the results in this exact JSON format:
 {
@@ -21,9 +33,10 @@ Important: Ensure the response is valid JSON and all TLDs are from the provided 
 
 export const getRelevantTlds = async (
   purpose: string,
-  vibe: string
+  vibe: string,
+  theme: string
 ): Promise<string[]> => {
-  const prompt = getRelevantTldsPrompt(purpose, vibe);
+  const prompt = getRelevantTldsPrompt(purpose, vibe, theme);
   console.log("Prompt:", prompt);
 
   const completion = await openaiClient.chat.completions.create({

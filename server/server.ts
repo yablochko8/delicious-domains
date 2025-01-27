@@ -24,14 +24,22 @@ app.get("/tlds/all", async (req, res) => {
 app.post("/tlds/relevant", async (req, res) => {
   const userInput = req.body.userInput;
   console.log("User input:", userInput);
-  const tlds = await getRelevantTlds(userInput.purpose, userInput.vibe);
+  const tlds = await getRelevantTlds(
+    userInput.purpose,
+    userInput.vibe,
+    userInput.theme
+  );
   res.json({ tlds });
 });
 
 app.post("/find-domains", async (req, res) => {
   const userInput = req.body.userInput;
   console.log("User input:", userInput);
-  const domains = await getDomainLongList(userInput.purpose, userInput.vibe);
+  const domains = await getDomainLongList(
+    userInput.purpose,
+    userInput.vibe,
+    userInput.theme
+  );
 
   // Limit the number of domains to process
   const MAX_DOMAINS = 100;

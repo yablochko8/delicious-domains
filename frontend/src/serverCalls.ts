@@ -4,6 +4,8 @@ const serverPath = `http://localhost:${PORT}`;
 type UserInput = {
   purpose: string;
   vibe: string;
+  theme: string;
+  preferredTlds?: string[];
 };
 
 export const sendInputsAndReturnDomains = async (

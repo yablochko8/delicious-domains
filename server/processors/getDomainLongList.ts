@@ -1,7 +1,24 @@
 import { validTlds } from "../tlds";
 import { openaiClient } from "../utils/openaiClient";
 
-const generateDomainListPrompt = (purpose: string, vibe: string) => {
+const generateDomainListPrompt = (
+  purpose: string,
+  vibe: string,
+  theme: string,
+  preferredTlds?: string[]
+) => {
+  const themeInsertion = theme
+    ? `
+
+Ideally choose examples relevant to this theme: ${theme}`
+    : "";
+
+  const preferredTldsInsertion = preferredTlds
+    ? `
+
+The following TLDs are preferred: ${preferredTlds.join(", ")}`
+    : "";
+
   const prompt = `You are a brand name suggestion engine. Your task is to generate domain name suggestions that are both practical and memorable.
 
 Rules for domain names:
@@ -12,6 +29,8 @@ Rules for domain names:
    - Must be pronounceable (although it doesn't have to be a "real" word from the dictionary)
    - No special characters or numbers
 3. TLD (domain extension) must be one of: ${validTlds.join(", ")}
+
+${preferredTldsInsertion}
 
 Context:
 - Purpose: ${purpose}
@@ -24,12 +43,15 @@ Generate a list of 50 domain names that:
 - Are currently feasible as domain names (avoid obvious trademarks)
 - Be quirky, we're looking for available domains that are not already taken
 
+${themeInsertion}
+
 Return the results in this exact JSON format:
 {
   "domains": ["example.com", "example.net"]
 }
 
 Important: Ensure the response is valid JSON and all TLDs are from the provided list.`;
+
   return prompt;
 };
 
@@ -40,9 +62,11 @@ Important: Ensure the response is valid JSON and all TLDs are from the provided 
  */
 export const getDomainLongList = async (
   purpose: string,
-  vibe: string
+  vibe: string,
+  theme: string,
+  preferredTlds?: string[]
 ): Promise<string[]> => {
-  const prompt = generateDomainListPrompt(purpose, vibe);
+  const prompt = generateDomainListPrompt(purpose, vibe, theme, preferredTlds);
   console.log("Prompt:", prompt);
 
   const completion = await openaiClient.chat.completions.create({
