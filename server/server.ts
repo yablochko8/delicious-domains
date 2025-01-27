@@ -38,7 +38,8 @@ app.post("/find-domains", async (req, res) => {
   const domains = await getDomainLongList(
     userInput.purpose,
     userInput.vibe,
-    userInput.theme
+    userInput.theme,
+    userInput.preferredTlds
   );
 
   // Limit the number of domains to process
