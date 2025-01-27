@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import { getDomainLongList } from "./processors/getDomainLongList";
 import { checkDomainAvailable } from "./processors/checkDomainAvailable";
+import { validTlds } from "./tlds";
+import { getRelevantTlds } from "./processors/getRelevantTlds";
 
 export const PORT = 4101;
 
@@ -13,6 +15,17 @@ app.use(cors());
 app.get("/", async (req, res) => {
   console.log("GET endpoint called.");
   res.json({ message: "Hello from the server" });
+});
+
+app.get("/tlds/all", async (req, res) => {
+  res.json({ tlds: validTlds });
+});
+
+app.post("/tlds/relevant", async (req, res) => {
+  const userInput = req.body.userInput;
+  console.log("User input:", userInput);
+  const tlds = await getRelevantTlds(userInput.purpose, userInput.vibe);
+  res.json({ tlds });
 });
 
 app.post("/find-domains", async (req, res) => {

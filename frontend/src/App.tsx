@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { sendInputsAndReturnDomains } from "./serverCalls";
+import { getAvailableTlds, getRelevantTlds, sendInputsAndReturnDomains } from "./serverCalls";
 
 
 function App() {
   const [input1Purpose, setInput1Purpose] = useState("");
   const [input2Vibe, setInput2Vibe] = useState("");
+  const [availableTlds, setAvailableTlds] = useState<string[]>([]);
+  const [selectedTlds, setSelectedTlds] = useState<string[]>([]);
   const [domainOptions, setDomainOptions] = useState<string[]>([]);
+
+
+  const handleGetRelevantTlds = async () => {
+    const tlds = await getRelevantTlds({
+      purpose: input1Purpose,
+      vibe: input2Vibe,
+    });
+    setSelectedTlds(tlds);
+  };
 
   const handleSubmit = async () => {
     const domainList = await sendInputsAndReturnDomains({
@@ -15,6 +26,19 @@ function App() {
     });
     setDomainOptions(domainList);
   };
+
+  // useEffect initially to fetch all available tlds and select them all
+  useEffect(() => {
+    const fetchTlds = async () => {
+      const tlds = await getAvailableTlds();
+      setAvailableTlds(tlds);
+      setSelectedTlds(tlds);
+      console.log("Tlds fetched:", tlds);
+    };
+    fetchTlds();
+
+  }, []);
+
 
   return (
     <>
@@ -57,6 +81,29 @@ function App() {
             style={{ width: '100%', maxWidth: '500px' }}
           />
           <br />
+          <button onClick={handleGetRelevantTlds}>Pick Out Good TLD Options For Me</button>
+          <br />
+          <div>Select TLDs</div>
+          <div>
+            {availableTlds.length > 0 && availableTlds.map((tld) => {
+              return (
+                <label key={tld} style={{ display: 'block' }}>
+                  <input
+                    type="checkbox"
+                    checked={selectedTlds.includes(tld)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedTlds([...selectedTlds, tld]);
+                      } else {
+                        setSelectedTlds(selectedTlds.filter(t => t !== tld));
+                      }
+                    }}
+                  />
+                  {' '}{tld}
+                </label>
+              );
+            })}
+          </div>
           <button
             onClick={() => handleSubmit()}
           >
