@@ -65,13 +65,19 @@ function App() {
 
   return (
     <>
+      <div className="bg-blue-500 text-white p-4">
+        Tailwind Test
+      </div>
+      <div className="alert alert-info">
+        DaisyUI is working if this is styled!
+      </div>
       <div style={{
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'center'
       }}>
-        <h1>Delicious Domains</h1>
+        <h1 className="text-3xl font-bold underline text-red-500">Delicious Domains</h1>
 
       </div>
       <div>There are now over 1,000 top-level domains to choose from. So if you're building Strawberry Finance, why send users to getstrawberryfinance.com when you can delight them with strawberry.finance?</div>
@@ -144,6 +150,13 @@ function App() {
             })}
           </div> */}
           <button
+            className="btn btn-primary"
+            onClick={() => handleSubmit()}
+          >
+            Get Domains!
+          </button>
+          <button
+            className="btn btn-secondary"
             onClick={() => handleSubmit()}
           >
             Get Domains!
