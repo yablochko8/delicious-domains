@@ -1,25 +1,9 @@
 import { validTlds } from "../tlds";
+import { deepseekClient } from "../utils/deepseekClient";
 import { openaiClient } from "../utils/openaiClient";
 
-const generateDomainListPrompt = (
-  purpose: string,
-  vibe: string,
-  theme: string,
-  preferredTlds?: string[]
-) => {
-  const themeInsertion = theme
-    ? `
-
-Ideally choose examples relevant to this theme: ${theme}`
-    : "";
-
-  const preferredTldsInsertion = preferredTlds
-    ? `
-
-The following TLDs are preferred: ${preferredTlds.join(", ")}`
-    : "";
-
-  const prompt = `You are a brand name suggestion engine. Your task is to generate domain name suggestions that are both practical and memorable.
+const generateSystemPrompt =
+  () => `You are a brand name suggestion engine. Your task is to generate domain name suggestions that are both practical and memorable.
 
 Rules for domain names:
 1. Format: Each name must be "root.tld". Alliteration across these two words (e.g. "liffey.life") is encouraged.
@@ -30,21 +14,6 @@ Rules for domain names:
    - No special characters or numbers
 3. TLD (domain extension) must be one of: ${validTlds.join(", ")}
 
-${preferredTldsInsertion}
-
-Context:
-- Purpose: ${purpose}
-- Desired vibe: ${vibe}
-
-Generate a list of 50 domain names that:
-- Are memorable and brandable
-- Reflect the stated purpose and vibe
-- Use appropriate TLDs from the provided list
-- Are currently feasible as domain names (avoid obvious trademarks)
-- Be quirky, we're looking for available domains that are not already taken
-
-${themeInsertion}
-
 Return the results in this exact JSON format:
 {
   "domains": ["example.com", "example.net"]
@@ -52,41 +21,77 @@ Return the results in this exact JSON format:
 
 Important: Ensure the response is valid JSON and all TLDs are from the provided list.`;
 
-  return prompt;
+const generateUserPrompt = (
+  purpose: string,
+  vibe: string,
+  theme: string,
+  preferredTlds?: string[]
+) => {
+  const themeInsertion = theme
+    ? `\nIdeally choose examples relevant to this theme: ${theme}`
+    : "";
+  const preferredTldsInsertion = preferredTlds
+    ? `\nThe following TLDs are preferred: ${preferredTlds.join(", ")}`
+    : "";
+
+  return `Generate 50 domain names with these requirements:
+- Purpose: ${purpose}
+- Desired vibe: ${vibe}${preferredTldsInsertion}${themeInsertion}
+
+The domains should be:
+- Memorable and brandable
+- Reflect the stated purpose and vibe
+- Use appropriate TLDs from the provided list
+- Currently feasible (avoid obvious trademarks)
+- Quirky, we're looking for available domains that are not already taken`;
 };
 
-/**
- * Takes in a messy description.
- * Sends it to LLM.
- * Returns a cleaned version.
- */
 export const getDomainLongList = async (
   purpose: string,
   vibe: string,
   theme: string,
   preferredTlds?: string[]
 ): Promise<string[]> => {
-  const prompt = generateDomainListPrompt(purpose, vibe, theme, preferredTlds);
-  console.log("Prompt:", prompt);
+  const systemPrompt = generateSystemPrompt();
+  const userPrompt = generateUserPrompt(purpose, vibe, theme, preferredTlds);
 
-  const completion = await openaiClient.chat.completions.create({
-    messages: [{ role: "system", content: prompt }],
-    model: "gpt-4o-mini",
-  });
-
-  const response = completion.choices[0];
-
-  console.log("Response:", response);
+  console.log("Sending prompts:", { systemPrompt, userPrompt });
 
   try {
-    const content = response.message.content || "{}";
-    // Remove markdown code block syntax including backticks
-    const cleanedContent = content.replace(/^```json\n|\n```$|`/g, "");
+    const completion = await deepseekClient.chat.completions.create({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      // model: "deepseek-reasoner",
+      model: "deepseek-chat",
+    });
+
+    console.log("Raw API response:", JSON.stringify(completion, null, 2));
+
+    const response = completion.choices[0];
+    console.log("First choice:", response);
+
+    if (!response?.message?.content) {
+      console.error("No content in response");
+      return [];
+    }
+
+    const content = response.message.content;
+    console.log("Content to parse:", content);
+
+    // Remove any markdown code block syntax, handling various formats
+    const cleanedContent = content
+      .replace(/```(?:json)?\n?/g, "")
+      .replace(/`/g, "")
+      .trim();
+
+    console.log("Cleaned content:", cleanedContent);
 
     const json = JSON.parse(cleanedContent);
     return Array.isArray(json.domains) ? json.domains : [];
   } catch (error) {
-    console.error("Error parsing domain list response:", error);
+    console.error("Error in getDomainLongList:", error);
     return [];
   }
 };

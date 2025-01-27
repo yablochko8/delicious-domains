@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { getAvailableTlds, getRelevantTlds, sendInputsAndReturnDomains } from "./serverCalls";
+import { getAvailableTlds, sendInputsAndReturnDomains } from "./serverCalls";
 
 
 function App() {
   const [input1Purpose, setInput1Purpose] = useState("");
   const [input2Vibe, setInput2Vibe] = useState("");
   const [input3Theme, setInput3Theme] = useState("");
-  const [availableTlds, setAvailableTlds] = useState<string[]>([]);
-  const [selectedTlds, setSelectedTlds] = useState<string[]>([]);
+  // const [availableTlds, setAvailableTlds] = useState<string[]>([]);
+  // const [selectedTlds, setSelectedTlds] = useState<string[]>([]);
   const [domainOptions, setDomainOptions] = useState<string[]>([]);
 
 
-  const handleGetRelevantTlds = async () => {
-    const tlds = await getRelevantTlds({
-      purpose: input1Purpose,
-      vibe: input2Vibe,
-      theme: input3Theme,
-    });
-    setSelectedTlds(tlds);
-  };
+  // const handleGetRelevantTlds = async () => {
+  //   const tlds = await getRelevantTlds({
+  //     purpose: input1Purpose,
+  //     vibe: input2Vibe,
+  //     theme: input3Theme,
+  //   });
+  //   setSelectedTlds(tlds);
+  // };
 
   const handleSubmit = async () => {
     const domainList = await sendInputsAndReturnDomains({
@@ -34,8 +34,8 @@ function App() {
   useEffect(() => {
     const fetchTlds = async () => {
       const tlds = await getAvailableTlds();
-      setAvailableTlds(tlds);
-      setSelectedTlds(tlds);
+      // setAvailableTlds(tlds);
+      // setSelectedTlds(tlds);
       console.log("Tlds fetched:", tlds);
     };
     fetchTlds();
@@ -51,7 +51,7 @@ function App() {
         width: '100%',
         justifyContent: 'center'
       }}>
-        <h1>Domain Finder</h1>
+        <h1>Tasty Domains OR Rapid Domains</h1>
 
       </div>
       <div>There are now over 1,000 top-level domains to choose from. So if you're building Strawberry Finance, why send users to getstrawberryfinance.com when you can delight them with strawberry.finance?</div>
@@ -96,6 +96,7 @@ function App() {
             style={{ width: '100%', maxWidth: '500px' }}
           />
           <br />
+          {/* 
           <button onClick={handleGetRelevantTlds}>Pick Out Good TLD Options For Me</button>
           <br />
           <div>Select TLDs</div>
@@ -118,7 +119,7 @@ function App() {
                 </label>
               );
             })}
-          </div>
+          </div> */}
           <button
             onClick={() => handleSubmit()}
           >
