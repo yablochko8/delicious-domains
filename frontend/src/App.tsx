@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
-import { getAvailableTlds, sendInputsAndReturnDomains } from "./serverCalls";
+import { sendInputsAndReturnDomains } from "./serverCalls";
+import { NavBar } from "./components/NavBar";
 
 const themes = [
   "🌿 plants, nature, growth",
@@ -27,148 +28,88 @@ function App() {
   const [input1Purpose, setInput1Purpose] = useState("");
   const [input2Vibe, setInput2Vibe] = useState("");
   const [input3Theme, setInput3Theme] = useState<typeof themes[number] | null>(null);
-  // const [availableTlds, setAvailableTlds] = useState<string[]>([]);
-  // const [selectedTlds, setSelectedTlds] = useState<string[]>([]);
   const [domainOptions, setDomainOptions] = useState<string[]>([]);
-
-
-  // const handleGetRelevantTlds = async () => {
-  //   const tlds = await getRelevantTlds({
-  //     purpose: input1Purpose,
-  //     vibe: input2Vibe,
-  //     theme: input3Theme,
-  //   });
-  //   setSelectedTlds(tlds);
-  // };
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const domainList = await sendInputsAndReturnDomains({
       purpose: input1Purpose,
       vibe: input2Vibe,
       theme: input3Theme,
     });
     setDomainOptions(domainList);
+    setIsLoading(false);
   };
-
-  // useEffect initially to fetch all available tlds and select them all
-  useEffect(() => {
-    const fetchTlds = async () => {
-      const tlds = await getAvailableTlds();
-      // setAvailableTlds(tlds);
-      // setSelectedTlds(tlds);
-      console.log("Tlds fetched:", tlds);
-    };
-    fetchTlds();
-
-  }, []);
 
 
   return (
     <>
-      <div className="bg-blue-500 text-white p-4">
-        Tailwind Test
+      <div className="flex flex-row w-full justify-center">
+        <NavBar />
       </div>
-      <div className="alert alert-info">
-        DaisyUI is working if this is styled!
-      </div>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'center'
-      }}>
-        <h1 className="text-3xl font-bold underline text-red-500">Delicious Domains</h1>
-
-      </div>
-      <div>There are now over 1,000 top-level domains to choose from. So if you're building Strawberry Finance, why send users to getstrawberryfinance.com when you can delight them with strawberry.finance?</div>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        minHeight: '100vh',
-        justifyContent: 'center'
-      }}>
-        <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
-          <div>What are you building?</div>
-          <textarea
-            placeholder='e.g. "linkedin for cattle farms"'
-            value={input1Purpose}
-            onChange={(e) => {
-              setInput1Purpose(e.target.value);
-            }}
-            rows={4}
-            style={{ width: '100%', maxWidth: '500px' }}
-          />
-          <br />
-          <div>What kind of vibe does your app have?</div>
-          <textarea
-            placeholder='e.g. "slick, sophisticated, fresh"'
-            value={input2Vibe}
-            onChange={(e) => {
-              setInput2Vibe(e.target.value);
-            }}
-            rows={4}
-            style={{ width: '100%', maxWidth: '500px' }}
-          />
-          <br />
-          <div>Any theme or metaphor you're considering? (optional)</div>
-          <select
-            value={input3Theme || ""}
-            onChange={(e) => {
-              setInput3Theme(e.target.value || null);
-            }}
-            style={{ width: '100%', maxWidth: '500px' }}
-          >
-            <option value="" disabled>Select a theme (optional)</option>
-            {themes.map((theme) => (
-              <option key={theme} value={theme}>{theme}</option>
-            ))}
-          </select>
-          <br />
-          {/* 
-          <button onClick={handleGetRelevantTlds}>Pick Out Good TLD Options For Me</button>
-          <br />
-          <div>Select TLDs</div>
+      <h2 className="text-center p-4">give your next project a name that sizzles</h2>
+      <div className="flex flex-row w-full min-h-screen">
+        <div className="flex flex-col w-1/2 space-y-4">
           <div>
-            {availableTlds.length > 0 && availableTlds.map((tld) => {
-              return (
-                <label key={tld} style={{ display: 'block' }}>
-                  <input
-                    type="checkbox"
-                    checked={selectedTlds.includes(tld)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedTlds([...selectedTlds, tld]);
-                      } else {
-                        setSelectedTlds(selectedTlds.filter(t => t !== tld));
-                      }
-                    }}
-                  />
-                  {' '}{tld}
-                </label>
-              );
-            })}
-          </div> */}
-          <button
-            className="btn btn-primary"
-            onClick={() => handleSubmit()}
-          >
-            Get Domains!
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={() => handleSubmit()}
-          >
-            Get Domains!
-          </button>
+            <h3>what are you building?</h3>
+          </div>
+          <div>
+            <textarea
+              className="textarea textarea-primary w-full max-w-500"
+              placeholder='e.g. "linkedin for cattle farms"'
+              value={input1Purpose}
+              onChange={(e) => {
+                setInput1Purpose(e.target.value);
+              }}
+              rows={3}
+            />
+          </div>
+          <div>
+            <h3>what kind of vibe does your app have?</h3>
+          </div>
+          <div>
+            <textarea
+              className="textarea textarea-secondary w-full max-w-500"
+              placeholder='e.g. "slick, sophisticated, fresh"'
+              value={input2Vibe}
+              onChange={(e) => {
+                setInput2Vibe(e.target.value);
+              }}
+              rows={3}
+            />
+          </div>
+          <div>
+            <h3>want to use a theme or metaphor? (optional)</h3>
+          </div>
+          <div>
+            <select
+              className="select select-accent w-full max-w-500"
+              value={input3Theme || ""}
+              onChange={(e) => {
+                setInput3Theme(e.target.value || null);
+              }}
+            >
+              <option value="" disabled>select</option>
+              {themes.map((theme) => (
+                <option key={theme} value={theme}>{theme}</option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
-          <div>Domains</div>
-          {domainOptions.map((value, index) => {
-            return <div key={index}>{value}</div>;
-          })}
-          {domainOptions.length === 0 && <div style={{ color: 'gray', fontSize: '12px' }}>(domains will appear here)</div>}
-
+        <div className="flex flex-col w-1/2 text-center justify-start p-4">
+          {domainOptions.length > 0 &&
+            domainOptions.map((value, index) => {
+              return <div key={index}>{value}</div>;
+            })}
+          {domainOptions.length === 0 && !isLoading &&
+            <button
+              className="btn btn-primary"
+              onClick={() => handleSubmit()}
+            >
+              see domain ideas
+            </button>}
+          {isLoading && <span className="loading loading-spinner loading-lg"></span>}
 
         </div>
       </div>
