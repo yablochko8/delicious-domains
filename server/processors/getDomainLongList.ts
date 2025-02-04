@@ -63,8 +63,8 @@ export const getDomainLongList = async (
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
-      // model: "deepseek-reasoner",
-      model: "deepseek-chat",
+      model: "deepseek-reasoner",
+      // model: "deepseek-chat",
     });
 
     console.log("Raw API response:", JSON.stringify(completion, null, 2));

@@ -96,19 +96,22 @@ function App() {
               ))}
             </select>
           </div>
+          <div>
+            <button
+              className="btn btn-primary"
+              onClick={() => handleSubmit()}
+            >
+              see domain ideas
+            </button>
+          </div>
+
         </div>
         <div className="flex flex-col w-1/2 text-center justify-start p-4">
           {domainOptions.length > 0 &&
             domainOptions.map((value, index) => {
               return <div key={index}>{value}</div>;
             })}
-          {domainOptions.length === 0 && !isLoading &&
-            <button
-              className="btn btn-primary"
-              onClick={() => handleSubmit()}
-            >
-              see domain ideas
-            </button>}
+
           {isLoading && <span className="loading loading-spinner loading-lg"></span>}
 
         </div>
