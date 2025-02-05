@@ -2,6 +2,8 @@ import { useState } from "react";
 import "./App.css";
 import { sendInputsAndReturnDomains } from "./serverCalls";
 import { NavBar } from "./components/NavBar";
+import { ExpandyInput } from "./components/ExpandyInput";
+import { OptionDropdown } from "./components/OptionDropdown";
 
 const themes = [
   "🌿 plants, nature, growth",
@@ -44,79 +46,69 @@ function App() {
 
 
   return (
-    <>
-      <div className="flex flex-row w-full justify-center">
-        <NavBar />
+    <div className="flex flex-col w-full space-y-4">
+      <NavBar />
+      <div>
+        <h2 className="text-center text-pink-600">give your next project a name that sizzles</h2>
       </div>
-      <h2 className="text-center p-4">give your next project a name that sizzles</h2>
-      <div className="flex flex-row w-full min-h-screen">
-        <div className="flex flex-col w-1/2 space-y-4">
-          <div>
-            <h3>what are you building?</h3>
-          </div>
-          <div>
-            <textarea
-              className="textarea textarea-primary w-full max-w-500"
-              placeholder='e.g. "linkedin for cattle farms"'
-              value={input1Purpose}
-              onChange={(e) => {
-                setInput1Purpose(e.target.value);
-              }}
-              rows={3}
-            />
-          </div>
-          <div>
-            <h3>what kind of vibe does your app have?</h3>
-          </div>
-          <div>
-            <textarea
-              className="textarea textarea-secondary w-full max-w-500"
-              placeholder='e.g. "slick, sophisticated, fresh"'
-              value={input2Vibe}
-              onChange={(e) => {
-                setInput2Vibe(e.target.value);
-              }}
-              rows={3}
-            />
-          </div>
-          <div>
-            <h3>want to use a theme or metaphor? (optional)</h3>
-          </div>
-          <div>
-            <select
-              className="select select-accent w-full max-w-500"
-              value={input3Theme || ""}
-              onChange={(e) => {
-                setInput3Theme(e.target.value || null);
-              }}
-            >
-              <option value="" disabled>select</option>
-              {themes.map((theme) => (
-                <option key={theme} value={theme}>{theme}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <button
-              className="btn btn-primary"
-              onClick={() => handleSubmit()}
-            >
-              see domain ideas
-            </button>
-          </div>
-
+      <div>
+        <h3>what are you building?</h3>
+      </div>
+      <div>
+        <ExpandyInput
+          value={input1Purpose}
+          onChange={(e) => {
+            setInput1Purpose(e.target.value);
+          }}
+          placeholder='e.g. "linkedin for cattle farms"'
+        />
+      </div>
+      <div>
+        <h3>what kind of vibe does your app have?</h3>
+      </div>
+      <div>
+        <ExpandyInput
+          value={input2Vibe}
+          onChange={(e) => {
+            setInput2Vibe(e.target.value);
+          }}
+          placeholder='e.g. "slick, sophisticated, fresh"'
+        />
+      </div>
+      <div>
+        <h3>want to use a theme or metaphor? (optional)</h3>
+      </div>
+      <div>
+        <OptionDropdown
+          value={input3Theme || ""}
+          onChange={(e) => {
+            setInput3Theme(e.target.value || null);
+          }}
+          options={themes}
+        />
+      </div>
+      <div>
+        <div className="flex flex-row w-full justify-center">
+          <button
+            className="btn btn-primary"
+            onClick={() => handleSubmit()}
+          >
+            see domain ideas
+          </button>
         </div>
-        <div className="flex flex-col w-1/2 text-center justify-start p-4">
-          {domainOptions.length > 0 &&
-            domainOptions.map((value, index) => {
-              return <div key={index}>{value}</div>;
-            })}
+        <div className="flex flex-row w-full min-h-screen">
+          <div className="flex flex-col w-1/2 text-center justify-start p-4">
+            {domainOptions.length > 0 &&
+              domainOptions.map((value, index) => {
+                return <div key={index}>{value}</div>;
+              })}
 
-          {isLoading && <span className="loading loading-spinner loading-lg"></span>}
+            {isLoading && <span className="loading loading-spinner loading-lg"></span>}
 
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
