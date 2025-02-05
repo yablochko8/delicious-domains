@@ -61,7 +61,7 @@ function App() {
 
 
   return (
-    <div className="flex flex-col w-full space-y-4 px-4">
+    <div className="flex flex-col w-full space-y-4 p-4">
       <WhatIsThis />
 
       <ExpandyInput
