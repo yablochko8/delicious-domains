@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./App.css";
 import { sendInputsAndReturnDomains } from "./serverCalls";
-import { NavBar } from "./components/NavBar";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
@@ -74,7 +73,7 @@ function App() {
       />
 
       <ExpandyInput
-        question="what kind of vibe does your app have?"
+        question="what kind of *vibe* do you want?"
         value={inputVibe}
         onChange={(e) => {
           setInputVibe(e.target.value);
@@ -83,7 +82,7 @@ function App() {
       />
 
       <ExpandyInput
-        question="paste in any ideas you've had so far (optional)"
+        question="shortlist/longlist: paste in any ideas you've had so far (optional)"
         value={inputShortlist}
         onChange={(e) => {
           setInputShortlist(e.target.value);
