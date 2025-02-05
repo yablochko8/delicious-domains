@@ -60,7 +60,7 @@ function App() {
 
 
   return (
-    <div className="flex flex-col w-full space-y-4">
+    <div className="flex flex-col w-full space-y-4 px-4">
       <NavBar />
       <div>
         <h2 className="text-center text-pink-600">give your next project a name that sizzles</h2>
