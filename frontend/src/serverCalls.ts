@@ -22,3 +22,9 @@ export const sendInputsAndReturnDomains = async (
   console.log("The server response was:", domainList);
   return domainList;
 };
+
+export const checkHeartbeat = async (): Promise<void> => {
+  const response = await fetch(`${SERVER_PATH}/heartbeat`);
+  const json = await response.json();
+  console.log("The server response was:", json);
+};
