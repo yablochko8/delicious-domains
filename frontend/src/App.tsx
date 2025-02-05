@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { sendInputsAndReturnDomains } from "./serverCalls";
+import { checkHeartbeat, sendInputsAndReturnDomains } from "./serverCalls";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
@@ -37,6 +37,13 @@ function App() {
     setIsLoading(false);
   };
 
+  // Wake the server when the page loads (because this is on Free plan on Render)
+  useEffect(() => {
+    const wakeTheServer = async () => {
+      await checkHeartbeat();
+    };
+    wakeTheServer();
+  }, []);
 
   return (
     <div className="flex flex-col w-full space-y-4 p-4">
