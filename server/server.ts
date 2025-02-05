@@ -27,7 +27,9 @@ app.post("/tlds/relevant", async (req, res) => {
   const tlds = await getRelevantTlds(
     userInput.purpose,
     userInput.vibe,
-    userInput.theme
+    userInput.shortlist,
+    userInput.theme,
+    userInput.model
   );
   res.json({ tlds });
 });
@@ -38,7 +40,9 @@ app.post("/find-domains", async (req, res) => {
   const domains = await getDomainLongList(
     userInput.purpose,
     userInput.vibe,
+    userInput.shortlist,
     userInput.theme,
+    userInput.model,
     userInput.preferredTlds
   );
 

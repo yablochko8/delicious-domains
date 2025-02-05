@@ -1,6 +1,5 @@
 import { validTlds } from "../tlds";
-import { deepseekClient } from "../utils/deepseekClient";
-import { openaiClient } from "../utils/openaiClient";
+import { getAIClient } from "../utils/ClientFactory";
 
 const generateSystemPrompt =
   () => `You are a brand name suggestion engine. Your task is to generate domain name suggestions that are both practical and memorable.
@@ -24,6 +23,7 @@ Important: Ensure the response is valid JSON and all TLDs are from the provided 
 const generateUserPrompt = (
   purpose: string,
   vibe: string,
+  shortlist: string,
   theme: string,
   preferredTlds?: string[]
 ) => {
@@ -32,6 +32,9 @@ const generateUserPrompt = (
     : "";
   const preferredTldsInsertion = preferredTlds
     ? `\nThe following TLDs are preferred: ${preferredTlds.join(", ")}`
+    : "";
+  const shortlistInsertion = shortlist
+    ? `\nNote the user has already drafted this list of ideas: ${shortlist} (though we don't need to stick to these).`
     : "";
 
   return `Generate 50 domain names with these requirements:
@@ -43,28 +46,38 @@ The domains should be:
 - Reflect the stated purpose and vibe
 - Use appropriate TLDs from the provided list
 - Currently feasible (avoid obvious trademarks)
-- Quirky, we're looking for available domains that are not already taken`;
+- Quirky, we're looking for available domains that are not already taken
+
+${shortlistInsertion}
+`;
 };
 
 export const getDomainLongList = async (
   purpose: string,
   vibe: string,
+  shortlist: string,
   theme: string,
+  model: string,
   preferredTlds?: string[]
 ): Promise<string[]> => {
   const systemPrompt = generateSystemPrompt();
-  const userPrompt = generateUserPrompt(purpose, vibe, theme, preferredTlds);
+  const userPrompt = generateUserPrompt(
+    purpose,
+    vibe,
+    shortlist,
+    theme,
+    preferredTlds
+  );
 
   console.log("Sending prompts:", { systemPrompt, userPrompt });
 
   try {
-    const completion = await deepseekClient.chat.completions.create({
+    const completion = await getAIClient(model).chat.completions.create({
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
-      // model: "deepseek-reasoner",
-      model: "deepseek-chat",
+      model: model,
     });
 
     console.log("Raw API response:", JSON.stringify(completion, null, 2));
