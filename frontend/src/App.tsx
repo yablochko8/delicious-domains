@@ -26,6 +26,7 @@ const themes = [
 ]
 
 const models = [
+  "gpt-4o-mini",
   "deepseek-chat",
   "deepseek-reasoner",
 ]
