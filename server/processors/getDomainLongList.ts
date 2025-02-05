@@ -37,7 +37,7 @@ const generateUserPrompt = (
     ? `\nNote the user has already drafted this list of ideas: ${shortlist} (though we don't need to stick to these).`
     : "";
 
-  return `Generate 50 domain names with these requirements:
+  return `Generate 20 domain names with these requirements:
 - Purpose: ${purpose}
 - Desired vibe: ${vibe}${preferredTldsInsertion}${themeInsertion}
 
