@@ -27,7 +27,7 @@ const themes = [
 
 const models = [
   "gpt-4o-mini",
-  // "o1-mini",
+  "o1-mini",
   "deepseek-chat",
   "deepseek-reasoner",
 ]
