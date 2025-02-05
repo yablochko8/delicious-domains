@@ -25,20 +25,33 @@ const themes = [
   "🎉 celebration, events, parties",
 ]
 
+const models = [
+  "deepseek-chat",
+  "deepseek-reasoner",
+]
 
 function App() {
-  const [input1Purpose, setInput1Purpose] = useState("");
-  const [input2Vibe, setInput2Vibe] = useState("");
-  const [input3Theme, setInput3Theme] = useState<typeof themes[number] | null>(null);
+
+  // User inputs
+  const [inputPurpose, setInputPurpose] = useState("");
+  const [inputVibe, setInputVibe] = useState("");
+  const [inputShortlist, setInputShortlist] = useState("");
+  const [selectedTheme, setSelectedTheme] = useState<typeof themes[number] | null>(null);
+  const [selectedModel, setSelectedModel] = useState<typeof models[number]>(models[0]);
+
+  // Request state and output 
   const [domainOptions, setDomainOptions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
 
   const handleSubmit = async () => {
     setIsLoading(true);
     const domainList = await sendInputsAndReturnDomains({
-      purpose: input1Purpose,
-      vibe: input2Vibe,
-      theme: input3Theme,
+      purpose: inputPurpose,
+      vibe: inputVibe,
+      shortlist: inputShortlist,
+      theme: selectedTheme,
+      model: selectedModel,
     });
     setDomainOptions(domainList);
     setIsLoading(false);
@@ -51,42 +64,52 @@ function App() {
       <div>
         <h2 className="text-center text-pink-600">give your next project a name that sizzles</h2>
       </div>
-      <div>
-        <h3>what are you building?</h3>
-      </div>
-      <div>
-        <ExpandyInput
-          value={input1Purpose}
-          onChange={(e) => {
-            setInput1Purpose(e.target.value);
-          }}
-          placeholder='e.g. "linkedin for cattle farms"'
-        />
-      </div>
-      <div>
-        <h3>what kind of vibe does your app have?</h3>
-      </div>
-      <div>
-        <ExpandyInput
-          value={input2Vibe}
-          onChange={(e) => {
-            setInput2Vibe(e.target.value);
-          }}
-          placeholder='e.g. "slick, sophisticated, fresh"'
-        />
-      </div>
-      <div>
-        <h3>want to use a theme or metaphor? (optional)</h3>
-      </div>
-      <div>
-        <OptionDropdown
-          value={input3Theme || ""}
-          onChange={(e) => {
-            setInput3Theme(e.target.value || null);
-          }}
-          options={themes}
-        />
-      </div>
+
+      <ExpandyInput
+        question="what are you building?"
+        value={inputPurpose}
+        onChange={(e) => {
+          setInputPurpose(e.target.value);
+        }}
+        placeholder='e.g. "linkedin for cattle farms"'
+      />
+
+      <ExpandyInput
+        question="what kind of vibe does your app have?"
+        value={inputVibe}
+        onChange={(e) => {
+          setInputVibe(e.target.value);
+        }}
+        placeholder='e.g. "slick, sophisticated, fresh"'
+      />
+
+      <ExpandyInput
+        question="paste in any ideas you've had so far (optional)"
+        value={inputShortlist}
+        onChange={(e) => {
+          setInputShortlist(e.target.value);
+        }}
+        placeholder='e.g. "farm.com", "cows.com", "cows.farm"'
+      />
+
+      <OptionDropdown
+        question="want to use a theme or metaphor? (optional)"
+        value={selectedTheme || ""}
+        onChange={(e) => {
+          setSelectedTheme(e.target.value || null);
+        }}
+        options={themes}
+      />
+
+      <OptionDropdown
+        question="AI model"
+        value={selectedModel}
+        onChange={(e) => {
+          setSelectedModel(e.target.value);
+        }}
+        options={models}
+      />
+
       <div>
         <div className="flex flex-row w-full justify-center">
           <button

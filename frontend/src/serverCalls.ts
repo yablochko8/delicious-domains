@@ -4,7 +4,9 @@ const serverPath = `http://localhost:${PORT}`;
 type UserInput = {
   purpose: string;
   vibe: string;
+  shortlist: string | null;
   theme: string | null;
+  model: string;
   preferredTlds?: string[];
 };
 
