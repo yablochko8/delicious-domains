@@ -37,7 +37,7 @@ const generateUserPrompt = (
     ? `\nNote the user has already drafted this list of ideas: ${shortlist} (though we don't need to stick to these).`
     : "";
 
-  return `Generate 50 domain names with these requirements:
+  return `Generate 20 domain names with these requirements:
 - Purpose: ${purpose}
 - Desired vibe: ${vibe}${preferredTldsInsertion}${themeInsertion}
 
@@ -71,10 +71,13 @@ export const getDomainLongList = async (
 
   console.log("Sending prompts:", { systemPrompt, userPrompt });
 
+  // Models that start with o1 need the first message to be a user message
+  const firstMessageRole = model.startsWith("o1") ? "user" : "system";
+
   try {
     const completion = await getAIClient(model).chat.completions.create({
       messages: [
-        { role: "system", content: systemPrompt },
+        { role: firstMessageRole, content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
       model: model,

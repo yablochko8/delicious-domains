@@ -1,5 +1,4 @@
-const PORT = 4101; // change this to an import before doing anything serious
-const serverPath = `http://localhost:${PORT}`;
+const SERVER_PATH = import.meta.env.VITE_SERVER_URL;
 
 type UserInput = {
   purpose: string;
@@ -13,7 +12,7 @@ type UserInput = {
 export const sendInputsAndReturnDomains = async (
   userInput: UserInput
 ): Promise<string[]> => {
-  const response = await fetch(`${serverPath}/find-domains`, {
+  const response = await fetch(`${SERVER_PATH}/find-domains`, {
     method: "POST",
     body: JSON.stringify({ userInput }),
     headers: {
@@ -27,7 +26,7 @@ export const sendInputsAndReturnDomains = async (
 };
 
 export const getAvailableTlds = async (): Promise<string[]> => {
-  const response = await fetch(`${serverPath}/tlds/all`);
+  const response = await fetch(`${SERVER_PATH}/tlds/all`);
   const json = await response.json();
   console.log("The server response was:", json);
   const tlds: string[] = json.tlds;
@@ -37,7 +36,7 @@ export const getAvailableTlds = async (): Promise<string[]> => {
 export const getRelevantTlds = async (
   userInput: UserInput
 ): Promise<string[]> => {
-  const response = await fetch(`${serverPath}/tlds/relevant`, {
+  const response = await fetch(`${SERVER_PATH}/tlds/relevant`, {
     method: "POST",
     body: JSON.stringify({ userInput }),
     headers: {

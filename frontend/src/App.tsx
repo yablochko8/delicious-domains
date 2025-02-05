@@ -27,8 +27,9 @@ const themes = [
 
 const models = [
   "gpt-4o-mini",
+  "o1-mini",
   "deepseek-chat",
-  "deepseek-reasoner",
+  // "deepseek-reasoner",
 ]
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
   const [inputPurpose, setInputPurpose] = useState("");
   const [inputVibe, setInputVibe] = useState("");
   const [inputShortlist, setInputShortlist] = useState("");
-  const [selectedTheme, setSelectedTheme] = useState<typeof themes[number] | null>(null);
+  const [selectedTheme, _setSelectedTheme] = useState<typeof themes[number] | null>(null);
   const [selectedModel, setSelectedModel] = useState<typeof models[number]>(models[0]);
 
   // Request state and output 
@@ -60,11 +61,11 @@ function App() {
 
 
   return (
-    <div className="flex flex-col w-full space-y-4 px-4">
+    <div className="flex flex-col w-full space-y-4 p-4">
       <WhatIsThis />
 
       <ExpandyInput
-        question="what are you building?"
+        question="what are you building? (for best results paste in a blob of text here)"
         value={inputPurpose}
         onChange={(e) => {
           setInputPurpose(e.target.value);
@@ -90,14 +91,14 @@ function App() {
         placeholder='e.g. "farm.com", "cows.com", "cows.farm"'
       />
 
-      <OptionDropdown
+      {/* <OptionDropdown
         question="want to use a theme or metaphor? (optional)"
         value={selectedTheme || ""}
         onChange={(e) => {
           setSelectedTheme(e.target.value || null);
         }}
         options={themes}
-      />
+      /> */}
 
       <OptionDropdown
         question="AI model"
@@ -118,7 +119,7 @@ function App() {
           </button>
         </div>
         <div className="flex flex-row w-full min-h-screen">
-          <div className="flex flex-col w-1/2 text-center justify-start p-4">
+          <div className="flex flex-col text-center justify-start p-4 w-full">
             {domainOptions.length > 0 &&
               domainOptions.map((value, index) => {
                 return <div key={index}>{value}</div>;

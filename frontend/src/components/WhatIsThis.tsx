@@ -8,7 +8,7 @@ export const WhatIsThis = () => {
 
     return (
         <>
-            <h2 className="text-2xl font-bold text-center">delicious.domains</h2>
+            <h2 className="text-2xl font-bold text-center text-secondary">delicious.domains</h2>
             <div className="flex flex-row justify-center">
                 <button className="btn btn-ghost text-xl" onClick={() => setIsOpen(!isOpen)}> what is this?</button>
             </div>
@@ -22,7 +22,7 @@ export const WhatIsThis = () => {
                             <li><a href="https://domatron.com" target="_blank" rel="noopener noreferrer">Domatron: (good for .com names)</a></li>
                             <li><a href="https://instantdomainsearch.com/" target="_blank" rel="noopener noreferrer">Instant Domain Search: (good for everything else)</a></li>
                         </ul>
-                        <p>Please don't share outside the cohort, some of the APIs cost Lui money.</p>
+                        <p>Please don't share outside the cohort, it uses APIs that cost Lui money.</p>
                         <div className="flex justify-center py-4">
                             <button className="btn btn-warning" onClick={() => setIsOpen(false)}>just let me use the terrible tool</button>
                         </div>
