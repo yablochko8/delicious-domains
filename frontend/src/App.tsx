@@ -4,6 +4,7 @@ import { sendInputsAndReturnDomains } from "./serverCalls";
 import { NavBar } from "./components/NavBar";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
+import { WhatIsThis } from "./components/WhatIsThis";
 
 const themes = [
   "🌿 plants, nature, growth",
@@ -61,10 +62,7 @@ function App() {
 
   return (
     <div className="flex flex-col w-full space-y-4 px-4">
-      <NavBar />
-      <div>
-        <h2 className="text-center text-pink-600">give your next project a name that sizzles</h2>
-      </div>
+      <WhatIsThis />
 
       <ExpandyInput
         question="what are you building?"
