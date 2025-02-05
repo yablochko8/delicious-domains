@@ -29,7 +29,7 @@ const models = [
   "gpt-4o-mini",
   "o1-mini",
   "deepseek-chat",
-  "deepseek-reasoner",
+  // "deepseek-reasoner",
 ]
 
 function App() {
