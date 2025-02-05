@@ -3,7 +3,6 @@ import cors from "cors";
 import { getDomainLongList } from "./processors/getDomainLongList";
 import { checkDomainAvailable } from "./processors/checkDomainAvailable";
 import { validTlds } from "./tlds";
-import { getRelevantTlds } from "./processors/getRelevantTlds";
 
 export const PORT = 4101;
 
@@ -12,26 +11,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", async (req, res) => {
+app.get("/heartbeat", async (req, res) => {
   console.log("GET endpoint called.");
   res.json({ message: "Hello from the server" });
 });
 
 app.get("/tlds/all", async (req, res) => {
   res.json({ tlds: validTlds });
-});
-
-app.post("/tlds/relevant", async (req, res) => {
-  const userInput = req.body.userInput;
-  console.log("User input:", userInput);
-  const tlds = await getRelevantTlds(
-    userInput.purpose,
-    userInput.vibe,
-    userInput.shortlist,
-    userInput.theme,
-    userInput.model
-  );
-  res.json({ tlds });
 });
 
 app.post("/find-domains", async (req, res) => {
@@ -47,7 +33,7 @@ app.post("/find-domains", async (req, res) => {
   );
 
   // Limit the number of domains to process
-  const MAX_DOMAINS = 100;
+  const MAX_DOMAINS = 50;
   const domainsToCheck = domains.slice(0, MAX_DOMAINS);
 
   const validDomains = [];

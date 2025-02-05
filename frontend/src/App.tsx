@@ -5,26 +5,6 @@ import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
 
-const themes = [
-  "🌿 plants, nature, growth",
-  "🐾 animals, pets, wildlife",
-  "🍽️ food, cooking, ingredients",
-  "⚒️ artisanal work, metalwork, forging",
-  "☁️ gods, superheroes, heaven",
-  "🔮 magic, witchcraft, spells",
-  "🌌 space, galaxies, universe",
-  "⏳ history, time, past",
-  "💼 office, work, business",
-  "🏡 home, family, real estate",
-  "🏛️ government, politics, bureaucracy",
-  "📚 education, learning, knowledge",
-  "🏥 health, medicine, hospitals",
-  "🛍️ shopping, retail, commerce",
-  "🎨 creativity, art, design",
-  "🌍 environment, sustainability, ecology",
-  "🎉 celebration, events, parties",
-]
-
 const models = [
   "gpt-4o-mini",
   "o1-mini",
@@ -38,7 +18,6 @@ function App() {
   const [inputPurpose, setInputPurpose] = useState("");
   const [inputVibe, setInputVibe] = useState("");
   const [inputShortlist, setInputShortlist] = useState("");
-  const [selectedTheme, _setSelectedTheme] = useState<typeof themes[number] | null>(null);
   const [selectedModel, setSelectedModel] = useState<typeof models[number]>(models[0]);
 
   // Request state and output 
@@ -52,7 +31,6 @@ function App() {
       purpose: inputPurpose,
       vibe: inputVibe,
       shortlist: inputShortlist,
-      theme: selectedTheme,
       model: selectedModel,
     });
     setDomainOptions(domainList);
@@ -90,15 +68,6 @@ function App() {
         }}
         placeholder='e.g. "farm.com", "cows.com", "cows.farm"'
       />
-
-      {/* <OptionDropdown
-        question="want to use a theme or metaphor? (optional)"
-        value={selectedTheme || ""}
-        onChange={(e) => {
-          setSelectedTheme(e.target.value || null);
-        }}
-        options={themes}
-      /> */}
 
       <OptionDropdown
         question="AI model"
