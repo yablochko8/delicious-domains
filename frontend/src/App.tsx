@@ -19,6 +19,7 @@ function App() {
   const [inputVibe, setInputVibe] = useState("");
   const [inputShortlist, setInputShortlist] = useState("");
   const [selectedModel, setSelectedModel] = useState<typeof models[number]>(models[0]);
+  const [seriousDomainsOnly, setSeriousDomainsOnly] = useState(false);
 
   // Request state and output 
   const [domainOptions, setDomainOptions] = useState<string[]>([]);
@@ -32,6 +33,7 @@ function App() {
       vibe: inputVibe,
       shortlist: inputShortlist,
       model: selectedModel,
+      preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
     });
     setDomainOptions(domainList);
     setIsLoading(false);
@@ -76,6 +78,11 @@ function App() {
         placeholder='e.g. "farm.com", "cows.com", "cows.farm"'
       />
 
+      <div className="flex flex-row w-full justify-start items-center">
+        <input type="checkbox" className="checkbox checkbox-success" checked={seriousDomainsOnly} onChange={() => setSeriousDomainsOnly(!seriousDomainsOnly)} />
+        <label className="label cursor-pointer flex items-center">serious domains only (.com / .ai / .io)</label>
+      </div>
+
       <OptionDropdown
         question="AI model"
         value={selectedModel}
@@ -97,12 +104,16 @@ function App() {
         <div className="flex flex-row w-full min-h-screen">
           <div className="flex flex-col text-center justify-start p-4 w-full">
             {domainOptions.length > 0 &&
-              domainOptions.map((value, index) => {
-                return <div key={index}>{value}</div>;
-              })}
-
+              <>
+                <div>
+                  20 domain names generated, here are the {domainOptions.length} that are available to register:
+                </div>
+                {domainOptions.map((value, index) => {
+                  return <div key={index}>{value}</div>;
+                })}
+              </>
+            }
             {isLoading && <span className="loading loading-spinner loading-lg"></span>}
-
           </div>
         </div>
       </div>

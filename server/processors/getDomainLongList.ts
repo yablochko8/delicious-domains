@@ -1,8 +1,9 @@
 import { validTlds } from "../tlds";
 import { getAIClient } from "../utils/ClientFactory";
 
-const generateSystemPrompt =
-  () => `You are a brand name suggestion engine. Your task is to generate domain name suggestions that are both practical and memorable.
+const generateSystemPrompt = (
+  allowedTlds: string[]
+) => `You are a brand name suggestion engine. Your task is to generate domain name suggestions that are both practical and memorable.
 
 Rules for domain names:
 1. Format: Each name must be "root.tld". Alliteration across these two words (e.g. "liffey.life") is encouraged.
@@ -11,7 +12,7 @@ Rules for domain names:
    - Maximum 10 characters
    - Must be pronounceable (although it doesn't have to be a "real" word from the dictionary)
    - No special characters or numbers
-3. TLD (domain extension) must be one of: ${validTlds.join(", ")}
+3. TLD (domain extension) must be one of: ${allowedTlds.join(", ")}
 
 Return the results in this exact JSON format:
 {
@@ -30,16 +31,13 @@ const generateUserPrompt = (
   const themeInsertion = theme
     ? `\nIdeally choose examples relevant to this theme: ${theme}`
     : "";
-  const preferredTldsInsertion = preferredTlds
-    ? `\nThe following TLDs are preferred: ${preferredTlds.join(", ")}`
-    : "";
   const shortlistInsertion = shortlist
     ? `\nNote the user has already drafted this list of ideas: ${shortlist} (though we don't need to stick to these).`
     : "";
 
   return `Generate 20 domain names with these requirements:
 - Purpose: ${purpose}
-- Desired vibe: ${vibe}${preferredTldsInsertion}${themeInsertion}
+- Desired vibe: ${vibe}${themeInsertion}
 
 The domains should be:
 - Memorable and brandable
@@ -47,6 +45,9 @@ The domains should be:
 - Use appropriate TLDs from the provided list
 - Currently feasible (avoid obvious trademarks)
 - Quirky, we're looking for available domains that are not already taken
+
+Remember the most important input here is the purpose of the project, which is:
+${purpose}
 
 ${shortlistInsertion}
 `;
@@ -60,14 +61,9 @@ export const getDomainLongList = async (
   model: string,
   preferredTlds?: string[]
 ): Promise<string[]> => {
-  const systemPrompt = generateSystemPrompt();
-  const userPrompt = generateUserPrompt(
-    purpose,
-    vibe,
-    shortlist,
-    theme,
-    preferredTlds
-  );
+  const tldList = preferredTlds?.length ? preferredTlds : validTlds;
+  const systemPrompt = generateSystemPrompt(tldList);
+  const userPrompt = generateUserPrompt(purpose, vibe, shortlist, theme);
 
   console.log("Sending prompts:", { systemPrompt, userPrompt });
 

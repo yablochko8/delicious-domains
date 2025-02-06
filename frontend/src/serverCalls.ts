@@ -5,6 +5,7 @@ type UserInput = {
   vibe: string;
   shortlist: string | null;
   model: string;
+  preferredTlds?: string[];
 };
 
 export const sendInputsAndReturnDomains = async (
