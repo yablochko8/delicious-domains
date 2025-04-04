@@ -1,7 +1,24 @@
 // Example response:
 // {"status":[{"domain":"fmoaceioacmedafdoajcdioa.com","zone":"com","status":"undelegated inactive","summary":"inactive"}]}
+// All statuses: https://domainr.com/docs/api/v2/status
 
 import { validTlds } from "../tlds";
+
+export const checkDomainsAvailableParallel = async (
+  domains: string[],
+  delayMs: number = 100
+): Promise<string[]> => {
+  const results = await Promise.all(
+    domains.map(async (domain, index) => {
+      // Add a small delay for each request
+      await new Promise((resolve) => setTimeout(resolve, index * delayMs));
+      return checkDomainAvailable(domain);
+    })
+  );
+
+  // Just return the domains that are available
+  return domains.filter((domain, index) => results[index]);
+};
 
 export const checkDomainAvailable = async (
   domain: string

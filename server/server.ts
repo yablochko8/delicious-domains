@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
 import { getDomainLongList } from "./processors/getDomainLongList";
-import { checkDomainAvailable } from "./processors/checkDomainAvailable";
+import {
+  checkDomainAvailable,
+  checkDomainsAvailableParallel,
+} from "./processors/checkDomainAvailable";
 import { validTlds } from "./tlds";
 
 export const PORT = 4101;
@@ -36,18 +39,7 @@ app.post("/find-domains", async (req, res) => {
   const MAX_DOMAINS = 50;
   const domainsToCheck = domains.slice(0, MAX_DOMAINS);
 
-  const validDomains = [];
-  for (const domain of domainsToCheck) {
-    try {
-      const isAvailable = await checkDomainAvailable(domain);
-      if (isAvailable) {
-        validDomains.push(domain);
-      }
-    } catch (error) {
-      console.error(`Error checking domain ${domain}:`, error);
-      continue;
-    }
-  }
+  const validDomains = await checkDomainsAvailableParallel(domainsToCheck);
   res.json({
     domains: validDomains,
   });
