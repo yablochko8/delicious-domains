@@ -6,6 +6,7 @@ import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
 import { DomainCard } from "./components/DomainCard";
 import { VibeButton } from "./components/Buttons";
+import { exampleExpensiveDomain, exampleImpossibleDomain, exampleUnavailableDomain, fakeAssess } from "./utils/fakeAssess";
 
 const models = [
   "gpt-4o-mini",
@@ -129,13 +130,17 @@ function App() {
             {domainOptions.length > 0 &&
               <>
                 <div>
-                  20 domain names generated, here are the {domainOptions.length} that are available to register:
+                  10 domain names generated, here are the {domainOptions.length} that are available to register:
                 </div>
                 {domainOptions.map((value, index) => {
-                  return <DomainCard key={index} domain={value} />;
+                  return <DomainCard key={index} {...fakeAssess(value)} />;
                 })}
+                <DomainCard {...exampleExpensiveDomain} />
+                <DomainCard {...exampleUnavailableDomain} />
+                <DomainCard {...exampleImpossibleDomain} />
               </>
             }
+
             {isLoading && <span className="loading loading-spinner loading-lg"></span>}
           </div>
         </div>
