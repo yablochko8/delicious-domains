@@ -4,6 +4,9 @@ import { checkHeartbeat, sendInputsAndReturnDomains } from "./serverCalls";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
+import { DomainCard } from "./components/DomainCard";
+import { VibeButton } from "./components/Buttons";
+import { exampleExpensiveDomain, exampleImpossibleDomain, exampleUnavailableDomain, fakeAssess } from "./utils/fakeAssess";
 
 const models = [
   "gpt-4o-mini",
@@ -11,6 +14,8 @@ const models = [
   "deepseek-chat",
   // "deepseek-reasoner",
 ]
+
+const STARTING_VIBES = ["fun", "serious", "casual", "professional", "creative", "unique", "trendy"];
 
 function App() {
 
@@ -21,9 +26,22 @@ function App() {
   const [selectedModel, setSelectedModel] = useState<typeof models[number]>(models[0]);
   const [seriousDomainsOnly, setSeriousDomainsOnly] = useState(false);
 
+  // Suggestion inputs
+  const [suggestedVibes, setSuggestedVibes] = useState<string[]>(STARTING_VIBES);
+
   // Request state and output 
   const [domainOptions, setDomainOptions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const appendVibe = (vibe: string) => {
+    setSuggestedVibes(suggestedVibes.filter(suggestedVibe => suggestedVibe !== vibe));
+
+    if (inputVibe.length > 0) {
+      setInputVibe(inputVibe + ", " + vibe);
+    } else {
+      setInputVibe(vibe);
+    }
+  }
 
 
   const handleSubmit = async () => {
@@ -69,6 +87,12 @@ function App() {
         placeholder='e.g. "slick, sophisticated, fresh"'
       />
 
+      <div className="flex flex-row gap-2">
+        {suggestedVibes.map(vibe => (
+          <VibeButton vibe={vibe} onClick={appendVibe} />
+        ))}
+      </div>
+
       <ExpandyInput
         question="shortlist/longlist: paste in any ideas you've had so far (optional)"
         value={inputShortlist}
@@ -106,13 +130,17 @@ function App() {
             {domainOptions.length > 0 &&
               <>
                 <div>
-                  20 domain names generated, here are the {domainOptions.length} that are available to register:
+                  10 domain names generated, here are the {domainOptions.length} that are available to register:
                 </div>
                 {domainOptions.map((value, index) => {
-                  return <div key={index}>{value}</div>;
+                  return <DomainCard key={index} {...fakeAssess(value)} />;
                 })}
+                <DomainCard {...exampleExpensiveDomain} />
+                <DomainCard {...exampleUnavailableDomain} />
+                <DomainCard {...exampleImpossibleDomain} />
               </>
             }
+
             {isLoading && <span className="loading loading-spinner loading-lg"></span>}
           </div>
         </div>
