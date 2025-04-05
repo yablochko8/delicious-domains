@@ -1,21 +1,6 @@
 import { useState } from "react";
 import { MdFavorite as LikedIcon, MdFavoriteBorder as UnlikedIcon } from "react-icons/md";
-
-export type DomainAssessment = {
-    domain: string;
-    isPossible: boolean;
-    isAvailable: boolean;
-    isCheap: boolean;
-    evoc: number;
-    brev: number;
-    grep: number;
-    goog: number;
-    pron: number;
-    spel: number;
-    verb: number;
-}
-
-
+import { DomainAssessment } from "shared/types";
 
 const ScoreTile = ({ label, score }: { label: string, score: number }) => {
     const backgroundColor = (() => {

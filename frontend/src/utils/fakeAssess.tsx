@@ -1,4 +1,4 @@
-import { DomainAssessment } from "../components/DomainCard";
+import { DomainAssessment } from "shared/types";
 
 export const exampleImpossibleDomain: DomainAssessment = {
     domain: "borgen.borgen",
