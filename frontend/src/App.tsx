@@ -89,7 +89,7 @@ function App() {
 
       <div className="flex flex-row gap-2">
         {suggestedVibes.map(vibe => (
-          <VibeButton vibe={vibe} onClick={appendVibe} />
+          <VibeButton vibe={vibe} onClick={appendVibe} key={vibe} />
         ))}
       </div>
 
