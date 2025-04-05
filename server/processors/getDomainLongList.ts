@@ -26,6 +26,7 @@ const generateUserPrompt = (
   vibe: string,
   shortlist: string,
   theme: string,
+  targetQuantity: number,
   preferredTlds?: string[]
 ) => {
   const themeInsertion = theme
@@ -35,7 +36,7 @@ const generateUserPrompt = (
     ? `\nNote the user has already drafted this list of ideas: ${shortlist} (though we don't need to stick to these).`
     : "";
 
-  return `Generate 20 domain names with these requirements:
+  return `Generate ${targetQuantity} domain names with these requirements:
 - Purpose: ${purpose}
 - Desired vibe: ${vibe}${themeInsertion}
 
@@ -59,11 +60,18 @@ export const getDomainLongList = async (
   shortlist: string,
   theme: string,
   model: string,
+  targetQuantity: number,
   preferredTlds?: string[]
 ): Promise<string[]> => {
   const tldList = preferredTlds?.length ? preferredTlds : validTlds;
   const systemPrompt = generateSystemPrompt(tldList);
-  const userPrompt = generateUserPrompt(purpose, vibe, shortlist, theme);
+  const userPrompt = generateUserPrompt(
+    purpose,
+    vibe,
+    shortlist,
+    theme,
+    targetQuantity
+  );
 
   console.log("Sending prompts:", { systemPrompt, userPrompt });
 

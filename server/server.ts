@@ -9,6 +9,8 @@ import { validTlds } from "./tlds";
 
 export const PORT = 4101;
 
+const MAX_DOMAINS_PER_CALL = 5;
+
 const app = express();
 
 app.use(express.json());
@@ -32,6 +34,7 @@ app.post("/find-domains", async (req, res) => {
     userInput.shortlist,
     userInput.theme,
     userInput.model,
+    MAX_DOMAINS_PER_CALL,
     userInput.preferredTlds
   );
 
