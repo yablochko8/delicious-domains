@@ -6,7 +6,7 @@ import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
 import { DomainCard } from "./components/DomainCard";
 import { VibeButton } from "./components/Buttons";
-import { exampleExpensiveDomain, exampleImpossibleDomain, exampleUnavailableDomain, fakeAssess } from "./utils/fakeAssess";
+import { DomainAssessment } from "shared/types";
 
 const models = [
   "gpt-4o-mini",
@@ -30,7 +30,7 @@ function App() {
   const [suggestedVibes, setSuggestedVibes] = useState<string[]>(STARTING_VIBES);
 
   // Request state and output 
-  const [domainOptions, setDomainOptions] = useState<string[]>([]);
+  const [domainOptions, setDomainOptions] = useState<DomainAssessment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const appendVibe = (vibe: string) => {
@@ -46,14 +46,14 @@ function App() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const domainList = await sendInputsAndReturnDomains({
+    const newDomainOptions = await sendInputsAndReturnDomains({
       purpose: inputPurpose,
       vibe: inputVibe,
       shortlist: inputShortlist,
       model: selectedModel,
       preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
     });
-    setDomainOptions(domainList);
+    setDomainOptions(newDomainOptions);
     setIsLoading(false);
   };
 
@@ -132,12 +132,15 @@ function App() {
                 <div>
                   10 domain names generated, here are the {domainOptions.length} that are available to register:
                 </div>
-                {domainOptions.map((value, index) => {
-                  return <DomainCard key={index} {...fakeAssess(value)} />;
+                {domainOptions.map((domainAssessment, index) => {
+                  return <DomainCard key={index} {...domainAssessment} />;
                 })}
+
+                {/* <DomainCard {...exampleValid} /> */}
+                {/* <DomainCard {...exampleValidDomain} />
                 <DomainCard {...exampleExpensiveDomain} />
                 <DomainCard {...exampleUnavailableDomain} />
-                <DomainCard {...exampleImpossibleDomain} />
+                <DomainCard {...exampleImpossibleDomain} /> */}
               </>
             }
 
