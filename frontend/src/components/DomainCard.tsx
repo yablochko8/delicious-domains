@@ -6,7 +6,7 @@ import {
 } from "react-icons/md";
 import { ScoreIcons } from "../assets/ScoreIcons";
 import { DomainAssessment } from "shared/types";
-import { explanations } from "../assets/explanations";
+import { explanations } from "../assets/scoreExplanations";
 
 const ScoreTile = ({ label, score }: { label: string; score: number }) => {
   const backgroundColor = (() => {

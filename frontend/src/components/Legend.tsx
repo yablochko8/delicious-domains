@@ -1,5 +1,5 @@
 import { ScoreIcons } from "../assets/ScoreIcons";
-import { explanations } from "../assets/Explanations";
+import { explanations } from "../assets/scoreExplanations";
 
 /** This is not currently used. */
 export const Legend = () => {
