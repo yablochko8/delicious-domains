@@ -6,6 +6,7 @@ import {
 } from "react-icons/md";
 import { ScoreIcons } from "../assets/ScoreIcons";
 import { DomainAssessment } from "shared/types";
+import { explanations } from "../assets/Explanations";
 
 const ScoreTile = ({ label, score }: { label: string; score: number }) => {
   const backgroundColor = (() => {
@@ -34,26 +35,8 @@ const ScoreTile = ({ label, score }: { label: string; score: number }) => {
     }
   })();
 
-  const hoverText = (() => {
-    switch (label.toLowerCase()) {
-      case "evoc":
-        return "Evocativity: Conveys at least a hint of what it’s naming";
-      case "brev":
-        return "Brevity: Shorter = better";
-      case "grep":
-        return "Greppability: Not a substring of common words";
-      case "goog":
-        return "Googlability: Reasonably unique";
-      case "pron":
-        return "Pronounceability: You can read it out loud when you see it. Bonus points for alliteration or related patterns, including classy consonance, arrogant assonance, and explosive plosives.";
-      case "spel":
-        return "Spellability: You know how it's spelled when you hear it";
-      case "verb":
-        return "Verbability: The core name - the first part of the domain name - can be used as a verb";
-      default:
-        return undefined;
-    }
-  })();
+  const hoverText =
+    explanations[label.toLowerCase() as keyof typeof explanations];
 
   const ScoreIcon = ScoreIcons[label.toLowerCase() as keyof typeof ScoreIcons];
 
