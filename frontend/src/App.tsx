@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { checkHeartbeat, sendInputsAndReturnDomains } from "./serverCalls";
+import { checkLimits, sendInputsAndReturnDomains } from "./serverCalls";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
@@ -50,7 +50,6 @@ function App() {
   // Request state and output
   const [domainOptions, setDomainOptions] = useState<DomainAssessment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const appendVibe = (vibe: string) => {
     setSuggestedVibes(
       suggestedVibes.filter((suggestedVibe) => suggestedVibe !== vibe)
@@ -79,7 +78,9 @@ function App() {
   // Wake the server when the page loads (because this is on Free plan on Render)
   useEffect(() => {
     const wakeTheServer = async () => {
-      await checkHeartbeat();
+      const reportedMaxDomains = await checkLimits();
+      console.log("Max domains:", reportedMaxDomains);
+      // This will prob be useful on the frontend eventually
     };
     wakeTheServer();
   }, []);
@@ -168,8 +169,8 @@ function App() {
               {domainOptions.length > 0 && (
                 <>
                   <div>
-                    10 domain names generated, here are the{" "}
-                    {domainOptions.length} that are available to register:
+                    {domainOptions.length} domain names tried. Names with
+                    hallucinated TLDs are omitted.
                   </div>
                   <DomainList domainOptions={domainOptions} />
                 </>
@@ -185,7 +186,9 @@ function App() {
               )}
 
               {isLoading && (
-                <span className="loading loading-spinner loading-lg"></span>
+                <div className="flex flex-row w-full justify-center p-16">
+                  <span className="loading loading-spinner loading-lg"></span>
+                </div>
               )}
             </div>
           </div>

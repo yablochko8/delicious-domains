@@ -3,12 +3,11 @@ import cors from "cors";
 import { getDomainLongList } from "./processors/getDomainLongList";
 import { getDomainStatusParallel } from "./processors/checkDomainAvailable";
 import { validTlds } from "./tlds";
-import { DomainAssessment } from "shared/types";
 import { addScoresToDomain } from "processors/assessDomain";
 
 export const PORT = 4101;
 
-const MAX_DOMAINS_PER_CALL = 20;
+const MAX_DOMAINS = 20;
 
 const app = express();
 
@@ -18,6 +17,11 @@ app.use(cors());
 app.get("/heartbeat", async (_req, res) => {
   console.log("GET endpoint called.");
   res.json({ message: "Hello from the server" });
+});
+
+app.get("/limits", async (_req, res) => {
+  console.log("/limits GET endpoint called.");
+  res.json({ maxDomains: MAX_DOMAINS });
 });
 
 app.get("/tlds/all", async (_req, res) => {
@@ -33,17 +37,16 @@ app.post("/find-domains", async (req, res) => {
     userInput.shortlist,
     userInput.theme,
     userInput.model,
-    MAX_DOMAINS_PER_CALL,
+    MAX_DOMAINS,
     userInput.preferredTlds
   );
 
   // Limit the number of domains to process
-  const MAX_DOMAINS = 50;
   const domainsToCheck = domains.slice(0, MAX_DOMAINS);
 
   const domainsBeforeScores = await getDomainStatusParallel(domainsToCheck);
-  const domainsAfterScores: DomainAssessment[] = domainsBeforeScores.map(
-    (domain) => addScoresToDomain(domain)
+  const domainsAfterScores = await Promise.all(
+    domainsBeforeScores.map((domain) => addScoresToDomain(domain))
   );
 
   res.json({
