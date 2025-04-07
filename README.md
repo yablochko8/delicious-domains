@@ -1,16 +1,19 @@
 # File created using Typespark
 
-------------------------
+---
 
-To fire up your frontend, run:
-`npm --prefix frontend run dev`
+To start dev environment...
 
-To fire up your server, run:
-`cd server && bun --watch server.ts && cd ..`
+Terminal 1:
 
-To fire up your database, run:
-`cd server && npx --prefix ./server prisma studio --schema ./prisma/schema.prisma && cd ..`
+`cd server`
+`npm i`
+`bun --watch server.ts`
 
-The command for firing up everything is:
-`pm2 delete all || true && pm2 start 'npm --prefix frontend run dev' --name devclient && pm2 start 'cd server && bun --watch server.ts && cd ..' --name devserver && pm2 start 'cd server && npx --prefix ./server prisma studio --schema ./prisma/schema.prisma && cd ..' --name prismastudio && pm2 logs`
+Terminal 2:
 
+`cd frontend`
+`npm i`
+`npm run dev`
+
+---
