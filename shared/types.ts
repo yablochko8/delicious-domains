@@ -23,7 +23,9 @@ export type DomainAssessment = {
   isPossible: boolean;
   isAvailable: boolean;
   isCheap: boolean;
-  scores: DomainScores;
+  scores?: DomainScores;
+  status?: string;
+  error?: string;
 };
 
 export const exampleValid: DomainAssessment = {

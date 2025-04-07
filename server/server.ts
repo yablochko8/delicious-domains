@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
 import { getDomainLongList } from "./processors/getDomainLongList";
-import { checkDomainsAvailableParallel } from "./processors/checkDomainAvailable";
+import { getDomainStatusParallel } from "./processors/checkDomainAvailable";
 import { validTlds } from "./tlds";
 import { DomainAssessment } from "shared/types";
-import { fakeAssess } from "processors/assessDomain";
+import { addScoresToDomain } from "processors/assessDomain";
 
 export const PORT = 4101;
 
@@ -41,13 +41,13 @@ app.post("/find-domains", async (req, res) => {
   const MAX_DOMAINS = 50;
   const domainsToCheck = domains.slice(0, MAX_DOMAINS);
 
-  const validDomains = await checkDomainsAvailableParallel(domainsToCheck);
-  const domainOptions: DomainAssessment[] = validDomains.map((domain) =>
-    fakeAssess(domain)
+  const domainsBeforeScores = await getDomainStatusParallel(domainsToCheck);
+  const domainsAfterScores: DomainAssessment[] = domainsBeforeScores.map(
+    (domain) => addScoresToDomain(domain)
   );
 
   res.json({
-    domainAssessments: domainOptions,
+    domainAssessments: domainsAfterScores,
   });
 });
 

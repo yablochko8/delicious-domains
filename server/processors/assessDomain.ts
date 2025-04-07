@@ -1,4 +1,13 @@
-import { blankScores, DomainAssessment } from "shared/types";
+import { blankScores, DomainAssessment, DomainScores } from "shared/types";
+
+export const addScoresToDomain = (
+  input: DomainAssessment
+): DomainAssessment => {
+  return {
+    ...input,
+    scores: fakeAssess(input.domain),
+  };
+};
 
 export const exampleImpossibleDomain: DomainAssessment = {
   domain: "borgen.borgen",
@@ -24,7 +33,7 @@ export const exampleExpensiveDomain: DomainAssessment = {
   scores: blankScores,
 };
 /** 0 is unassessed. 1 is red, 2 is yellow, 3 is green */
-export const fakeAssess = (domain: string): DomainAssessment => {
+export const fakeAssess = (domain: string): DomainScores => {
   const brevScore = (() => {
     const domainLength = domain.length;
     switch (true) {
@@ -37,41 +46,35 @@ export const fakeAssess = (domain: string): DomainAssessment => {
     }
   })();
 
-  /** Throwaway code to consistently fake some scores */
-  const randomScore = (stringSeed: string, numberSeed: number = 1) => {
-    // Convert the string seed to an integer
-    let hash = 0;
-    for (let i = 0; i < stringSeed.length; i++) {
-      const char = stringSeed.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash; // Convert to 32bit integer
-    }
-    // Incorporate the number seed into the hash calculation
-    hash = ((hash * numberSeed) ^ (numberSeed << 7)) & 0xffffffff;
-    const percentile = Math.abs(hash % 100);
-
-    if (percentile < 60) {
-      return 3; // 60% chance of green
-    } else if (percentile < 85) {
-      return 2; // 25% chance of yellow
-    } else {
-      return 1; // 15% chance of red
-    }
-  };
-
   return {
-    domain,
-    isPossible: true,
-    isAvailable: true,
-    isCheap: true,
-    scores: {
-      evoc: randomScore(domain, 1),
-      brev: brevScore,
-      grep: randomScore(domain, 2),
-      goog: randomScore(domain, 3),
-      pron: randomScore(domain, 4),
-      spel: randomScore(domain, 5),
-      verb: randomScore(domain, 6),
-    },
+    evoc: randomScore(domain, 1),
+    brev: brevScore,
+    grep: randomScore(domain, 2),
+    goog: randomScore(domain, 3),
+    pron: randomScore(domain, 4),
+    spel: randomScore(domain, 5),
+    verb: randomScore(domain, 6),
   };
+};
+
+/** Throwaway code to consistently fake some scores */
+const randomScore = (stringSeed: string, numberSeed: number = 1) => {
+  // Convert the string seed to an integer
+  let hash = 0;
+  for (let i = 0; i < stringSeed.length; i++) {
+    const char = stringSeed.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  // Incorporate the number seed into the hash calculation
+  hash = ((hash * numberSeed) ^ (numberSeed << 7)) & 0xffffffff;
+  const percentile = Math.abs(hash % 100);
+
+  if (percentile < 60) {
+    return 3; // 60% chance of green
+  } else if (percentile < 85) {
+    return 2; // 25% chance of yellow
+  } else {
+    return 1; // 15% chance of red
+  }
 };
