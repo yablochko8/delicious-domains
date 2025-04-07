@@ -1,21 +1,6 @@
 import { useState } from "react";
 import { MdFavorite as LikedIcon, MdFavoriteBorder as UnlikedIcon } from "react-icons/md";
-
-export type DomainAssessment = {
-    domain: string;
-    isPossible: boolean;
-    isAvailable: boolean;
-    isCheap: boolean;
-    evoc: number;
-    brev: number;
-    grep: number;
-    goog: number;
-    pron: number;
-    spel: number;
-    verb: number;
-}
-
-
+import { DomainAssessment } from "shared/types";
 
 const ScoreTile = ({ label, score }: { label: string, score: number }) => {
     const backgroundColor = (() => {
@@ -107,7 +92,8 @@ export const ImpossibleBanner = ({ isPossible, isAvailable, isCheap }: { isPossi
 
 export const DomainCard = (assessment: DomainAssessment) => {
     const [isLiked, setIsLiked] = useState(false);
-    const { domain, isPossible, isAvailable, isCheap, evoc, brev, grep, goog, pron, spel, verb } = assessment;
+    const { domain, isPossible, isAvailable, isCheap, scores } = assessment;
+    const { evoc, brev, grep, goog, pron, spel, verb } = scores;
     const totalScore = evoc + brev + grep + goog + pron + spel + verb;
 
     const isValid = isPossible && isAvailable && isCheap

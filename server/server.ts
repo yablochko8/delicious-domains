@@ -1,11 +1,10 @@
 import express from "express";
 import cors from "cors";
 import { getDomainLongList } from "./processors/getDomainLongList";
-import {
-  checkDomainAvailable,
-  checkDomainsAvailableParallel,
-} from "./processors/checkDomainAvailable";
+import { checkDomainsAvailableParallel } from "./processors/checkDomainAvailable";
 import { validTlds } from "./tlds";
+import { DomainAssessment } from "shared/types";
+import { fakeAssess } from "processors/assessDomain";
 
 export const PORT = 4101;
 
@@ -16,12 +15,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/heartbeat", async (req, res) => {
+app.get("/heartbeat", async (_req, res) => {
   console.log("GET endpoint called.");
   res.json({ message: "Hello from the server" });
 });
 
-app.get("/tlds/all", async (req, res) => {
+app.get("/tlds/all", async (_req, res) => {
   res.json({ tlds: validTlds });
 });
 
@@ -43,8 +42,12 @@ app.post("/find-domains", async (req, res) => {
   const domainsToCheck = domains.slice(0, MAX_DOMAINS);
 
   const validDomains = await checkDomainsAvailableParallel(domainsToCheck);
+  const domainOptions: DomainAssessment[] = validDomains.map((domain) =>
+    fakeAssess(domain)
+  );
+
   res.json({
-    domains: validDomains,
+    domainAssessments: domainOptions,
   });
 });
 

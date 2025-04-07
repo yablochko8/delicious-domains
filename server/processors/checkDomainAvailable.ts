@@ -17,12 +17,10 @@ export const checkDomainsAvailableParallel = async (
   );
 
   // Just return the domains that are available
-  return domains.filter((domain, index) => results[index]);
+  return domains.filter((_domain, index) => results[index]);
 };
 
-export const checkDomainAvailable = async (
-  domain: string
-): Promise<boolean> => {
+const checkDomainAvailable = async (domain: string): Promise<boolean> => {
   console.log("Checking domain availability for:", domain);
   const tld = domain.split(".")[1];
   if (!validTlds.includes(tld.toUpperCase())) {
@@ -53,7 +51,3 @@ export const checkDomainAvailable = async (
     return false;
   }
 };
-
-// await checkDomainAvailable("google.com");
-
-// await checkDomainAvailable("fmoaceioacmedafdoajcdioa.com");

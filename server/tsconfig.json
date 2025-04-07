@@ -1,9 +1,32 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "target": "ES2020",
+    "module": "CommonJS",
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    /* Node.js mode */
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
     "esModuleInterop": true,
-    "strict": true
-  }
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Other */
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "shared/*": ["../shared/*"]
+    },
+    "rootDir": "..",
+    "outDir": "./dist"
+  },
+  "include": ["./**/*", "../shared/**/*"],
+  "exclude": ["node_modules"]
 }
