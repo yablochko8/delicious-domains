@@ -1,5 +1,6 @@
+import { sendLLMRequest } from "utils/sendLLMRequest";
 import { validTlds } from "../tlds";
-import { getAIClient } from "../utils/ClientFactory";
+import { jsonToArray } from "utils/jsonToArray";
 
 const generateSystemPrompt = (
   allowedTlds: string[]
@@ -36,6 +37,10 @@ const generateUserPrompt = (
     ? `\nNote the user has already drafted this list of ideas: ${shortlist} (though we don't need to stick to these).`
     : "";
 
+  const tldInsertion = preferredTlds?.length
+    ? `\nIf possible, use these TLDs: ${preferredTlds}`
+    : "";
+
   return `Generate ${targetQuantity} domain names with these requirements:
 - Purpose: ${purpose}
 - Desired vibe: ${vibe}${themeInsertion}
@@ -47,10 +52,11 @@ The domains should be:
 - Currently feasible (avoid obvious trademarks)
 - Quirky, we're looking for available domains that are not already taken
 
+${shortlistInsertion}
+${tldInsertion}
+
 Remember the most important input here is the purpose of the project, which is:
 ${purpose}
-
-${shortlistInsertion}
 `;
 };
 
@@ -75,43 +81,9 @@ export const getDomainLongList = async (
 
   console.log("Sending prompts:", { systemPrompt, userPrompt });
 
-  // Models that start with o1 need the first message to be a user message
-  const firstMessageRole = model.startsWith("o1") ? "user" : "system";
+  const response = await sendLLMRequest(model, systemPrompt, userPrompt);
 
-  try {
-    const completion = await getAIClient(model).chat.completions.create({
-      messages: [
-        { role: firstMessageRole, content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      model: model,
-    });
+  console.log("Response:", response);
 
-    console.log("Raw API response:", JSON.stringify(completion, null, 2));
-
-    const response = completion.choices[0];
-    console.log("First choice:", response);
-
-    if (!response?.message?.content) {
-      console.error("No content in response");
-      return [];
-    }
-
-    const content = response.message.content;
-    console.log("Content to parse:", content);
-
-    // Remove any markdown code block syntax, handling various formats
-    const cleanedContent = content
-      .replace(/```(?:json)?\n?/g, "")
-      .replace(/`/g, "")
-      .trim();
-
-    console.log("Cleaned content:", cleanedContent);
-
-    const json = JSON.parse(cleanedContent);
-    return Array.isArray(json.domains) ? json.domains : [];
-  } catch (error) {
-    console.error("Error in getDomainLongList:", error);
-    return [];
-  }
+  return jsonToArray(response, "domains");
 };

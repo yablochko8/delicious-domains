@@ -16,6 +16,9 @@ export const checkDomainsAvailableParallel = async (
     })
   );
 
+  console.log("Domains:", domains);
+  console.log("Results:", results);
+
   // Just return the domains that are available
   return domains.filter((_domain, index) => results[index]);
 };
