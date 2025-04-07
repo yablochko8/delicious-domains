@@ -4,45 +4,56 @@ import { checkHeartbeat, sendInputsAndReturnDomains } from "./serverCalls";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
-import { DomainCard } from "./components/DomainCard";
 import { VibeButton } from "./components/Buttons";
 import { DomainAssessment } from "shared/types";
+import { DomainList } from "./components/DomainList";
 
 const models = [
   "gpt-4o-mini",
   "o1-mini",
   "deepseek-chat",
   // "deepseek-reasoner",
-]
+];
 
-const STARTING_VIBES = ["fun", "serious", "casual", "professional", "creative", "unique", "trendy"];
+const STARTING_VIBES = [
+  "fun",
+  "serious",
+  "casual",
+  "professional",
+  "creative",
+  "unique",
+  "trendy",
+];
 
 function App() {
-
   // User inputs
   const [inputPurpose, setInputPurpose] = useState("");
   const [inputVibe, setInputVibe] = useState("");
   const [inputShortlist, setInputShortlist] = useState("");
-  const [selectedModel, setSelectedModel] = useState<typeof models[number]>(models[0]);
+  const [selectedModel, setSelectedModel] = useState<(typeof models)[number]>(
+    models[0]
+  );
   const [seriousDomainsOnly, setSeriousDomainsOnly] = useState(false);
 
   // Suggestion inputs
-  const [suggestedVibes, setSuggestedVibes] = useState<string[]>(STARTING_VIBES);
+  const [suggestedVibes, setSuggestedVibes] =
+    useState<string[]>(STARTING_VIBES);
 
-  // Request state and output 
+  // Request state and output
   const [domainOptions, setDomainOptions] = useState<DomainAssessment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const appendVibe = (vibe: string) => {
-    setSuggestedVibes(suggestedVibes.filter(suggestedVibe => suggestedVibe !== vibe));
+    setSuggestedVibes(
+      suggestedVibes.filter((suggestedVibe) => suggestedVibe !== vibe)
+    );
 
     if (inputVibe.length > 0) {
       setInputVibe(inputVibe + ", " + vibe);
     } else {
       setInputVibe(vibe);
     }
-  }
-
+  };
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -88,7 +99,7 @@ function App() {
       />
 
       <div className="flex flex-row gap-2">
-        {suggestedVibes.map(vibe => (
+        {suggestedVibes.map((vibe) => (
           <VibeButton vibe={vibe} onClick={appendVibe} key={vibe} />
         ))}
       </div>
@@ -103,8 +114,15 @@ function App() {
       />
 
       <div className="flex flex-row w-full justify-start items-center">
-        <input type="checkbox" className="checkbox checkbox-success" checked={seriousDomainsOnly} onChange={() => setSeriousDomainsOnly(!seriousDomainsOnly)} />
-        <label className="label cursor-pointer flex items-center">serious domains only (.com / .ai / .io)</label>
+        <input
+          type="checkbox"
+          className="checkbox checkbox-success"
+          checked={seriousDomainsOnly}
+          onChange={() => setSeriousDomainsOnly(!seriousDomainsOnly)}
+        />
+        <label className="label cursor-pointer flex items-center">
+          serious domains only (.com / .ai / .io)
+        </label>
       </div>
 
       <OptionDropdown
@@ -118,23 +136,19 @@ function App() {
 
       <div>
         <div className="flex flex-row w-full justify-center">
-          <button
-            className="btn btn-primary"
-            onClick={() => handleSubmit()}
-          >
+          <button className="btn btn-primary" onClick={() => handleSubmit()}>
             see domain ideas
           </button>
         </div>
         <div className="flex flex-row w-full min-h-screen">
           <div className="flex flex-col text-center justify-start p-4 w-full">
-            {domainOptions.length > 0 &&
+            {domainOptions.length > 0 && (
               <>
                 <div>
-                  10 domain names generated, here are the {domainOptions.length} that are available to register:
+                  10 domain names generated, here are the {domainOptions.length}{" "}
+                  that are available to register:
                 </div>
-                {domainOptions.map((domainAssessment, index) => {
-                  return <DomainCard key={index} {...domainAssessment} />;
-                })}
+                <DomainList domainOptions={domainOptions} />
 
                 {/* <DomainCard {...exampleValid} /> */}
                 {/* <DomainCard {...exampleValidDomain} />
@@ -142,9 +156,11 @@ function App() {
                 <DomainCard {...exampleUnavailableDomain} />
                 <DomainCard {...exampleImpossibleDomain} /> */}
               </>
-            }
+            )}
 
-            {isLoading && <span className="loading loading-spinner loading-lg"></span>}
+            {isLoading && (
+              <span className="loading loading-spinner loading-lg"></span>
+            )}
           </div>
         </div>
       </div>
