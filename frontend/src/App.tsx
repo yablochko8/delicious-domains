@@ -105,7 +105,7 @@ function App() {
         placeholder='e.g. "slick, sophisticated, fresh"'
       />
 
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 flex-wrap">
         {suggestedVibes.map((vibe) => (
           <VibeButton vibe={vibe} onClick={appendVibe} key={vibe} />
         ))}
