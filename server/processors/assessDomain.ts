@@ -45,7 +45,13 @@ export const scoreDomain = async (domain: string): Promise<DomainScores> => {
     domain
   );
 
-  const parsedScores = JSON.parse(attemptedScores);
+  let parsedScores;
+  try {
+    parsedScores = JSON.parse(attemptedScores);
+  } catch (error) {
+    console.error("Failed to parse LLM response as JSON:", error);
+    parsedScores = {};
+  }
 
   const aiScores = {
     evoc: Number(parsedScores?.evoc) || 0,

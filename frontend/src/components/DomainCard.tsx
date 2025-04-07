@@ -6,7 +6,7 @@ import {
 } from "react-icons/md";
 import { ScoreIcons } from "../assets/ScoreIcons";
 import { DomainAssessment } from "shared/types";
-import { explanations } from "../assets/Explanations";
+import { explanations } from "../assets/explanations";
 
 const ScoreTile = ({ label, score }: { label: string; score: number }) => {
   const backgroundColor = (() => {
@@ -175,7 +175,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
     <div
       className={`grid grid-cols-9 md:grid-cols-11 shadow-md p-1 ${styling}`}
     >
-      <div className="col-span-9 md:col-span-2 flex justify-left text-lg font-semibold pt-2 pb-1">
+      <div className="col-span-9 md:col-span-2 flex justify-start text-lg font-semibold pt-2 pb-1">
         {domain}
       </div>
       <div className="col-span-7">
