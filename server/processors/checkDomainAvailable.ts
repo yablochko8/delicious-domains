@@ -1,30 +1,73 @@
 // Example response:
-// {"status":[{"domain":"fmoaceioacmedafdoajcdioa.com","zone":"com","status":"undelegated inactive","summary":"inactive"}]}
+// {"status":[{"domain":"fmoaceioacmedafdoajcdioa.com","zone":"com","status":"undelegated inactive"}]}
 // All statuses: https://domainr.com/docs/api/v2/status
 
+import { DomainAssessment } from "shared/types";
 import { validTlds } from "../tlds";
 
-export const checkDomainsAvailableParallel = async (
+export const getDomainStatusParallel = async (
   domains: string[],
   delayMs: number = 100
-): Promise<string[]> => {
-  const results = await Promise.all(
+): Promise<DomainAssessment[]> => {
+  const resultsPromise = await Promise.allSettled(
     domains.map(async (domain, index) => {
       // Add a small delay for each request
       await new Promise((resolve) => setTimeout(resolve, index * delayMs));
-      return checkDomainAvailable(domain);
+      try {
+        const status = await getDomainStatus(domain);
+        return status;
+      } catch (error) {
+        return {
+          domain,
+          isPossible: false,
+          isAvailable: false,
+          isCheap: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+        };
+      }
     })
   );
 
-  // Just return the domains that are available
-  return domains.filter((_domain, index) => results[index]);
+  const results = resultsPromise
+    .map((resultPromise) => {
+      if (resultPromise.status === "fulfilled") {
+        return resultPromise.value;
+      }
+      return {
+        domain: "something.com",
+        isPossible: false,
+        isAvailable: false,
+        isCheap: false,
+        error:
+          resultPromise.reason instanceof Error
+            ? resultPromise.reason.message
+            : "Unknown error",
+      };
+    })
+    .filter(Boolean);
+
+  return results;
 };
 
-const checkDomainAvailable = async (domain: string): Promise<boolean> => {
+const getDomainStatus = async (domain: string): Promise<DomainAssessment> => {
   console.log("Checking domain availability for:", domain);
+
   const tld = domain.split(".")[1];
+
+  const defaultResult: DomainAssessment = {
+    domain,
+    isPossible: true,
+    isAvailable: false,
+    isCheap: false,
+    status: "Unknown",
+  };
+
   if (!validTlds.includes(tld.toUpperCase())) {
-    return false;
+    return {
+      ...defaultResult,
+      isPossible: false,
+      status: "Custom status: TLD not included on long list.",
+    };
   }
 
   const url = `https://domainr.p.rapidapi.com/v2/status?domain=${domain}`;
@@ -36,18 +79,54 @@ const checkDomainAvailable = async (domain: string): Promise<boolean> => {
       "x-rapidapi-host": "domainr.p.rapidapi.com",
     },
   };
-  console.log(apiKey);
-  console.log(url);
+
   try {
     const response = await fetch(url, options);
-    const result = await response.text();
-    console.log(result);
-    // If the status is "undelegated inactive", then the domain is available
-    const data = JSON.parse(result);
-    const status = data.status[0].status;
-    return status === "undelegated inactive";
+    const data = await response.json();
+    const domainrStatus = data.status[0].status;
+
+    const impossibleTags = [
+      "unknown",
+      "disallowed",
+      "reserved",
+      "dpml",
+      "invalid",
+      "suffix",
+      "zone",
+      "tld",
+    ];
+    const impossibleTagFound = impossibleTags.some((tag) =>
+      domainrStatus.includes(tag)
+    );
+
+    // if domainrStatus includes "inactive" then it SHOULD BE available for registration
+    const inactiveTagFound = domainrStatus.includes("inactive");
+
+    // Some registries sell a subset of their domains as "premium" e.g. with special tiered pricing.
+    // Anything referencing an aftermarket implies the same.
+    const premiumTags = [
+      "premium",
+      "marketed",
+      "priced",
+      "parked",
+      "transferable",
+    ];
+    const premiumTagFound = premiumTags.some((tag) =>
+      domainrStatus.includes(tag)
+    );
+
+    return {
+      ...defaultResult,
+      isPossible: !impossibleTagFound,
+      isAvailable: inactiveTagFound,
+      isCheap: !premiumTagFound,
+      status: `Domainr status: ${domainrStatus}`,
+    };
   } catch (error) {
-    console.error(error);
-    return false;
+    return {
+      ...defaultResult,
+      isPossible: false,
+      status: "Custom status: Error fetching domain status.",
+    };
   }
 };

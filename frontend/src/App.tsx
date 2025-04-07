@@ -1,48 +1,66 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { checkHeartbeat, sendInputsAndReturnDomains } from "./serverCalls";
+import { checkLimits, sendInputsAndReturnDomains } from "./serverCalls";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
-import { DomainCard } from "./components/DomainCard";
 import { VibeButton } from "./components/Buttons";
 import { DomainAssessment } from "shared/types";
+import { DomainList } from "./components/DomainList";
+import { DomainCard } from "./components/DomainCard";
+import {
+  exampleExpensive,
+  exampleImpossible,
+  exampleUnavailable,
+  exampleValid,
+} from "./devtools/sampleResults";
 
 const models = [
   "gpt-4o-mini",
   "o1-mini",
   "deepseek-chat",
   // "deepseek-reasoner",
-]
+];
 
-const STARTING_VIBES = ["fun", "serious", "casual", "professional", "creative", "unique", "trendy"];
+const STARTING_VIBES = [
+  "fun",
+  "serious",
+  "casual",
+  "professional",
+  "creative",
+  "unique",
+  "trendy",
+];
 
 function App() {
-
   // User inputs
   const [inputPurpose, setInputPurpose] = useState("");
   const [inputVibe, setInputVibe] = useState("");
   const [inputShortlist, setInputShortlist] = useState("");
-  const [selectedModel, setSelectedModel] = useState<typeof models[number]>(models[0]);
+  const [selectedModel, setSelectedModel] = useState<(typeof models)[number]>(
+    models[0]
+  );
   const [seriousDomainsOnly, setSeriousDomainsOnly] = useState(false);
+  const [showDevtools, setShowDevtools] = useState(false);
 
   // Suggestion inputs
-  const [suggestedVibes, setSuggestedVibes] = useState<string[]>(STARTING_VIBES);
+  const [suggestedVibes, setSuggestedVibes] =
+    useState<string[]>(STARTING_VIBES);
 
-  // Request state and output 
+  // Request state and output
   const [domainOptions, setDomainOptions] = useState<DomainAssessment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const appendVibe = (vibe: string) => {
-    setSuggestedVibes(suggestedVibes.filter(suggestedVibe => suggestedVibe !== vibe));
+    setSuggestedVibes(
+      suggestedVibes.filter((suggestedVibe) => suggestedVibe !== vibe)
+    );
 
     if (inputVibe.length > 0) {
       setInputVibe(inputVibe + ", " + vibe);
     } else {
       setInputVibe(vibe);
     }
-  }
-
+  };
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -60,95 +78,123 @@ function App() {
   // Wake the server when the page loads (because this is on Free plan on Render)
   useEffect(() => {
     const wakeTheServer = async () => {
-      await checkHeartbeat();
+      const reportedMaxDomains = await checkLimits();
+      console.log("Max domains:", reportedMaxDomains);
+      // This will prob be useful on the frontend eventually
     };
     wakeTheServer();
   }, []);
 
   return (
-    <div className="flex flex-col w-full space-y-4 p-4">
-      <WhatIsThis />
-
-      <ExpandyInput
-        question="what are you building? (for best results paste in a blob of text here)"
-        value={inputPurpose}
-        onChange={(e) => {
-          setInputPurpose(e.target.value);
-        }}
-        placeholder='e.g. "linkedin for cattle farms"'
-      />
-
-      <ExpandyInput
-        question="what kind of *vibe* do you want?"
-        value={inputVibe}
-        onChange={(e) => {
-          setInputVibe(e.target.value);
-        }}
-        placeholder='e.g. "slick, sophisticated, fresh"'
-      />
-
-      <div className="flex flex-row gap-2">
-        {suggestedVibes.map(vibe => (
-          <VibeButton vibe={vibe} onClick={appendVibe} key={vibe} />
-        ))}
+    <>
+      <div className="absolute top-2 right-2">
+        <label className="label cursor-pointer flex items-center gap-2">
+          <span className="text-sm">dev mode</span>
+          <input
+            type="checkbox"
+            className="toggle toggle-sm"
+            checked={showDevtools}
+            onChange={() => setShowDevtools(!showDevtools)}
+          />
+        </label>
       </div>
+      <div className="flex flex-col w-full space-y-4 p-4">
+        <WhatIsThis />
 
-      <ExpandyInput
-        question="shortlist/longlist: paste in any ideas you've had so far (optional)"
-        value={inputShortlist}
-        onChange={(e) => {
-          setInputShortlist(e.target.value);
-        }}
-        placeholder='e.g. "farm.com", "cows.com", "cows.farm"'
-      />
+        <ExpandyInput
+          question="what are you building? (for best results paste in a blob of text here)"
+          value={inputPurpose}
+          onChange={(e) => {
+            setInputPurpose(e.target.value);
+          }}
+          placeholder='e.g. "linkedin for cattle farms"'
+        />
 
-      <div className="flex flex-row w-full justify-start items-center">
-        <input type="checkbox" className="checkbox checkbox-success" checked={seriousDomainsOnly} onChange={() => setSeriousDomainsOnly(!seriousDomainsOnly)} />
-        <label className="label cursor-pointer flex items-center">serious domains only (.com / .ai / .io)</label>
-      </div>
+        <ExpandyInput
+          question="what kind of *vibe* do you want?"
+          value={inputVibe}
+          onChange={(e) => {
+            setInputVibe(e.target.value);
+          }}
+          placeholder='e.g. "slick, sophisticated, fresh"'
+        />
 
-      <OptionDropdown
-        question="AI model"
-        value={selectedModel}
-        onChange={(e) => {
-          setSelectedModel(e.target.value);
-        }}
-        options={models}
-      />
-
-      <div>
-        <div className="flex flex-row w-full justify-center">
-          <button
-            className="btn btn-primary"
-            onClick={() => handleSubmit()}
-          >
-            see domain ideas
-          </button>
+        <div className="flex flex-row gap-2 flex-wrap">
+          {suggestedVibes.map((vibe) => (
+            <VibeButton vibe={vibe} onClick={appendVibe} key={vibe} />
+          ))}
         </div>
-        <div className="flex flex-row w-full min-h-screen">
-          <div className="flex flex-col text-center justify-start p-4 w-full">
-            {domainOptions.length > 0 &&
-              <>
-                <div>
-                  10 domain names generated, here are the {domainOptions.length} that are available to register:
+
+        <ExpandyInput
+          question="shortlist/longlist: paste in any ideas you've had so far (optional)"
+          value={inputShortlist}
+          onChange={(e) => {
+            setInputShortlist(e.target.value);
+          }}
+          placeholder='e.g. "farm.com", "cows.com", "cows.farm"'
+        />
+
+        <div className="flex flex-row w-full justify-start items-center">
+          <input
+            type="checkbox"
+            className="checkbox checkbox-success"
+            checked={seriousDomainsOnly}
+            onChange={() => setSeriousDomainsOnly(!seriousDomainsOnly)}
+          />
+          <label className="label cursor-pointer flex items-center">
+            serious domains only (.com / .ai / .io)
+          </label>
+        </div>
+        {showDevtools && (
+          <>
+            <OptionDropdown
+              question="AI model"
+              value={selectedModel}
+              onChange={(e) => {
+                setSelectedModel(e.target.value);
+              }}
+              options={models}
+            />
+          </>
+        )}
+
+        <div>
+          <div className="flex flex-row w-full justify-center">
+            <button className="btn btn-primary" onClick={() => handleSubmit()}>
+              see domain ideas
+            </button>
+          </div>
+          <div className="flex flex-row w-full min-h-screen">
+            <div className="flex flex-col text-center justify-start p-4 w-full">
+              {domainOptions.length > 0 && (
+                <>
+                  <div>
+                    {domainOptions.length} domain names tried. Names with
+                    hallucinated TLDs are omitted.
+                  </div>
+                  <DomainList domainOptions={domainOptions} />
+                </>
+              )}
+
+              {showDevtools && (
+                <>
+                  <DomainCard {...exampleValid} />
+                  <DomainCard {...exampleExpensive} />
+                  <DomainCard {...exampleUnavailable} />
+                  <DomainCard {...exampleImpossible} />
+                </>
+              )}
+
+              {isLoading && (
+                <div className="flex flex-row w-full justify-center p-16">
+                  <span className="loading loading-spinner loading-lg"></span>
                 </div>
-                {domainOptions.map((domainAssessment, index) => {
-                  return <DomainCard key={index} {...domainAssessment} />;
-                })}
-
-                {/* <DomainCard {...exampleValid} /> */}
-                {/* <DomainCard {...exampleValidDomain} />
-                <DomainCard {...exampleExpensiveDomain} />
-                <DomainCard {...exampleUnavailableDomain} />
-                <DomainCard {...exampleImpossibleDomain} /> */}
-              </>
-            }
-
-            {isLoading && <span className="loading loading-spinner loading-lg"></span>}
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

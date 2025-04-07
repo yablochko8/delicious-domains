@@ -1,31 +1,69 @@
-import { blankScores, DomainAssessment } from "shared/types";
+import { DomainAssessment, DomainScores } from "shared/types";
+import { sendLLMRequest } from "utils/sendLLMRequest";
 
-export const exampleImpossibleDomain: DomainAssessment = {
-  domain: "borgen.borgen",
-  isPossible: false,
-  isAvailable: false,
-  isCheap: false,
-  scores: blankScores,
+const assessmentPromptSystem = `
+You are a brand name assessor. Your task is to assess a domain name and provide a score for each of the following criteria:
+
+  evoc: "Evocativity: Conveys at least a hint of what it's naming",
+  brev: "Brevity: Shorter = better",
+  grep: "Greppability: Not a substring of common words",
+  goog: "Googlability: Reasonably unique",
+  pron: "Pronounceability: You can read it out loud when you see it. Bonus points for alliteration or related patterns, including classy consonance, arrogant assonance, and explosive plosives.",
+  spel: "Spellability: You know how it's spelled when you hear it",
+  verb: "Verbability: The core name - the first part of the domain name - can be used as a verb"
+
+  Each score should be between 1 and 3.
+
+  The scores should be returned in a JSON format.
+  Example:
+  {
+    "evoc": 3,
+    "brev": 2,
+    "grep": 1,
+    "goog": 3,
+    "pron": 2,
+    "spel": 3,
+    "verb": 1
+  }
+`;
+
+export const addScoresToDomain = async (
+  input: DomainAssessment
+): Promise<DomainAssessment> => {
+  return {
+    ...input,
+    scores: await scoreDomain(input.domain),
+  };
 };
 
-export const exampleUnavailableDomain: DomainAssessment = {
-  domain: "google.com",
-  isPossible: true,
-  isAvailable: false,
-  isCheap: false,
-  scores: blankScores,
-};
-
-export const exampleExpensiveDomain: DomainAssessment = {
-  domain: "table.com",
-  isPossible: true,
-  isAvailable: true,
-  isCheap: false,
-  scores: blankScores,
-};
 /** 0 is unassessed. 1 is red, 2 is yellow, 3 is green */
-export const fakeAssess = (domain: string): DomainAssessment => {
-  const brevScore = (() => {
+export const scoreDomain = async (domain: string): Promise<DomainScores> => {
+  // First pass - try to get all scores from LLM
+  const attemptedScores = await sendLLMRequest(
+    "gpt-4o-mini",
+    assessmentPromptSystem,
+    domain
+  );
+
+  let parsedScores;
+  try {
+    parsedScores = JSON.parse(attemptedScores);
+  } catch (error) {
+    console.error("Failed to parse LLM response as JSON:", error);
+    parsedScores = {};
+  }
+
+  const aiScores = {
+    evoc: Number(parsedScores?.evoc) || 0,
+    brev: Number(parsedScores?.brev) || 0,
+    grep: Number(parsedScores?.grep) || 0,
+    goog: Number(parsedScores?.goog) || 0,
+    pron: Number(parsedScores?.pron) || 0,
+    spel: Number(parsedScores?.spel) || 0,
+    verb: Number(parsedScores?.verb) || 0,
+  };
+
+  const calculatedBrevScore = (() => {
     const domainLength = domain.length;
     switch (true) {
       case domainLength <= 8:
@@ -37,41 +75,7 @@ export const fakeAssess = (domain: string): DomainAssessment => {
     }
   })();
 
-  /** Throwaway code to consistently fake some scores */
-  const randomScore = (stringSeed: string, numberSeed: number = 1) => {
-    // Convert the string seed to an integer
-    let hash = 0;
-    for (let i = 0; i < stringSeed.length; i++) {
-      const char = stringSeed.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash; // Convert to 32bit integer
-    }
-    // Incorporate the number seed into the hash calculation
-    hash = ((hash * numberSeed) ^ (numberSeed << 7)) & 0xffffffff;
-    const percentile = Math.abs(hash % 100);
+  console.log("Brev score comparison", calculatedBrevScore, aiScores.brev);
 
-    if (percentile < 60) {
-      return 3; // 60% chance of green
-    } else if (percentile < 85) {
-      return 2; // 25% chance of yellow
-    } else {
-      return 1; // 15% chance of red
-    }
-  };
-
-  return {
-    domain,
-    isPossible: true,
-    isAvailable: true,
-    isCheap: true,
-    scores: {
-      evoc: randomScore(domain, 1),
-      brev: brevScore,
-      grep: randomScore(domain, 2),
-      goog: randomScore(domain, 3),
-      pron: randomScore(domain, 4),
-      spel: randomScore(domain, 5),
-      verb: randomScore(domain, 6),
-    },
-  };
+  return { ...aiScores, brev: calculatedBrevScore };
 };

@@ -27,8 +27,8 @@ export const sendInputsAndReturnDomains = async (
   return results;
 };
 
-export const checkHeartbeat = async (): Promise<void> => {
-  const response = await fetch(`${SERVER_PATH}/heartbeat`);
+export const checkLimits = async (): Promise<number> => {
+  const response = await fetch(`${SERVER_PATH}/limits`);
   const json = await response.json();
-  console.log("Warmup ping sent. Server response:", json.message);
+  return json.maxDomains;
 };
