@@ -7,6 +7,13 @@ import { WhatIsThis } from "./components/WhatIsThis";
 import { VibeButton } from "./components/Buttons";
 import { DomainAssessment } from "shared/types";
 import { DomainList } from "./components/DomainList";
+import { DomainCard } from "./components/DomainCard";
+import {
+  exampleExpensive,
+  exampleImpossible,
+  exampleUnavailable,
+  exampleValid,
+} from "./devtools/sampleResults";
 
 const models = [
   "gpt-4o-mini",
@@ -149,14 +156,12 @@ function App() {
                   that are available to register:
                 </div>
                 <DomainList domainOptions={domainOptions} />
-
-                {/* <DomainCard {...exampleValid} /> */}
-                {/* <DomainCard {...exampleValidDomain} />
-                <DomainCard {...exampleExpensiveDomain} />
-                <DomainCard {...exampleUnavailableDomain} />
-                <DomainCard {...exampleImpossibleDomain} /> */}
               </>
             )}
+            <DomainCard {...exampleValid} />
+            <DomainCard {...exampleExpensive} />
+            <DomainCard {...exampleUnavailable} />
+            <DomainCard {...exampleImpossible} />
 
             {isLoading && (
               <span className="loading loading-spinner loading-lg"></span>

@@ -43,7 +43,7 @@ const ScoreTile = ({ label, score }: { label: string; score: number }) => {
 
   return (
     <div
-      className={`h-full w-full text-sm font-semibold content-center ${backgroundColor}`}
+      className={`h-full w-full text-xs md:text-sm font-semibold content-center ${backgroundColor}`}
       title={hoverText}
     >
       {label.toUpperCase()}

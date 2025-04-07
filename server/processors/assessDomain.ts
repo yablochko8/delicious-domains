@@ -1,4 +1,4 @@
-import { blankScores, DomainAssessment, DomainScores } from "shared/types";
+import { DomainAssessment, DomainScores } from "shared/types";
 
 export const addScoresToDomain = (
   input: DomainAssessment
@@ -9,29 +9,6 @@ export const addScoresToDomain = (
   };
 };
 
-export const exampleImpossibleDomain: DomainAssessment = {
-  domain: "borgen.borgen",
-  isPossible: false,
-  isAvailable: false,
-  isCheap: false,
-  scores: blankScores,
-};
-
-export const exampleUnavailableDomain: DomainAssessment = {
-  domain: "google.com",
-  isPossible: true,
-  isAvailable: false,
-  isCheap: false,
-  scores: blankScores,
-};
-
-export const exampleExpensiveDomain: DomainAssessment = {
-  domain: "table.com",
-  isPossible: true,
-  isAvailable: true,
-  isCheap: false,
-  scores: blankScores,
-};
 /** 0 is unassessed. 1 is red, 2 is yellow, 3 is green */
 export const fakeAssess = (domain: string): DomainScores => {
   const brevScore = (() => {
