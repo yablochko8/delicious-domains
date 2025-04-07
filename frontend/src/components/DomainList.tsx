@@ -7,11 +7,15 @@ export const DomainList = ({
 }: {
   domainOptions: DomainAssessment[];
 }) => {
-  const sortedDomainOptions = domainOptions.sort(
+  // Filter out impossible domains (mainly hallucinated TLDs)
+  const filteredDomainOptions = domainOptions.filter(
+    (domain) => domain.isPossible
+  );
+
+  const sortedDomainOptions = filteredDomainOptions.sort(
     (a, b) => getTotalScore(b) - getTotalScore(a)
   );
 
-  console.log({ domainOptions, sortedDomainOptions });
   return (
     <div>
       {sortedDomainOptions.map((domainAssessment, index) => (
