@@ -102,13 +102,17 @@ export const ImpossibleBanner = ({
   isPossible,
   isAvailable,
   isCheap,
+  isRejected,
 }: {
   isPossible: boolean;
   isAvailable: boolean;
   isCheap: boolean;
+  isRejected: boolean;
 }) => {
   const message = (() => {
     switch (true) {
+      case isRejected:
+        return "Rejected";
       case !isPossible:
         return "Impossible";
       case !isAvailable:
@@ -122,6 +126,8 @@ export const ImpossibleBanner = ({
 
   const styling = (() => {
     switch (true) {
+      case isRejected:
+        return "bg-gray-400 text-gray-500";
       case !isPossible:
         return "bg-gray-300 text-gray-400";
       case !isAvailable:
@@ -134,7 +140,7 @@ export const ImpossibleBanner = ({
   })();
 
   return (
-    <div className={`col-span-8 ${styling}`}>
+    <div className={`col-span-8 rounded-md ${styling}`}>
       <div className="h-full w-full text-xs content-center">{message}</div>
     </div>
   );
@@ -142,8 +148,10 @@ export const ImpossibleBanner = ({
 
 export const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
   const { isPossible, isAvailable, isCheap, scores, domain } = assessment;
+  const { rejected } = useSearchStateStore();
+  const isRejected = rejected.includes(domain);
 
-  const isValid = isPossible && isAvailable && isCheap;
+  const isValid = isPossible && isAvailable && isCheap && !isRejected;
 
   return (
     <div className="grid grid-cols-7 h-full gap-2 px-2">
@@ -176,6 +184,7 @@ export const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
           isPossible={isPossible}
           isAvailable={isAvailable}
           isCheap={isCheap}
+          isRejected={isRejected}
         />
       )}
     </div>
@@ -227,7 +236,11 @@ const LikeButton = ({ domain }: { domain: string }) => {
 export const DomainCard = (assessment: DomainAssessment) => {
   const { domain, isPossible, isAvailable, isCheap } = assessment;
 
-  const isValid = isPossible && isAvailable && isCheap;
+  const { rejected } = useSearchStateStore();
+
+  const isRejected = rejected.includes(domain);
+
+  const isValid = isPossible && isAvailable && isCheap && !isRejected;
 
   const styling = isValid ? "text-gray-800" : " text-gray-400";
 

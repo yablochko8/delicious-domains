@@ -12,7 +12,7 @@ export const DomainScoreModal = ({
       className="modal modal-bottom sm:modal-middle"
     >
       <div className="modal-box">
-        <p className="py-4">Score Breakdown</p>
+        <p className="py-4">Score Breakdown for {assessment.domain}</p>
         <div className="flex flex-col gap-4 text-justify">
           {assessment.scores &&
             Object.entries(assessment.scores).map(([key, score]) => (
