@@ -78,6 +78,7 @@ export const useSearchStateStore = create<SearchStateStore>()(
         set((state) => ({
           ...state,
           liked: [...state.liked, domain],
+          rejected: state.rejected.filter((d) => d !== domain),
         })),
       unlikeDomain: (domain: string) =>
         set((state) => ({
@@ -88,6 +89,7 @@ export const useSearchStateStore = create<SearchStateStore>()(
         set((state) => ({
           ...state,
           rejected: [...state.rejected, domain],
+          liked: state.liked.filter((d) => d !== domain),
         })),
       unrejectDomain: (domain: string) =>
         set((state) => ({
