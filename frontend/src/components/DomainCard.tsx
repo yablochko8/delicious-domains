@@ -92,7 +92,7 @@ const TotalScoreTile = ({
   })();
 
   return (
-    <div className={`btn btn-circle ${styling}`} onClick={onClick}>
+    <div className={`btn btn-sm btn-circle ${styling}`} onClick={onClick}>
       {displayScore}
     </div>
   );
@@ -255,13 +255,13 @@ export const DomainCard = (assessment: DomainAssessment) => {
           <div className="hidden md:block md:col-span-7">
             <ScoreRow assessment={assessment} />
           </div>
-          <div className="col-span-1 flex justify-center items-center">
+          <div className="col-span-1 flex justify-end items-center">
             <TotalScoreTile
               totalScore={getTotalScore(assessment)}
               onClick={openScoreModal}
             />
           </div>
-          <div className="col-span-1 flex justify-end items-center">
+          <div className="col-span-1 flex justify-center items-center">
             <LikeButton domain={domain} />
           </div>
         </>
