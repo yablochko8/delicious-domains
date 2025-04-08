@@ -3,6 +3,7 @@ import { DomainAssessment } from "shared/types";
 import { DomainCard } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
 import { useSearchStateStore } from "../stores/searchStateStore";
+import { DomainListTopRow } from "./DomainListTopRow";
 
 export const DomainList = ({
   domainOptions,
@@ -51,6 +52,7 @@ export const DomainList = ({
 
   return (
     <div>
+      <DomainListTopRow />
       <AnimatePresence>
         {sortedDomainOptions.map((domainAssessment) => (
           <motion.div
