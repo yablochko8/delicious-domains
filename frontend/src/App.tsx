@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { checkLimits, sendInputsAndReturnDomains } from "./serverCalls";
+import { checkLimits, getDomainAssessment, getLongList } from "./serverCalls";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
 import { VibeButton } from "./components/Buttons";
-import { DomainAssessment } from "shared/types";
 import { DomainList } from "./components/DomainList";
-import { DomainCard } from "./components/DomainCard";
+import { DomainCard, DomainCardLoading } from "./components/DomainCard";
 import {
   exampleExpensive,
   exampleImpossible,
   exampleUnavailable,
   exampleValid,
 } from "./devtools/sampleResults";
+import { useSearchStateStore } from "./stores/searchStateStore";
 
 const models = [
   "gpt-4o-mini",
@@ -48,8 +48,15 @@ function App() {
     useState<string[]>(STARTING_VIBES);
 
   // Request state and output
-  const [domainOptions, setDomainOptions] = useState<DomainAssessment[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    longlist,
+    assessments: assessedDomains,
+    addToLonglist,
+    addAssessment,
+    addFailure: _addFailureTODO,
+  } = useSearchStateStore();
+
   const appendVibe = (vibe: string) => {
     setSuggestedVibes(
       suggestedVibes.filter((suggestedVibe) => suggestedVibe !== vibe)
@@ -63,16 +70,22 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
-    const newDomainOptions = await sendInputsAndReturnDomains({
+    const longlist = await getLongList({
       purpose: inputPurpose,
       vibe: inputVibe,
       shortlist: inputShortlist,
       model: selectedModel,
       preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
     });
-    setDomainOptions(newDomainOptions);
-    setIsLoading(false);
+    addToLonglist(longlist);
+    await Promise.all(
+      longlist.map(async (domain, index) => {
+        await new Promise((resolve) => setTimeout(resolve, index * 100));
+        const assessment = await getDomainAssessment(domain);
+        console.log("Adding Assessment:", assessment);
+        addAssessment(assessment);
+      })
+    );
   };
 
   // Wake the server when the page loads (because this is on Free plan on Render)
@@ -166,15 +179,33 @@ function App() {
           </div>
           <div className="flex flex-row w-full min-h-screen">
             <div className="flex flex-col text-center justify-start p-4 w-full">
-              {domainOptions.length > 0 && (
+              {/* HEADLINE */}
+              {longlist.length > 0 && (
                 <>
                   <div>
-                    {domainOptions.length} domain names tried. Names with
+                    {longlist.length} domain names found. Names with
                     hallucinated TLDs are omitted.
                   </div>
-                  <DomainList domainOptions={domainOptions} />
                 </>
               )}
+
+              {/* RESULTS */}
+              {assessedDomains.completed.length > 0 && (
+                <>
+                  <DomainList domainOptions={assessedDomains.completed} />
+                </>
+              )}
+
+              {/* IN PROGRESS */}
+
+              {assessedDomains.inProgress.length > 0 &&
+                assessedDomains.inProgress.map((domain) => (
+                  <DomainCardLoading domain={domain} key={domain} />
+                ))}
+
+              {/* FAILED - ADD IN LATER */}
+
+              {/* DEV - REMOVE LATER */}
 
               {showDevtools && (
                 <>
@@ -183,12 +214,6 @@ function App() {
                   <DomainCard {...exampleUnavailable} />
                   <DomainCard {...exampleImpossible} />
                 </>
-              )}
-
-              {isLoading && (
-                <div className="flex flex-row w-full justify-center p-16">
-                  <span className="loading loading-spinner loading-lg"></span>
-                </div>
               )}
             </div>
           </div>

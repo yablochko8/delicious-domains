@@ -33,7 +33,7 @@ export const sendLLMRequest = async (
       model: model,
     });
 
-    console.log("Raw API response:", JSON.stringify(completion, null, 2));
+    // console.log("Raw API response:", JSON.stringify(completion, null, 2));
 
     const response = completion.choices[0];
     console.log("First choice:", response);

@@ -191,3 +191,23 @@ export const DomainCard = (assessment: DomainAssessment) => {
     </div>
   );
 };
+
+export const DomainCardLoading = ({ domain }: { domain: string }) => {
+  const [isLiked, setIsLiked] = useState(false);
+
+  return (
+    <div
+      className={`grid grid-cols-9 md:grid-cols-11 shadow-md p-1 text-gray-400`}
+    >
+      <div className="col-span-9 md:col-span-2 flex justify-start text-lg font-semibold pt-2 pb-1">
+        {domain}
+      </div>
+      <div className="col-span-7"></div>
+      <div className="col-span-1"></div>
+
+      <div className="col-span-1 flex justify-center items-center">
+        <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
+      </div>
+    </div>
+  );
+};

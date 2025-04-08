@@ -49,7 +49,9 @@ export const getDomainStatusParallel = async (
   return results;
 };
 
-const getDomainStatus = async (domain: string): Promise<DomainAssessment> => {
+export const getDomainStatus = async (
+  domain: string
+): Promise<DomainAssessment> => {
   console.log("Checking domain availability for:", domain);
 
   const tld = domain.split(".")[1];
