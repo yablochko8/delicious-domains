@@ -73,11 +73,18 @@ const TotalScoreTile = ({ totalScore }: { totalScore: number }) => {
   //   If the score is negative, we want to display zero
   const displayScore = totalScore < 0 ? 0 : totalScore;
 
-  return (
-    <div className="h-full w-full text-lg font-semibold content-center bg-gray-200 text-gray-800">
-      {displayScore}
-    </div>
-  );
+  const styling = (() => {
+    switch (true) {
+      case displayScore >= 16:
+        return "btn-success";
+      case displayScore >= 14:
+        return "btn-warning";
+      default:
+        return "btn-error";
+    }
+  })();
+
+  return <div className={`btn btn-circle ${styling}`}>{displayScore}</div>;
 };
 
 export const ImpossibleBanner = ({
@@ -224,7 +231,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
       <div className="hidden md:block md:col-span-7">
         <ScoreRow assessment={assessment} />
       </div>
-      <div className="col-span-1">
+      <div className="col-span-1 flex justify-center items-center">
         <TotalScoreTile totalScore={getTotalScore(assessment)} />
       </div>
 
