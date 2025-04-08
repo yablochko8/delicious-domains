@@ -16,7 +16,6 @@ export type SearchState = {
 };
 
 type SearchStateStore = SearchState & {
-  getState: () => SearchState;
   addToLonglist: (domains: string[]) => void;
   addAssessment: (domainAssessment: DomainAssessment) => void;
   addFailure: (domain: string, error: string) => void;
@@ -36,15 +35,6 @@ export const useSearchStateStore = create<SearchStateStore>()(
         completed: [],
         failed: [],
       },
-      getState: () => ({
-        longlist: [],
-        liked: [],
-        assessments: {
-          inProgress: [],
-          completed: [],
-          failed: [],
-        },
-      }),
       addToLonglist: (domains: string[]) =>
         // Only add domains that aren't already in the longlist
         // Add these domains to inProgress also

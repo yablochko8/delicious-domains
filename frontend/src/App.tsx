@@ -70,20 +70,28 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    const longlist = await getLongList({
+    const fetchedLonglist = await getLongList({
       purpose: inputPurpose,
       vibe: inputVibe,
       shortlist: inputShortlist,
       model: selectedModel,
       preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
     });
-    addToLonglist(longlist);
+    addToLonglist(fetchedLonglist);
     await Promise.all(
-      longlist.map(async (domain, index) => {
-        await new Promise((resolve) => setTimeout(resolve, index * 100));
-        const assessment = await getDomainAssessment(domain);
-        console.log("Adding Assessment:", assessment);
-        addAssessment(assessment);
+      fetchedLonglist.map(async (domain, index) => {
+        try {
+          await new Promise((resolve) => setTimeout(resolve, index * 200));
+          const assessment = await getDomainAssessment(domain);
+          console.log("Adding Assessment:", assessment);
+          addAssessment(assessment);
+        } catch (error) {
+          console.error(`Failed to assess domain ${domain}:`, error);
+          _addFailureTODO(
+            domain,
+            error instanceof Error ? error.message : String(error)
+          );
+        }
       })
     );
   };
