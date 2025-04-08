@@ -1,5 +1,4 @@
 import { getTotalScore } from "../utils/getTotalScore";
-import { useState } from "react";
 import {
   MdFavorite as LikedIcon,
   MdFavoriteBorder as UnlikedIcon,
@@ -7,6 +6,7 @@ import {
 import { ScoreIcons } from "../assets/ScoreIcons";
 import { DomainAssessment } from "shared/types";
 import { explanations } from "../assets/scoreExplanations";
+import { useSearchStateStore } from "../stores/searchStateStore";
 
 const ScoreTile = ({ label, score }: { label: string; score: number }) => {
   const backgroundColor = (() => {
@@ -145,15 +145,14 @@ const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
   );
 };
 
-const LikeButton = ({
-  isLiked,
-  setIsLiked,
-}: {
-  isLiked: boolean;
-  setIsLiked: (isLiked: boolean) => void;
-}) => {
+const LikeButton = ({ domain }: { domain: string }) => {
+  const { liked, likeDomain, unlikeDomain } = useSearchStateStore();
+  const isLiked = liked.includes(domain);
+  const handleClick = () =>
+    isLiked ? unlikeDomain(domain) : likeDomain(domain);
+
   return (
-    <div className="cursor-pointer" onClick={() => setIsLiked(!isLiked)}>
+    <div className="cursor-pointer" onClick={handleClick}>
       {isLiked ? (
         <LikedIcon className="text-2xl text-red-500" />
       ) : (
@@ -164,7 +163,6 @@ const LikeButton = ({
 };
 
 export const DomainCard = (assessment: DomainAssessment) => {
-  const [isLiked, setIsLiked] = useState(false);
   const { domain, isPossible, isAvailable, isCheap } = assessment;
 
   const isValid = isPossible && isAvailable && isCheap;
@@ -186,15 +184,13 @@ export const DomainCard = (assessment: DomainAssessment) => {
       </div>
 
       <div className="col-span-1 flex justify-center items-center">
-        <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
+        <LikeButton domain={domain} />
       </div>
     </div>
   );
 };
 
 export const DomainCardLoading = ({ domain }: { domain: string }) => {
-  const [isLiked, setIsLiked] = useState(false);
-
   return (
     <div
       className={`grid grid-cols-9 md:grid-cols-11 shadow-md p-1 text-gray-400`}
@@ -206,7 +202,7 @@ export const DomainCardLoading = ({ domain }: { domain: string }) => {
       <div className="col-span-1"></div>
 
       <div className="col-span-1 flex justify-center items-center">
-        <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
+        <LikeButton domain={domain} />
       </div>
     </div>
   );

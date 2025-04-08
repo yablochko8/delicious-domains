@@ -4,6 +4,7 @@ import { DomainAssessment } from "shared/types";
 
 export type SearchState = {
   longlist: string[];
+  liked: string[];
   assessments: {
     inProgress: string[];
     completed: DomainAssessment[];
@@ -19,12 +20,15 @@ type SearchStateStore = SearchState & {
   addToLonglist: (domains: string[]) => void;
   addAssessment: (domainAssessment: DomainAssessment) => void;
   addFailure: (domain: string, error: string) => void;
+  likeDomain: (domain: string) => void;
+  unlikeDomain: (domain: string) => void;
 };
 
 export const useSearchStateStore = create<SearchStateStore>()(
   persist(
     (set) => ({
       longlist: [],
+      liked: [],
       assessments: {
         inProgress: [],
         completed: [],
@@ -32,6 +36,7 @@ export const useSearchStateStore = create<SearchStateStore>()(
       },
       getState: () => ({
         longlist: [],
+        liked: [],
         assessments: {
           inProgress: [],
           completed: [],
@@ -72,6 +77,16 @@ export const useSearchStateStore = create<SearchStateStore>()(
             ...state.assessments,
             failed: [...state.assessments.failed, { domain, error }],
           },
+        })),
+      likeDomain: (domain: string) =>
+        set((state) => ({
+          ...state,
+          liked: [...state.liked, domain],
+        })),
+      unlikeDomain: (domain: string) =>
+        set((state) => ({
+          ...state,
+          liked: state.liked.filter((d) => d !== domain),
         })),
     }),
     { name: "search-state" }
