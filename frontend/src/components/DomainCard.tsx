@@ -2,6 +2,8 @@ import { getTotalScore } from "../utils/getTotalScore";
 import {
   MdFavorite as LikedIcon,
   MdFavoriteBorder as UnlikedIcon,
+  MdClose as RejectIcon,
+  MdAdd as UnrejectIcon,
 } from "react-icons/md";
 import { ScoreIcons } from "../assets/ScoreIcons";
 import { DomainAssessment, DomainScores } from "shared/types";
@@ -162,6 +164,25 @@ const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
   );
 };
 
+const RejectButton = ({ domain }: { domain: string }) => {
+  const { rejected, rejectDomain, unrejectDomain } = useSearchStateStore();
+  const isRejected = rejected.includes(domain);
+  const handleClick = () =>
+    isRejected ? unrejectDomain(domain) : rejectDomain(domain);
+
+  const hoverText = `${isRejected ? "Add back" : "Reject"} ${domain}`;
+
+  return (
+    <div className="btn btn-square" onClick={handleClick} title={hoverText}>
+      {isRejected ? (
+        <UnrejectIcon className="text-2xl text-gray-500" />
+      ) : (
+        <RejectIcon className="text-2xl text-gray-500" />
+      )}
+    </div>
+  );
+};
+
 const LikeButton = ({ domain }: { domain: string }) => {
   const { liked, likeDomain, unlikeDomain } = useSearchStateStore();
   const isLiked = liked.includes(domain);
@@ -171,7 +192,11 @@ const LikeButton = ({ domain }: { domain: string }) => {
   const hoverText = `${isLiked ? "Unlike" : "Like"} ${domain}`;
 
   return (
-    <div className="cursor-pointer" onClick={handleClick} title={hoverText}>
+    <div
+      className="btn btn-square btn-ghost"
+      onClick={handleClick}
+      title={hoverText}
+    >
       {isLiked ? (
         <LikedIcon className="text-2xl text-red-500" />
       ) : (
@@ -190,19 +215,20 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   return (
     <div
-      className={`grid grid-cols-9 md:grid-cols-11 shadow-md p-1 ${styling}`}
+      className={`grid grid-cols-5 md:grid-cols-12 shadow-md p-1 ${styling}`}
     >
-      <div className="col-span-9 md:col-span-2 flex justify-start text-lg font-semibold pt-2 pb-1">
+      <div className="col-span-3 flex justify-start items-center gap-2 text-lg font-semibold pt-2 pb-1">
+        <RejectButton domain={domain} />
         {domain}
       </div>
-      <div className="col-span-7">
+      <div className="hidden md:block md:col-span-7">
         <ScoreRow assessment={assessment} />
       </div>
       <div className="col-span-1">
         <TotalScoreTile totalScore={getTotalScore(assessment)} />
       </div>
 
-      <div className="col-span-1 flex justify-center items-center">
+      <div className="col-span-1 flex justify-end items-center">
         <LikeButton domain={domain} />
       </div>
     </div>

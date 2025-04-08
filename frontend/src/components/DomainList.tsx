@@ -16,7 +16,7 @@ export const DomainList = ({
     (domain) => domain.isPossible
   );
 
-  const { liked } = useSearchStateStore();
+  const { liked, rejected } = useSearchStateStore();
 
   /**
    * WHY DO WE NEED STABLE ID HERE?
@@ -42,14 +42,17 @@ export const DomainList = ({
       stableId: `${domain.domain}-${index}`, // Add stable ID
     }))
     .sort((a, b) => {
-      // First sort by liked status
+      // First sort by liked/rejected status
+      if (rejected.includes(a.domain) && !rejected.includes(b.domain)) return 1;
+      if (!rejected.includes(a.domain) && rejected.includes(b.domain))
+        return -1;
       if (liked.includes(a.domain) && !liked.includes(b.domain)) return -1;
       if (!liked.includes(a.domain) && liked.includes(b.domain)) return 1;
       // Then sort by total score
       return getTotalScore(b) - getTotalScore(a);
     });
 
-  console.log({ sortedDomainOptions });
+  // console.log({ sortedDomainOptions });
 
   return (
     <div>

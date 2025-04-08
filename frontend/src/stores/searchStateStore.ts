@@ -22,6 +22,8 @@ type SearchStateStore = SearchState & {
   addFailure: (domain: string, error: string) => void;
   likeDomain: (domain: string) => void;
   unlikeDomain: (domain: string) => void;
+  rejectDomain: (domain: string) => void;
+  unrejectDomain: (domain: string) => void;
   nudgeScore: (domain: string, scoreType: keyof DomainScores) => void;
   clearAll: () => void;
 };
@@ -82,6 +84,17 @@ export const useSearchStateStore = create<SearchStateStore>()(
           ...state,
           liked: state.liked.filter((d) => d !== domain),
         })),
+      rejectDomain: (domain: string) =>
+        set((state) => ({
+          ...state,
+          rejected: [...state.rejected, domain],
+        })),
+      unrejectDomain: (domain: string) =>
+        set((state) => ({
+          ...state,
+          rejected: state.rejected.filter((d) => d !== domain),
+        })),
+
       nudgeScore: (domain: string, scoreType: keyof DomainScores) =>
         set((state) => {
           const assessment = state.assessments.completed.find(
