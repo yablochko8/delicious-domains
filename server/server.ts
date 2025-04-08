@@ -10,7 +10,7 @@ import { addScoresToDomain } from "processors/assessDomain";
 
 export const PORT = 4101;
 
-const MAX_DOMAINS = 20;
+const MAX_DOMAINS = 10;
 
 const app = express();
 

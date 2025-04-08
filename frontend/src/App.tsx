@@ -48,6 +48,7 @@ function App() {
     useState<string[]>(STARTING_VIBES);
 
   // Request state and output
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     longlist,
@@ -72,6 +73,7 @@ function App() {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const feedback =
       longlist.length > 0
         ? {
@@ -105,6 +107,7 @@ function App() {
         }
       })
     );
+    setIsLoading(false);
   };
 
   // Wake the server when the page loads (because this is on Free plan on Render)
@@ -192,7 +195,7 @@ function App() {
 
         <div>
           <div className="flex flex-row w-full justify-center">
-            <AddDomainsButton onClick={handleSubmit} />
+            <AddDomainsButton onClick={handleSubmit} isLoading={isLoading} />
           </div>
           <div className="flex flex-row w-full min-h-screen">
             <div className="flex flex-col text-center justify-start p-4 w-full">
