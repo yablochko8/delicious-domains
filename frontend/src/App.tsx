@@ -54,7 +54,7 @@ function App() {
     assessments: assessedDomains,
     addToLonglist,
     addAssessment,
-    addFailure: _addFailureTODO,
+    addFailure,
   } = useSearchStateStore();
 
   const appendVibe = (vibe: string) => {
@@ -87,7 +87,7 @@ function App() {
           addAssessment(assessment);
         } catch (error) {
           console.error(`Failed to assess domain ${domain}:`, error);
-          _addFailureTODO(
+          addFailure(
             domain,
             error instanceof Error ? error.message : String(error)
           );
@@ -216,9 +216,9 @@ function App() {
                 </>
               )}
 
-              {/* FAILED - ADD IN LATER */}
+              {/* FAILED - TODO ADD IN LATER */}
 
-              {/* DEV - REMOVE LATER */}
+              {/* DEV - TODO REMOVE LATER */}
 
               {showDevtools && (
                 <>
