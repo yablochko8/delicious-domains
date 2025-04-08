@@ -55,7 +55,7 @@ export const useSearchStateStore = create<SearchStateStore>()(
       addAssessment: (domainAssessment: DomainAssessment) =>
         // Remove the domain from inProgress
         // Add the domain to completed
-        // Add the assessment if it's the first for that domain
+        // Replace any existing assessment for the domain
         set((state) => ({
           ...state,
           assessments: {

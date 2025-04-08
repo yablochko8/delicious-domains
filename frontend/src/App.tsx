@@ -74,40 +74,43 @@ function App() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const feedback =
-      longlist.length > 0
-        ? {
-            viewed: longlist,
-            liked: liked,
-            rejected: rejected,
+    try {
+      const feedback =
+        longlist.length > 0
+          ? {
+              viewed: longlist,
+              liked: liked,
+              rejected: rejected,
+            }
+          : undefined;
+      const fetchedLonglist = await getLongList({
+        purpose: inputPurpose,
+        vibe: inputVibe,
+        shortlist: inputShortlist,
+        model: selectedModel,
+        preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
+        feedback,
+      });
+      addToLonglist(fetchedLonglist);
+      await Promise.all(
+        fetchedLonglist.map(async (domain, index) => {
+          try {
+            await new Promise((resolve) => setTimeout(resolve, index * 200));
+            const assessment = await getDomainAssessment(domain);
+            console.log("Adding Assessment:", assessment);
+            addAssessment(assessment);
+          } catch (error) {
+            console.error(`Failed to assess domain ${domain}:`, error);
+            addFailure(
+              domain,
+              error instanceof Error ? error.message : String(error)
+            );
           }
-        : undefined;
-    const fetchedLonglist = await getLongList({
-      purpose: inputPurpose,
-      vibe: inputVibe,
-      shortlist: inputShortlist,
-      model: selectedModel,
-      preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
-      feedback,
-    });
-    addToLonglist(fetchedLonglist);
-    await Promise.all(
-      fetchedLonglist.map(async (domain, index) => {
-        try {
-          await new Promise((resolve) => setTimeout(resolve, index * 200));
-          const assessment = await getDomainAssessment(domain);
-          console.log("Adding Assessment:", assessment);
-          addAssessment(assessment);
-        } catch (error) {
-          console.error(`Failed to assess domain ${domain}:`, error);
-          addFailure(
-            domain,
-            error instanceof Error ? error.message : String(error)
-          );
-        }
-      })
-    );
-    setIsLoading(false);
+        })
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Wake the server when the page loads (because this is on Free plan on Render)
