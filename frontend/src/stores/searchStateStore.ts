@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { DomainAssessment } from "shared/types";
+import { DomainAssessment, DomainScores } from "shared/types";
 
 export type SearchState = {
   longlist: string[];
@@ -22,6 +22,7 @@ type SearchStateStore = SearchState & {
   addFailure: (domain: string, error: string) => void;
   likeDomain: (domain: string) => void;
   unlikeDomain: (domain: string) => void;
+  nudgeScore: (domain: string, scoreType: keyof DomainScores) => void;
 };
 
 export const useSearchStateStore = create<SearchStateStore>()(
@@ -88,6 +89,40 @@ export const useSearchStateStore = create<SearchStateStore>()(
           ...state,
           liked: state.liked.filter((d) => d !== domain),
         })),
+      nudgeScore: (domain: string, scoreType: keyof DomainScores) =>
+        set((state) => {
+          const assessment = state.assessments.completed.find(
+            (a) => a.domain === domain
+          );
+          if (!assessment || !assessment.scores) return state;
+
+          const oldScore = assessment.scores[scoreType] || 0;
+          const newScore = oldScore >= 3 ? 1 : oldScore + 1;
+
+          return {
+            ...state,
+            assessments: {
+              ...state.assessments,
+              completed: state.assessments.completed.map((a) =>
+                a.domain === domain
+                  ? {
+                      ...a,
+                      scores: {
+                        evoc: a.scores?.evoc || 0,
+                        brev: a.scores?.brev || 0,
+                        grep: a.scores?.grep || 0,
+                        goog: a.scores?.goog || 0,
+                        pron: a.scores?.pron || 0,
+                        spel: a.scores?.spel || 0,
+                        verb: a.scores?.verb || 0,
+                        [scoreType]: newScore,
+                      },
+                    }
+                  : a
+              ),
+            },
+          };
+        }),
     }),
     { name: "search-state" }
   )

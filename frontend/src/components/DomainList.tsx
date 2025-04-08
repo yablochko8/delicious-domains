@@ -16,20 +16,45 @@ export const DomainList = ({
 
   const { liked } = useSearchStateStore();
 
-  const sortedDomainOptions = filteredDomainOptions.sort((a, b) => {
-    // First sort by liked status
-    if (liked.includes(a.domain) && !liked.includes(b.domain)) return -1;
-    if (!liked.includes(a.domain) && liked.includes(b.domain)) return 1;
-    // Then sort by total score
-    return getTotalScore(b) - getTotalScore(a);
-  });
+  /**
+   * WHY DO WE NEED STABLE ID HERE?
+   *
+   * The domains are unique, but when the list re-sorts, React+Framer Motion needs
+   * to know which element is which to animate them properly. Using just the domain
+   * as the key means that when an item moves position due to sorting, React sees
+   * the same key in a different position.
+   *
+   * By adding the index to create the stableId, each card maintains its original
+   * position information even after sorting. This helps Framer Motion create
+   * smoother animations because it can better track the "journey" of each card
+   * from its original position to its new position.
+   *
+   * So the stableId isn't about uniqueness - it's about maintaining a consistent
+   * identity for each card that includes information about its original position
+   * in the list. This helps Framer Motion create more predictable and smoother
+   * animations when the list is reordered.
+   */
+  const sortedDomainOptions = filteredDomainOptions
+    .map((domain, index) => ({
+      ...domain,
+      stableId: `${domain.domain}-${index}`, // Add stable ID
+    }))
+    .sort((a, b) => {
+      // First sort by liked status
+      if (liked.includes(a.domain) && !liked.includes(b.domain)) return -1;
+      if (!liked.includes(a.domain) && liked.includes(b.domain)) return 1;
+      // Then sort by total score
+      return getTotalScore(b) - getTotalScore(a);
+    });
+
+  console.log({ sortedDomainOptions });
 
   return (
     <div>
       <AnimatePresence>
-        {sortedDomainOptions.map((domainAssessment, _index) => (
+        {sortedDomainOptions.map((domainAssessment) => (
           <motion.div
-            key={domainAssessment.domain}
+            key={domainAssessment.stableId}
             layout
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
