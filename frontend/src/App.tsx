@@ -6,7 +6,7 @@ import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
 import { VibeButton } from "./components/Buttons";
 import { DomainList } from "./components/DomainList";
-import { DomainCard, DomainCardLoading } from "./components/DomainCard";
+import { DomainCard } from "./components/DomainCard";
 import {
   exampleExpensive,
   exampleImpossible,
@@ -180,7 +180,7 @@ function App() {
           <div className="flex flex-row w-full min-h-screen">
             <div className="flex flex-col text-center justify-start p-4 w-full">
               {/* HEADLINE */}
-              {longlist.length > 0 && (
+              {assessedDomains.completed.length > 0 && (
                 <>
                   <div>
                     {longlist.length} domain names considered. Names with
@@ -198,10 +198,17 @@ function App() {
 
               {/* IN PROGRESS */}
 
-              {assessedDomains.inProgress.length > 0 &&
-                assessedDomains.inProgress.map((domain) => (
-                  <DomainCardLoading domain={domain} key={domain} />
-                ))}
+              {assessedDomains.inProgress.length > 0 && (
+                <>
+                  <div>
+                    Gathering scores for {assessedDomains.inProgress.length}{" "}
+                    domains...
+                  </div>
+                  {assessedDomains.inProgress.map((domain) => (
+                    <div key={domain}>{domain}</div>
+                  ))}
+                </>
+              )}
 
               {/* FAILED - ADD IN LATER */}
 
