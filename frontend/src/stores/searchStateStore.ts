@@ -55,6 +55,7 @@ export const useSearchStateStore = create<SearchStateStore>()(
       addAssessment: (domainAssessment: DomainAssessment) =>
         // Remove the domain from inProgress
         // Add the domain to completed
+        // Add the assessment if it's the first for that domain
         set((state) => ({
           ...state,
           assessments: {
@@ -62,7 +63,12 @@ export const useSearchStateStore = create<SearchStateStore>()(
             inProgress: state.assessments.inProgress.filter(
               (d) => d !== domainAssessment.domain
             ),
-            completed: [...state.assessments.completed, domainAssessment],
+            completed: [
+              ...state.assessments.completed.filter(
+                (a) => a.domain !== domainAssessment.domain
+              ),
+              domainAssessment,
+            ],
           },
         })),
       addFailure: (domain: string, error: string) =>
