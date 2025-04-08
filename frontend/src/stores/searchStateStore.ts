@@ -40,13 +40,12 @@ export const useSearchStateStore = create<SearchStateStore>()(
         failed: [],
       },
       addToLonglist: (domains: string[]) =>
-        // Only add domains that aren't already in the longlist
-        // Add these domains to inProgress also
         set((state) => {
+          const allDomains = new Set([...state.longlist, ...domains]);
           const newDomains = domains.filter((d) => !state.longlist.includes(d));
           return {
             ...state,
-            longlist: [...state.longlist, ...newDomains],
+            longlist: Array.from(allDomains),
             assessments: {
               ...state.assessments,
               inProgress: [...state.assessments.inProgress, ...newDomains],
