@@ -140,22 +140,18 @@ export const ImpossibleBanner = ({
   })();
 
   return (
-    <div className={`col-span-8 rounded-md ${styling}`}>
+    <div className={`col-span-9 rounded-md ${styling}`}>
       <div className="h-full w-full text-xs content-center">{message}</div>
     </div>
   );
 };
 
 export const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
-  const { isPossible, isAvailable, isCheap, scores, domain } = assessment;
-  const { rejected } = useSearchStateStore();
-  const isRejected = rejected.includes(domain);
-
-  const isValid = isPossible && isAvailable && isCheap && !isRejected;
+  const { scores, domain } = assessment;
 
   return (
     <div className="grid grid-cols-7 h-full gap-2 px-2">
-      {isValid && scores ? (
+      {scores && (
         <>
           <div className="col-span-1">
             <ScoreTile label="Evoc" score={scores.evoc} domain={domain} />
@@ -179,13 +175,6 @@ export const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
             <ScoreTile label="Verb" score={scores.verb} domain={domain} />
           </div>
         </>
-      ) : (
-        <ImpossibleBanner
-          isPossible={isPossible}
-          isAvailable={isAvailable}
-          isCheap={isCheap}
-          isRejected={isRejected}
-        />
       )}
     </div>
   );
@@ -246,7 +235,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   const openScoreModal = () => {
     const scoreModal = document.getElementById(
-      "DomainScoreModal"
+      `domain-score-modal-${domain}`
     ) as HTMLDialogElement;
     if (scoreModal) {
       scoreModal.showModal();
@@ -261,19 +250,29 @@ export const DomainCard = (assessment: DomainAssessment) => {
         <RejectButton domain={domain} />
         {domain}
       </div>
-      <div className="hidden md:block md:col-span-7">
-        <ScoreRow assessment={assessment} />
-      </div>
-      <div className="col-span-1 flex justify-center items-center">
-        <TotalScoreTile
-          totalScore={getTotalScore(assessment)}
-          onClick={openScoreModal}
+      {isValid ? (
+        <>
+          <div className="hidden md:block md:col-span-7">
+            <ScoreRow assessment={assessment} />
+          </div>
+          <div className="col-span-1 flex justify-center items-center">
+            <TotalScoreTile
+              totalScore={getTotalScore(assessment)}
+              onClick={openScoreModal}
+            />
+          </div>
+          <div className="col-span-1 flex justify-end items-center">
+            <LikeButton domain={domain} />
+          </div>
+        </>
+      ) : (
+        <ImpossibleBanner
+          isPossible={isPossible}
+          isAvailable={isAvailable}
+          isCheap={isCheap}
+          isRejected={isRejected}
         />
-      </div>
-
-      <div className="col-span-1 flex justify-end items-center">
-        <LikeButton domain={domain} />
-      </div>
+      )}
       <DomainScoreModal assessment={assessment} />
     </div>
   );

@@ -8,7 +8,7 @@ export const DomainScoreModal = ({
 }) => {
   return (
     <dialog
-      id="DomainScoreModal"
+      id={`domain-score-modal-${assessment.domain}`}
       className="modal modal-bottom sm:modal-middle"
     >
       <div className="modal-box">
