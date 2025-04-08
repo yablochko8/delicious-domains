@@ -4,7 +4,7 @@ import { checkLimits, getDomainAssessment, getLongList } from "./serverCalls";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
-import { VibeButton } from "./components/Buttons";
+import { AddDomainsButton, VibeButton } from "./components/Buttons";
 import { DomainList } from "./components/DomainList";
 import { DomainCard } from "./components/DomainCard";
 import {
@@ -173,9 +173,7 @@ function App() {
 
         <div>
           <div className="flex flex-row w-full justify-center">
-            <button className="btn btn-primary" onClick={() => handleSubmit()}>
-              see domain ideas
-            </button>
+            <AddDomainsButton onClick={handleSubmit} />
           </div>
           <div className="flex flex-row w-full min-h-screen">
             <div className="flex flex-col text-center justify-start p-4 w-full">

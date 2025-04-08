@@ -1,5 +1,16 @@
 import { useSearchStateStore } from "../stores/searchStateStore";
 
+export const AddDomainsButton = ({ onClick }: { onClick: () => void }) => {
+  const { longlist } = useSearchStateStore();
+
+  const cta = longlist.length > 0 ? "add more domains" : "see domain ideas";
+  return (
+    <button className="btn btn-primary" onClick={onClick}>
+      {cta}
+    </button>
+  );
+};
+
 export const VibeButton = ({
   vibe,
   onClick,
