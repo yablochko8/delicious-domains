@@ -1,4 +1,4 @@
-import { DomainAssessment } from "shared/types";
+import { DomainAssessment, Feedback } from "shared/types";
 
 const SERVER_PATH = import.meta.env.VITE_SERVER_URL;
 
@@ -8,6 +8,7 @@ type UserInput = {
   shortlist: string | null;
   model: string;
   preferredTlds?: string[];
+  feedback?: Feedback;
 };
 
 export const sendInputsAndReturnDomains = async (

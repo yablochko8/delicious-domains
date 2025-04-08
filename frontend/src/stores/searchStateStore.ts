@@ -5,6 +5,7 @@ import { DomainAssessment, DomainScores } from "shared/types";
 export type SearchState = {
   longlist: string[];
   liked: string[];
+  rejected: string[];
   assessments: {
     inProgress: string[];
     completed: DomainAssessment[];
@@ -30,6 +31,7 @@ export const useSearchStateStore = create<SearchStateStore>()(
     (set) => ({
       longlist: [],
       liked: [],
+      rejected: [],
       assessments: {
         inProgress: [],
         completed: [],

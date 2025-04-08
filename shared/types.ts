@@ -17,3 +17,9 @@ export type DomainAssessment = {
   status?: string;
   error?: string;
 };
+
+export type Feedback = {
+  viewed: string[];
+  liked: string[];
+  rejected: string[];
+};

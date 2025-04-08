@@ -51,6 +51,8 @@ function App() {
 
   const {
     longlist,
+    liked,
+    rejected,
     assessments: assessedDomains,
     addToLonglist,
     addAssessment,
@@ -70,12 +72,21 @@ function App() {
   };
 
   const handleSubmit = async () => {
+    const feedback =
+      longlist.length > 0
+        ? {
+            viewed: longlist,
+            liked: liked,
+            rejected: rejected,
+          }
+        : undefined;
     const fetchedLonglist = await getLongList({
       purpose: inputPurpose,
       vibe: inputVibe,
       shortlist: inputShortlist,
       model: selectedModel,
       preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
+      feedback,
     });
     addToLonglist(fetchedLonglist);
     await Promise.all(
