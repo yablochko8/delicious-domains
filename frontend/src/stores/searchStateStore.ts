@@ -23,6 +23,7 @@ type SearchStateStore = SearchState & {
   likeDomain: (domain: string) => void;
   unlikeDomain: (domain: string) => void;
   nudgeScore: (domain: string, scoreType: keyof DomainScores) => void;
+  clearAll: () => void;
 };
 
 export const useSearchStateStore = create<SearchStateStore>()(
@@ -123,6 +124,16 @@ export const useSearchStateStore = create<SearchStateStore>()(
             },
           };
         }),
+      clearAll: () =>
+        set(() => ({
+          longlist: [],
+          liked: [],
+          assessments: {
+            inProgress: [],
+            completed: [],
+            failed: [],
+          },
+        })),
     }),
     { name: "search-state" }
   )
