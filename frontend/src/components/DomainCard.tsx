@@ -9,6 +9,7 @@ import { ScoreIcons } from "../assets/ScoreIcons";
 import { DomainAssessment, DomainScores } from "shared/types";
 import { explanations } from "../assets/scoreExplanations";
 import { useSearchStateStore } from "../stores/searchStateStore";
+import { DomainScoreModal } from "./DomainScoreModal";
 
 const ScoreTile = ({
   label,
@@ -69,7 +70,13 @@ const ScoreTile = ({
   );
 };
 
-const TotalScoreTile = ({ totalScore }: { totalScore: number }) => {
+const TotalScoreTile = ({
+  totalScore,
+  onClick,
+}: {
+  totalScore: number;
+  onClick: () => void;
+}) => {
   //   If the score is negative, we want to display zero
   const displayScore = totalScore < 0 ? 0 : totalScore;
 
@@ -84,7 +91,11 @@ const TotalScoreTile = ({ totalScore }: { totalScore: number }) => {
     }
   })();
 
-  return <div className={`btn btn-circle ${styling}`}>{displayScore}</div>;
+  return (
+    <div className={`btn btn-circle ${styling}`} onClick={onClick}>
+      {displayScore}
+    </div>
+  );
 };
 
 export const ImpossibleBanner = ({
@@ -129,7 +140,7 @@ export const ImpossibleBanner = ({
   );
 };
 
-const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
+export const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
   const { isPossible, isAvailable, isCheap, scores, domain } = assessment;
 
   const isValid = isPossible && isAvailable && isCheap;
@@ -220,6 +231,15 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   const styling = isValid ? "text-gray-800" : " text-gray-400";
 
+  const openScoreModal = () => {
+    const scoreModal = document.getElementById(
+      "DomainScoreModal"
+    ) as HTMLDialogElement;
+    if (scoreModal) {
+      scoreModal.showModal();
+    }
+  };
+
   return (
     <div
       className={`grid grid-cols-5 md:grid-cols-12 shadow-md p-1 ${styling}`}
@@ -232,12 +252,16 @@ export const DomainCard = (assessment: DomainAssessment) => {
         <ScoreRow assessment={assessment} />
       </div>
       <div className="col-span-1 flex justify-center items-center">
-        <TotalScoreTile totalScore={getTotalScore(assessment)} />
+        <TotalScoreTile
+          totalScore={getTotalScore(assessment)}
+          onClick={openScoreModal}
+        />
       </div>
 
       <div className="col-span-1 flex justify-end items-center">
         <LikeButton domain={domain} />
       </div>
+      <DomainScoreModal assessment={assessment} />
     </div>
   );
 };
