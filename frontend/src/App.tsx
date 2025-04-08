@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { checkLimits, sendInputsAndReturnDomains } from "./serverCalls";
+import { checkLimits, getDomainAssessment, getLongList } from "./serverCalls";
 import { ExpandyInput } from "./components/ExpandyInput";
 import { OptionDropdown } from "./components/OptionDropdown";
 import { WhatIsThis } from "./components/WhatIsThis";
-import { VibeButton } from "./components/Buttons";
-import { DomainAssessment } from "shared/types";
+import { AddDomainsButton, VibeButton } from "./components/Buttons";
 import { DomainList } from "./components/DomainList";
 import { DomainCard } from "./components/DomainCard";
 import {
@@ -14,6 +13,7 @@ import {
   exampleUnavailable,
   exampleValid,
 } from "./devtools/sampleResults";
+import { useSearchStateStore } from "./stores/searchStateStore";
 
 const models = [
   "gpt-4o-mini",
@@ -48,8 +48,15 @@ function App() {
     useState<string[]>(STARTING_VIBES);
 
   // Request state and output
-  const [domainOptions, setDomainOptions] = useState<DomainAssessment[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    longlist,
+    assessments: assessedDomains,
+    addToLonglist,
+    addAssessment,
+    addFailure,
+  } = useSearchStateStore();
+
   const appendVibe = (vibe: string) => {
     setSuggestedVibes(
       suggestedVibes.filter((suggestedVibe) => suggestedVibe !== vibe)
@@ -63,16 +70,30 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
-    const newDomainOptions = await sendInputsAndReturnDomains({
+    const fetchedLonglist = await getLongList({
       purpose: inputPurpose,
       vibe: inputVibe,
       shortlist: inputShortlist,
       model: selectedModel,
       preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
     });
-    setDomainOptions(newDomainOptions);
-    setIsLoading(false);
+    addToLonglist(fetchedLonglist);
+    await Promise.all(
+      fetchedLonglist.map(async (domain, index) => {
+        try {
+          await new Promise((resolve) => setTimeout(resolve, index * 200));
+          const assessment = await getDomainAssessment(domain);
+          console.log("Adding Assessment:", assessment);
+          addAssessment(assessment);
+        } catch (error) {
+          console.error(`Failed to assess domain ${domain}:`, error);
+          addFailure(
+            domain,
+            error instanceof Error ? error.message : String(error)
+          );
+        }
+      })
+    );
   };
 
   // Wake the server when the page loads (because this is on Free plan on Render)
@@ -160,21 +181,44 @@ function App() {
 
         <div>
           <div className="flex flex-row w-full justify-center">
-            <button className="btn btn-primary" onClick={() => handleSubmit()}>
-              see domain ideas
-            </button>
+            <AddDomainsButton onClick={handleSubmit} />
           </div>
           <div className="flex flex-row w-full min-h-screen">
             <div className="flex flex-col text-center justify-start p-4 w-full">
-              {domainOptions.length > 0 && (
+              {/* HEADLINE */}
+              {assessedDomains.completed.length > 0 && (
                 <>
                   <div>
-                    {domainOptions.length} domain names tried. Names with
+                    {longlist.length} domain names considered. Names with
                     hallucinated TLDs are omitted.
                   </div>
-                  <DomainList domainOptions={domainOptions} />
                 </>
               )}
+
+              {/* RESULTS */}
+              {assessedDomains.completed.length > 0 && (
+                <>
+                  <DomainList domainOptions={assessedDomains.completed} />
+                </>
+              )}
+
+              {/* IN PROGRESS */}
+
+              {assessedDomains.inProgress.length > 0 && (
+                <>
+                  <div>
+                    Gathering scores for {assessedDomains.inProgress.length}{" "}
+                    domains...
+                  </div>
+                  {assessedDomains.inProgress.map((domain) => (
+                    <div key={domain}>{domain}</div>
+                  ))}
+                </>
+              )}
+
+              {/* FAILED - TODO ADD IN LATER */}
+
+              {/* DEV - TODO REMOVE LATER */}
 
               {showDevtools && (
                 <>
@@ -183,12 +227,6 @@ function App() {
                   <DomainCard {...exampleUnavailable} />
                   <DomainCard {...exampleImpossible} />
                 </>
-              )}
-
-              {isLoading && (
-                <div className="flex flex-row w-full justify-center p-16">
-                  <span className="loading loading-spinner loading-lg"></span>
-                </div>
               )}
             </div>
           </div>

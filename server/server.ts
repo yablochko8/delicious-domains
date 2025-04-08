@@ -1,13 +1,16 @@
 import express from "express";
 import cors from "cors";
 import { getDomainLongList } from "./processors/getDomainLongList";
-import { getDomainStatusParallel } from "./processors/checkDomainAvailable";
+import {
+  getDomainStatus,
+  getDomainStatusParallel,
+} from "./processors/checkDomainAvailable";
 import { validTlds } from "./tlds";
 import { addScoresToDomain } from "processors/assessDomain";
 
 export const PORT = 4101;
 
-const MAX_DOMAINS = 20;
+const MAX_DOMAINS = 5;
 
 const app = express();
 
@@ -52,6 +55,30 @@ app.post("/find-domains", async (req, res) => {
   res.json({
     domainAssessments: domainsAfterScores,
   });
+});
+
+app.post("/domain-longlist", async (req, res) => {
+  const userInput = req.body.userInput;
+  console.log("User input:", userInput);
+  const domains = await getDomainLongList(
+    userInput.purpose,
+    userInput.vibe,
+    userInput.shortlist,
+    userInput.theme,
+    userInput.model,
+    MAX_DOMAINS,
+    userInput.preferredTlds
+  );
+
+  res.json({ domains });
+});
+
+app.post("/domain-assessment", async (req, res) => {
+  const domain = req.body.domain;
+  console.log("Domain:", domain);
+  const domainWithStatus = await getDomainStatus(domain);
+  const domainAssessment = await addScoresToDomain(domainWithStatus);
+  res.json({ domainAssessment });
 });
 
 app.listen(PORT, () => {

@@ -1,14 +1,30 @@
 import { getTotalScore } from "../utils/getTotalScore";
-import { useState } from "react";
 import {
   MdFavorite as LikedIcon,
   MdFavoriteBorder as UnlikedIcon,
 } from "react-icons/md";
 import { ScoreIcons } from "../assets/ScoreIcons";
-import { DomainAssessment } from "shared/types";
+import { DomainAssessment, DomainScores } from "shared/types";
 import { explanations } from "../assets/scoreExplanations";
+import { useSearchStateStore } from "../stores/searchStateStore";
 
-const ScoreTile = ({ label, score }: { label: string; score: number }) => {
+const ScoreTile = ({
+  label,
+  score,
+  domain,
+}: {
+  label: string;
+  score: number;
+  domain: string;
+}) => {
+  const { nudgeScore } = useSearchStateStore();
+
+  const handleClick = () => {
+    const scoreType: keyof DomainScores =
+      label.toLowerCase() as keyof DomainScores;
+    nudgeScore(domain, scoreType);
+  };
+
   const backgroundColor = (() => {
     switch (score) {
       case 1:
@@ -42,8 +58,9 @@ const ScoreTile = ({ label, score }: { label: string; score: number }) => {
 
   return (
     <div
-      className={`h-full w-full text-xs md:text-lg flex justify-center items-center font-semibold ${backgroundColor} ${textColor}`}
+      className={`h-full w-full text-xs md:text-lg flex justify-center items-center font-semibold cursor-pointer rounded-md ${backgroundColor} ${textColor}`}
       title={hoverText}
+      onClick={handleClick}
     >
       {ScoreIcon}
     </div>
@@ -104,34 +121,34 @@ export const ImpossibleBanner = ({
 };
 
 const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
-  const { isPossible, isAvailable, isCheap, scores } = assessment;
+  const { isPossible, isAvailable, isCheap, scores, domain } = assessment;
 
   const isValid = isPossible && isAvailable && isCheap;
 
   return (
-    <div className="grid grid-cols-7 h-full">
+    <div className="grid grid-cols-7 h-full gap-2 px-2">
       {isValid && scores ? (
         <>
           <div className="col-span-1">
-            <ScoreTile label="Evoc" score={scores.evoc} />
+            <ScoreTile label="Evoc" score={scores.evoc} domain={domain} />
           </div>
           <div className="col-span-1">
-            <ScoreTile label="Brev" score={scores.brev} />
+            <ScoreTile label="Brev" score={scores.brev} domain={domain} />
           </div>
           <div className="col-span-1">
-            <ScoreTile label="Grep" score={scores.grep} />
+            <ScoreTile label="Grep" score={scores.grep} domain={domain} />
           </div>
           <div className="col-span-1">
-            <ScoreTile label="Goog" score={scores.goog} />
+            <ScoreTile label="Goog" score={scores.goog} domain={domain} />
           </div>
           <div className="col-span-1">
-            <ScoreTile label="Pron" score={scores.pron} />
+            <ScoreTile label="Pron" score={scores.pron} domain={domain} />
           </div>
           <div className="col-span-1">
-            <ScoreTile label="Spel" score={scores.spel} />
+            <ScoreTile label="Spel" score={scores.spel} domain={domain} />
           </div>
           <div className="col-span-1">
-            <ScoreTile label="Verb" score={scores.verb} />
+            <ScoreTile label="Verb" score={scores.verb} domain={domain} />
           </div>
         </>
       ) : (
@@ -145,15 +162,16 @@ const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
   );
 };
 
-const LikeButton = ({
-  isLiked,
-  setIsLiked,
-}: {
-  isLiked: boolean;
-  setIsLiked: (isLiked: boolean) => void;
-}) => {
+const LikeButton = ({ domain }: { domain: string }) => {
+  const { liked, likeDomain, unlikeDomain } = useSearchStateStore();
+  const isLiked = liked.includes(domain);
+  const handleClick = () =>
+    isLiked ? unlikeDomain(domain) : likeDomain(domain);
+
+  const hoverText = `${isLiked ? "Unlike" : "Like"} ${domain}`;
+
   return (
-    <div className="cursor-pointer" onClick={() => setIsLiked(!isLiked)}>
+    <div className="cursor-pointer" onClick={handleClick} title={hoverText}>
       {isLiked ? (
         <LikedIcon className="text-2xl text-red-500" />
       ) : (
@@ -164,7 +182,6 @@ const LikeButton = ({
 };
 
 export const DomainCard = (assessment: DomainAssessment) => {
-  const [isLiked, setIsLiked] = useState(false);
   const { domain, isPossible, isAvailable, isCheap } = assessment;
 
   const isValid = isPossible && isAvailable && isCheap;
@@ -186,7 +203,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
       </div>
 
       <div className="col-span-1 flex justify-center items-center">
-        <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
+        <LikeButton domain={domain} />
       </div>
     </div>
   );
