@@ -5,6 +5,7 @@ import { DomainAssessment, DomainScores } from "shared/types";
 export type SearchState = {
   longlist: string[];
   liked: string[];
+  rejected: string[];
   assessments: {
     inProgress: string[];
     completed: DomainAssessment[];
@@ -21,6 +22,8 @@ type SearchStateStore = SearchState & {
   addFailure: (domain: string, error: string) => void;
   likeDomain: (domain: string) => void;
   unlikeDomain: (domain: string) => void;
+  rejectDomain: (domain: string) => void;
+  unrejectDomain: (domain: string) => void;
   nudgeScore: (domain: string, scoreType: keyof DomainScores) => void;
   clearAll: () => void;
 };
@@ -30,19 +33,19 @@ export const useSearchStateStore = create<SearchStateStore>()(
     (set) => ({
       longlist: [],
       liked: [],
+      rejected: [],
       assessments: {
         inProgress: [],
         completed: [],
         failed: [],
       },
       addToLonglist: (domains: string[]) =>
-        // Only add domains that aren't already in the longlist
-        // Add these domains to inProgress also
         set((state) => {
+          const allDomains = new Set([...state.longlist, ...domains]);
           const newDomains = domains.filter((d) => !state.longlist.includes(d));
           return {
             ...state,
-            longlist: [...state.longlist, ...newDomains],
+            longlist: Array.from(allDomains),
             assessments: {
               ...state.assessments,
               inProgress: [...state.assessments.inProgress, ...newDomains],
@@ -52,6 +55,7 @@ export const useSearchStateStore = create<SearchStateStore>()(
       addAssessment: (domainAssessment: DomainAssessment) =>
         // Remove the domain from inProgress
         // Add the domain to completed
+        // Replace any existing assessment for the domain
         set((state) => ({
           ...state,
           assessments: {
@@ -59,7 +63,12 @@ export const useSearchStateStore = create<SearchStateStore>()(
             inProgress: state.assessments.inProgress.filter(
               (d) => d !== domainAssessment.domain
             ),
-            completed: [...state.assessments.completed, domainAssessment],
+            completed: [
+              ...state.assessments.completed.filter(
+                (a) => a.domain !== domainAssessment.domain
+              ),
+              domainAssessment,
+            ],
           },
         })),
       addFailure: (domain: string, error: string) =>
@@ -74,12 +83,25 @@ export const useSearchStateStore = create<SearchStateStore>()(
         set((state) => ({
           ...state,
           liked: [...state.liked, domain],
+          rejected: state.rejected.filter((d) => d !== domain),
         })),
       unlikeDomain: (domain: string) =>
         set((state) => ({
           ...state,
           liked: state.liked.filter((d) => d !== domain),
         })),
+      rejectDomain: (domain: string) =>
+        set((state) => ({
+          ...state,
+          rejected: [...state.rejected, domain],
+          liked: state.liked.filter((d) => d !== domain),
+        })),
+      unrejectDomain: (domain: string) =>
+        set((state) => ({
+          ...state,
+          rejected: state.rejected.filter((d) => d !== domain),
+        })),
+
       nudgeScore: (domain: string, scoreType: keyof DomainScores) =>
         set((state) => {
           const assessment = state.assessments.completed.find(

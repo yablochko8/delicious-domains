@@ -1,12 +1,22 @@
 import { useSearchStateStore } from "../stores/searchStateStore";
 
-export const AddDomainsButton = ({ onClick }: { onClick: () => void }) => {
+export const AddDomainsButton = ({
+  onClick,
+  isLoading,
+}: {
+  onClick: () => void;
+  isLoading: boolean;
+}) => {
   const { longlist } = useSearchStateStore();
 
   const cta = longlist.length > 0 ? "add more domains" : "see domain ideas";
   return (
-    <button className="btn btn-primary" onClick={onClick}>
-      {cta}
+    <button
+      className="btn btn-primary w-[200px]"
+      onClick={onClick}
+      disabled={isLoading}
+    >
+      {isLoading ? <span className="loading loading-spinner"></span> : cta}
     </button>
   );
 };

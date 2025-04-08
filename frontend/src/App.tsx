@@ -48,9 +48,12 @@ function App() {
     useState<string[]>(STARTING_VIBES);
 
   // Request state and output
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     longlist,
+    liked,
+    rejected,
     assessments: assessedDomains,
     addToLonglist,
     addAssessment,
@@ -70,30 +73,44 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    const fetchedLonglist = await getLongList({
-      purpose: inputPurpose,
-      vibe: inputVibe,
-      shortlist: inputShortlist,
-      model: selectedModel,
-      preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
-    });
-    addToLonglist(fetchedLonglist);
-    await Promise.all(
-      fetchedLonglist.map(async (domain, index) => {
-        try {
-          await new Promise((resolve) => setTimeout(resolve, index * 200));
-          const assessment = await getDomainAssessment(domain);
-          console.log("Adding Assessment:", assessment);
-          addAssessment(assessment);
-        } catch (error) {
-          console.error(`Failed to assess domain ${domain}:`, error);
-          addFailure(
-            domain,
-            error instanceof Error ? error.message : String(error)
-          );
-        }
-      })
-    );
+    setIsLoading(true);
+    try {
+      const feedback =
+        longlist.length > 0
+          ? {
+              viewed: longlist,
+              liked: liked,
+              rejected: rejected,
+            }
+          : undefined;
+      const fetchedLonglist = await getLongList({
+        purpose: inputPurpose,
+        vibe: inputVibe,
+        shortlist: inputShortlist,
+        model: selectedModel,
+        preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
+        feedback,
+      });
+      addToLonglist(fetchedLonglist);
+      await Promise.all(
+        fetchedLonglist.map(async (domain, index) => {
+          try {
+            await new Promise((resolve) => setTimeout(resolve, index * 200));
+            const assessment = await getDomainAssessment(domain);
+            console.log("Adding Assessment:", assessment);
+            addAssessment(assessment);
+          } catch (error) {
+            console.error(`Failed to assess domain ${domain}:`, error);
+            addFailure(
+              domain,
+              error instanceof Error ? error.message : String(error)
+            );
+          }
+        })
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Wake the server when the page loads (because this is on Free plan on Render)
@@ -181,7 +198,7 @@ function App() {
 
         <div>
           <div className="flex flex-row w-full justify-center">
-            <AddDomainsButton onClick={handleSubmit} />
+            <AddDomainsButton onClick={handleSubmit} isLoading={isLoading} />
           </div>
           <div className="flex flex-row w-full min-h-screen">
             <div className="flex flex-col text-center justify-start p-4 w-full">

@@ -2,11 +2,14 @@ import { getTotalScore } from "../utils/getTotalScore";
 import {
   MdFavorite as LikedIcon,
   MdFavoriteBorder as UnlikedIcon,
+  MdClose as RejectIcon,
+  MdAdd as UnrejectIcon,
 } from "react-icons/md";
 import { ScoreIcons } from "../assets/ScoreIcons";
 import { DomainAssessment, DomainScores } from "shared/types";
 import { explanations } from "../assets/scoreExplanations";
 import { useSearchStateStore } from "../stores/searchStateStore";
+import { DomainScoreModal } from "./DomainScoreModal";
 
 const ScoreTile = ({
   label,
@@ -67,12 +70,29 @@ const ScoreTile = ({
   );
 };
 
-const TotalScoreTile = ({ totalScore }: { totalScore: number }) => {
+const TotalScoreTile = ({
+  totalScore,
+  onClick,
+}: {
+  totalScore: number;
+  onClick: () => void;
+}) => {
   //   If the score is negative, we want to display zero
   const displayScore = totalScore < 0 ? 0 : totalScore;
 
+  const styling = (() => {
+    switch (true) {
+      case displayScore >= 16:
+        return "btn-success";
+      case displayScore >= 14:
+        return "btn-warning";
+      default:
+        return "btn-error";
+    }
+  })();
+
   return (
-    <div className="h-full w-full text-lg font-semibold content-center bg-gray-200 text-gray-800">
+    <div className={`btn btn-sm btn-circle ${styling}`} onClick={onClick}>
       {displayScore}
     </div>
   );
@@ -82,13 +102,17 @@ export const ImpossibleBanner = ({
   isPossible,
   isAvailable,
   isCheap,
+  isRejected,
 }: {
   isPossible: boolean;
   isAvailable: boolean;
   isCheap: boolean;
+  isRejected: boolean;
 }) => {
   const message = (() => {
     switch (true) {
+      case isRejected:
+        return "Rejected";
       case !isPossible:
         return "Impossible";
       case !isAvailable:
@@ -102,6 +126,8 @@ export const ImpossibleBanner = ({
 
   const styling = (() => {
     switch (true) {
+      case isRejected:
+        return "bg-gray-400 text-gray-500";
       case !isPossible:
         return "bg-gray-300 text-gray-400";
       case !isAvailable:
@@ -114,20 +140,18 @@ export const ImpossibleBanner = ({
   })();
 
   return (
-    <div className={`col-span-8 ${styling}`}>
+    <div className={`col-span-9 rounded-md ${styling}`}>
       <div className="h-full w-full text-xs content-center">{message}</div>
     </div>
   );
 };
 
-const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
-  const { isPossible, isAvailable, isCheap, scores, domain } = assessment;
-
-  const isValid = isPossible && isAvailable && isCheap;
+export const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
+  const { scores, domain } = assessment;
 
   return (
     <div className="grid grid-cols-7 h-full gap-2 px-2">
-      {isValid && scores ? (
+      {scores && (
         <>
           <div className="col-span-1">
             <ScoreTile label="Evoc" score={scores.evoc} domain={domain} />
@@ -151,12 +175,25 @@ const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
             <ScoreTile label="Verb" score={scores.verb} domain={domain} />
           </div>
         </>
+      )}
+    </div>
+  );
+};
+
+const RejectButton = ({ domain }: { domain: string }) => {
+  const { rejected, rejectDomain, unrejectDomain } = useSearchStateStore();
+  const isRejected = rejected.includes(domain);
+  const handleClick = () =>
+    isRejected ? unrejectDomain(domain) : rejectDomain(domain);
+
+  const hoverText = `${isRejected ? "Add back" : "Reject"} ${domain}`;
+
+  return (
+    <div className="btn btn-square" onClick={handleClick} title={hoverText}>
+      {isRejected ? (
+        <UnrejectIcon className="text-2xl text-gray-500" />
       ) : (
-        <ImpossibleBanner
-          isPossible={isPossible}
-          isAvailable={isAvailable}
-          isCheap={isCheap}
-        />
+        <RejectIcon className="text-2xl text-gray-500" />
       )}
     </div>
   );
@@ -171,7 +208,11 @@ const LikeButton = ({ domain }: { domain: string }) => {
   const hoverText = `${isLiked ? "Unlike" : "Like"} ${domain}`;
 
   return (
-    <div className="cursor-pointer" onClick={handleClick} title={hoverText}>
+    <div
+      className="btn btn-square btn-ghost"
+      onClick={handleClick}
+      title={hoverText}
+    >
       {isLiked ? (
         <LikedIcon className="text-2xl text-red-500" />
       ) : (
@@ -184,27 +225,55 @@ const LikeButton = ({ domain }: { domain: string }) => {
 export const DomainCard = (assessment: DomainAssessment) => {
   const { domain, isPossible, isAvailable, isCheap } = assessment;
 
-  const isValid = isPossible && isAvailable && isCheap;
+  const { rejected } = useSearchStateStore();
+
+  const isRejected = rejected.includes(domain);
+
+  const isValid = isPossible && isAvailable && isCheap && !isRejected;
 
   const styling = isValid ? "text-gray-800" : " text-gray-400";
 
+  const openScoreModal = () => {
+    const scoreModal = document.getElementById(
+      `domain-score-modal-${domain}`
+    ) as HTMLDialogElement;
+    if (scoreModal) {
+      scoreModal.showModal();
+    }
+  };
+
   return (
     <div
-      className={`grid grid-cols-9 md:grid-cols-11 shadow-md p-1 ${styling}`}
+      className={`grid grid-cols-5 md:grid-cols-12 shadow-md p-1 ${styling}`}
     >
-      <div className="col-span-9 md:col-span-2 flex justify-start text-lg font-semibold pt-2 pb-1">
+      <div className="col-span-3 flex justify-start items-center gap-2 text-lg font-semibold pt-2 pb-1">
+        <RejectButton domain={domain} />
         {domain}
       </div>
-      <div className="col-span-7">
-        <ScoreRow assessment={assessment} />
-      </div>
-      <div className="col-span-1">
-        <TotalScoreTile totalScore={getTotalScore(assessment)} />
-      </div>
-
-      <div className="col-span-1 flex justify-center items-center">
-        <LikeButton domain={domain} />
-      </div>
+      {isValid ? (
+        <>
+          <div className="hidden md:block md:col-span-7">
+            <ScoreRow assessment={assessment} />
+          </div>
+          <div className="col-span-1 flex justify-end items-center">
+            <TotalScoreTile
+              totalScore={getTotalScore(assessment)}
+              onClick={openScoreModal}
+            />
+          </div>
+          <div className="col-span-1 flex justify-center items-center">
+            <LikeButton domain={domain} />
+          </div>
+        </>
+      ) : (
+        <ImpossibleBanner
+          isPossible={isPossible}
+          isAvailable={isAvailable}
+          isCheap={isCheap}
+          isRejected={isRejected}
+        />
+      )}
+      <DomainScoreModal assessment={assessment} />
     </div>
   );
 };

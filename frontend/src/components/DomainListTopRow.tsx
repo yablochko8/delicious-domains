@@ -4,9 +4,9 @@ export const DomainListTopRow = () => {
   return (
     <>
       <div
-        className={`hidden md:block md:grid grid-cols-11 p-1 ${textStyling}`}
+        className={`hidden md:block md:grid grid-cols-12 p-1 ${textStyling}`}
       >
-        <div className="col-span-2"></div>
+        <div className="col-span-3"></div>
         <div className="col-span-7">
           <div className="grid grid-cols-7 h-full gap-2 px-2">
             <div className="col-span-1">EVOC</div>

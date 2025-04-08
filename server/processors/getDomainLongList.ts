@@ -1,6 +1,7 @@
 import { sendLLMRequest } from "utils/sendLLMRequest";
 import { validTlds } from "../tlds";
 import { jsonToArray } from "utils/jsonToArray";
+import { Feedback } from "shared/types";
 
 const generateSystemPrompt = (
   allowedTlds: string[]
@@ -28,7 +29,8 @@ const generateUserPrompt = (
   shortlist: string,
   theme: string,
   targetQuantity: number,
-  preferredTlds?: string[]
+  preferredTlds?: string[],
+  feedback?: Feedback
 ) => {
   const themeInsertion = theme
     ? `\nIdeally choose examples relevant to this theme: ${theme}`
@@ -39,6 +41,16 @@ const generateUserPrompt = (
 
   const tldInsertion = preferredTlds?.length
     ? `\nIf possible, use these TLDs: ${preferredTlds}`
+    : "";
+
+  const feedbackInsertion = feedback
+    ? `\nThe user has already viewed these domains: ${feedback.viewed.join(
+        ", "
+      )}. They liked these domains: ${feedback.liked.join(
+        ", "
+      )}. They rejected these domains: ${feedback.rejected.join(
+        ", "
+      )}. Learn from this, and don't suggest any of the above domains again.`
     : "";
 
   return `Generate ${targetQuantity} domain names with these requirements:
@@ -54,6 +66,7 @@ The domains should be:
 
 ${shortlistInsertion}
 ${tldInsertion}
+${feedbackInsertion}
 
 Remember the most important input here is the purpose of the project, which is:
 ${purpose}
@@ -67,7 +80,8 @@ export const getDomainLongList = async (
   theme: string,
   model: string,
   targetQuantity: number,
-  preferredTlds?: string[]
+  preferredTlds?: string[],
+  feedback?: Feedback
 ): Promise<string[]> => {
   const tldList = preferredTlds?.length ? preferredTlds : validTlds;
   const systemPrompt = generateSystemPrompt(tldList);
@@ -76,7 +90,9 @@ export const getDomainLongList = async (
     vibe,
     shortlist,
     theme,
-    targetQuantity
+    targetQuantity,
+    preferredTlds,
+    feedback
   );
 
   console.log("Sending prompts:", { systemPrompt, userPrompt });

@@ -10,7 +10,7 @@ import { addScoresToDomain } from "processors/assessDomain";
 
 export const PORT = 4101;
 
-const MAX_DOMAINS = 5;
+const MAX_DOMAINS = 10;
 
 const app = express();
 
@@ -31,6 +31,9 @@ app.get("/tlds/all", async (_req, res) => {
   res.json({ tlds: validTlds });
 });
 
+/**
+ * @deprecated
+ */
 app.post("/find-domains", async (req, res) => {
   const userInput = req.body.userInput;
   console.log("User input:", userInput);
@@ -41,7 +44,8 @@ app.post("/find-domains", async (req, res) => {
     userInput.theme,
     userInput.model,
     MAX_DOMAINS,
-    userInput.preferredTlds
+    userInput.preferredTlds,
+    userInput.feedback
   );
 
   // Limit the number of domains to process
@@ -67,7 +71,8 @@ app.post("/domain-longlist", async (req, res) => {
     userInput.theme,
     userInput.model,
     MAX_DOMAINS,
-    userInput.preferredTlds
+    userInput.preferredTlds,
+    userInput.feedback
   );
 
   res.json({ domains });
