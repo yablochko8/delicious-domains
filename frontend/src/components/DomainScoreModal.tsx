@@ -12,14 +12,14 @@ export const DomainScoreModal = ({
       className="modal modal-bottom sm:modal-middle"
     >
       <div className="modal-box">
-        <p className="py-4">FULL SCORES</p>
+        <p className="py-4">Score Breakdown</p>
         <div className="flex flex-col gap-4 text-justify">
           {assessment.scores &&
             Object.entries(assessment.scores).map(([key, score]) => (
               <div key={key}>
-                <h2 className="font-bold">
+                <h3 className="font-bold">
                   {key.toUpperCase()} : {score}
-                </h2>
+                </h3>
                 <p className="text-sm">
                   {explanations[key as keyof typeof explanations]}
                 </p>
@@ -33,9 +33,9 @@ export const DomainScoreModal = ({
           </form>
         </div>
       </div>
-      {/* <form method="dialog" className="modal-backdrop">
+      <form method="dialog" className="modal-backdrop">
         <button>close</button>
-      </form> */}
+      </form>
     </dialog>
   );
 };
