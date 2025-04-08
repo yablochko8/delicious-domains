@@ -183,7 +183,7 @@ function App() {
               {longlist.length > 0 && (
                 <>
                   <div>
-                    {longlist.length} domain names found. Names with
+                    {longlist.length} domain names considered. Names with
                     hallucinated TLDs are omitted.
                   </div>
                 </>

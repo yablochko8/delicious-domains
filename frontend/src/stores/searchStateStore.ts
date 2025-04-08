@@ -39,20 +39,32 @@ export const useSearchStateStore = create<SearchStateStore>()(
         },
       }),
       addToLonglist: (domains: string[]) =>
+        // Only add domains that aren't already in the longlist
+        // Add these domains to inProgress also
+        set((state) => {
+          const newDomains = domains.filter((d) => !state.longlist.includes(d));
+          return {
+            ...state,
+            longlist: [...state.longlist, ...newDomains],
+            assessments: {
+              ...state.assessments,
+              inProgress: [...state.assessments.inProgress, ...newDomains],
+            },
+          };
+        }),
+      addAssessment: (domainAssessment: DomainAssessment) =>
+        // Remove the domain from inProgress
+        // Add the domain to completed
         set((state) => ({
-          ...state,
-          longlist: [...state.longlist, ...domains],
-        })),
-      addAssessment: (domainAssessment: DomainAssessment) => {
-        console.log("INFUNCTION - Adding domain assessment:", domainAssessment);
-        return set((state) => ({
           ...state,
           assessments: {
             ...state.assessments,
+            inProgress: state.assessments.inProgress.filter(
+              (d) => d !== domainAssessment.domain
+            ),
             completed: [...state.assessments.completed, domainAssessment],
           },
-        }));
-      },
+        })),
       addFailure: (domain: string, error: string) =>
         set((state) => ({
           ...state,
