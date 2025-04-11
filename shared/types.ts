@@ -1,11 +1,7 @@
+import { ScoreId } from "../frontend/src/assets/scoreExplanations";
+
 export type DomainScores = {
-  evoc: number;
-  brev: number;
-  grep: number;
-  goog: number;
-  pron: number;
-  spel: number;
-  verb: number;
+  [key in ScoreId]: number;
 };
 
 export type DomainAssessment = {

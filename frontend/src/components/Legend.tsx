@@ -1,5 +1,5 @@
-import { ScoreIcons } from "../assets/ScoreIcons";
-import { explanations } from "../assets/scoreExplanations";
+import { ScoreIcons } from "../assets/Icons";
+import { scoreExplanations } from "../assets/scoreExplanations";
 
 /** This is not currently used. */
 export const Legend = () => {
@@ -9,7 +9,7 @@ export const Legend = () => {
         <div key={key} className="flex items-center gap-2">
           <div className="w-6 h-6 flex items-center justify-center">{icon}</div>
           <div className="text-sm">
-            {explanations[key as keyof typeof explanations]}
+            {scoreExplanations[key as keyof typeof scoreExplanations]}
           </div>
         </div>
       ))}

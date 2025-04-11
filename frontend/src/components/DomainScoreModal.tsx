@@ -1,5 +1,5 @@
 import { DomainAssessment } from "shared/types";
-import { explanations } from "../assets/scoreExplanations";
+import { scoreExplanations } from "../assets/scoreExplanations";
 
 export const DomainScoreModal = ({
   assessment,
@@ -21,7 +21,7 @@ export const DomainScoreModal = ({
                   {key.toUpperCase()} : {score}
                 </h3>
                 <p className="text-sm">
-                  {explanations[key as keyof typeof explanations]}
+                  {scoreExplanations.find(cat => cat.id === key)?.description}
                 </p>
               </div>
             ))}

@@ -123,11 +123,10 @@ export const useSearchStateStore = create<SearchStateStore>()(
                       scores: {
                         evoc: a.scores?.evoc || 0,
                         brev: a.scores?.brev || 0,
-                        grep: a.scores?.grep || 0,
-                        goog: a.scores?.goog || 0,
                         pron: a.scores?.pron || 0,
                         spel: a.scores?.spel || 0,
-                        verb: a.scores?.verb || 0,
+                        legs: a.scores?.legs || 0,
+                        find: a.scores?.find || 0,
                         [scoreType]: newScore,
                       },
                     }
