@@ -77,7 +77,7 @@ const DomainScoreModalEntry = ({
   })();
   return (
     <div key={scoreId} className="bg-base-200 rounded-md p-2">
-      <div className="flex flex-row gap-1 text-xl items-center rounded-md'">
+      <div className="flex flex-row gap-1 text-xl items-center rounded-md">
         <p className={`text-lg font-bold ${textColor}`}>{score}/3 {scoreExplanationDict[scoreId].name}</p>
         <div className="flex flex-grow"></div>
         <DomainScoreModalTile scoreId={scoreId} actualScore={score} thisTileScore={1} domain={domain} />
@@ -96,7 +96,6 @@ export const DomainScoreModal = ({
 }: {
   assessment: DomainAssessment;
 }) => {
-  console.log(assessment.scores);
   return (
     <dialog
       id={`domain-score-modal-${assessment.domain}`}

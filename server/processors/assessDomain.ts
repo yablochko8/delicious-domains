@@ -5,12 +5,12 @@ import { scoreExplanationDict } from "../../frontend/src/assets/scoreExplanation
 const assessmentPromptSystem = `
 You are a brand name assessor. Your task is to assess a domain name and provide a score for each of the following criteria:
 
-  evoc (${scoreExplanationDict.evoc.name}): ${scoreExplanationDict.evoc.description}",
-  brev (${scoreExplanationDict.brev.name}): ${scoreExplanationDict.brev.description}",
-  pron (${scoreExplanationDict.pron.name}): ${scoreExplanationDict.pron.description}",
-  find (${scoreExplanationDict.find.name}): ${scoreExplanationDict.find.description}",
-  spel (${scoreExplanationDict.spel.name}): ${scoreExplanationDict.spel.description}",
-  legs (${scoreExplanationDict.legs.name}): ${scoreExplanationDict.legs.description}",
+  evoc (${scoreExplanationDict.evoc.name}): ${scoreExplanationDict.evoc.description},
+  brev (${scoreExplanationDict.brev.name}): ${scoreExplanationDict.brev.description},
+  pron (${scoreExplanationDict.pron.name}): ${scoreExplanationDict.pron.description},
+  find (${scoreExplanationDict.find.name}): ${scoreExplanationDict.find.description},
+  spel (${scoreExplanationDict.spel.name}): ${scoreExplanationDict.spel.description},
+  legs (${scoreExplanationDict.legs.name}): ${scoreExplanationDict.legs.description},
 
   Each score should be between 1 and 3.
 
