@@ -5,9 +5,9 @@ import {
   MdClose as RejectIcon,
   MdAdd as UnrejectIcon,
 } from "react-icons/md";
-import { ScoreIcons } from "../assets/ScoreIcons";
-import { DomainAssessment, DomainScores } from "shared/types";
-import { explanations } from "../assets/scoreExplanations";
+import { ScoreIcons } from "../assets/Icons";
+import { DomainAssessment } from "shared/types";
+import { scoreExplanations, ScoreId, scoreIds } from "../assets/scoreExplanations";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { DomainScoreModal } from "./DomainScoreModal";
 
@@ -16,16 +16,18 @@ const ScoreTile = ({
   score,
   domain,
 }: {
-  label: string;
+  label: ScoreId;
   score: number;
   domain: string;
 }) => {
-  const { nudgeScore } = useSearchStateStore();
 
   const handleClick = () => {
-    const scoreType: keyof DomainScores =
-      label.toLowerCase() as keyof DomainScores;
-    nudgeScore(domain, scoreType);
+    const scoreModal = document.getElementById(
+      `domain-score-modal-${domain}`
+    ) as HTMLDialogElement;
+    if (scoreModal) {
+      scoreModal.showModal();
+    }
   };
 
   const backgroundColor = (() => {
@@ -55,14 +57,14 @@ const ScoreTile = ({
   })();
 
   const hoverText =
-    explanations[label.toLowerCase() as keyof typeof explanations];
+    scoreExplanations.find(cat => cat.id === label)?.description || "";
 
-  const ScoreIcon = ScoreIcons[label.toLowerCase() as keyof typeof ScoreIcons];
+  const ScoreIcon = ScoreIcons[label as keyof typeof ScoreIcons];
 
   return (
     <div
       className={`h-full w-full text-xs md:text-lg flex justify-center items-center font-semibold cursor-pointer rounded-md ${backgroundColor} ${textColor}`}
-      title={hoverText}
+      title={hoverText || ""}
       onClick={handleClick}
     >
       {ScoreIcon}
@@ -140,7 +142,7 @@ export const ImpossibleBanner = ({
   })();
 
   return (
-    <div className={`col-span-9 rounded-md ${styling}`}>
+    <div className={`col-span-8 rounded-md ${styling}`}>
       <div className="h-full w-full text-xs content-center">{message}</div>
     </div>
   );
@@ -150,30 +152,14 @@ export const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
   const { scores, domain } = assessment;
 
   return (
-    <div className="grid grid-cols-7 h-full gap-2 px-2">
+    <div className="grid grid-cols-6 h-full gap-2 px-2">
       {scores && (
         <>
-          <div className="col-span-1">
-            <ScoreTile label="Evoc" score={scores.evoc} domain={domain} />
-          </div>
-          <div className="col-span-1">
-            <ScoreTile label="Brev" score={scores.brev} domain={domain} />
-          </div>
-          <div className="col-span-1">
-            <ScoreTile label="Grep" score={scores.grep} domain={domain} />
-          </div>
-          <div className="col-span-1">
-            <ScoreTile label="Goog" score={scores.goog} domain={domain} />
-          </div>
-          <div className="col-span-1">
-            <ScoreTile label="Pron" score={scores.pron} domain={domain} />
-          </div>
-          <div className="col-span-1">
-            <ScoreTile label="Spel" score={scores.spel} domain={domain} />
-          </div>
-          <div className="col-span-1">
-            <ScoreTile label="Verb" score={scores.verb} domain={domain} />
-          </div>
+          {scoreIds.map((id) => (
+            <div className="col-span-1">
+              <ScoreTile label={id} score={scores[id]} domain={domain} />
+            </div>
+          ))}
         </>
       )}
     </div>
@@ -252,7 +238,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
       </div>
       {isValid ? (
         <>
-          <div className="hidden md:block md:col-span-7">
+          <div className="hidden md:block md:col-span-6">
             <ScoreRow assessment={assessment} />
           </div>
           <div className="col-span-1 flex justify-end items-center">

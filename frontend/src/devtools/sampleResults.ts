@@ -3,11 +3,10 @@ import { DomainAssessment, DomainScores } from "shared/types";
 const blankScores: DomainScores = {
   evoc: 3,
   brev: 2,
-  grep: 1,
-  goog: 3,
   pron: 2,
   spel: 1,
-  verb: 2,
+  legs: 2,
+  find: 3,
 };
 
 export const exampleValid: DomainAssessment = {
