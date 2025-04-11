@@ -6,7 +6,7 @@ import {
   MdAdd as UnrejectIcon,
 } from "react-icons/md";
 import { ScoreIcons } from "../assets/Icons";
-import { DomainAssessment, DomainScores } from "shared/types";
+import { DomainAssessment } from "shared/types";
 import { scoreExplanations, ScoreId, scoreIds } from "../assets/scoreExplanations";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { DomainScoreModal } from "./DomainScoreModal";
@@ -20,12 +20,14 @@ const ScoreTile = ({
   score: number;
   domain: string;
 }) => {
-  const { nudgeScore } = useSearchStateStore();
 
   const handleClick = () => {
-    const scoreType: keyof DomainScores =
-      label.toLowerCase() as keyof DomainScores;
-    nudgeScore(domain, scoreType);
+    const scoreModal = document.getElementById(
+      `domain-score-modal-${domain}`
+    ) as HTMLDialogElement;
+    if (scoreModal) {
+      scoreModal.showModal();
+    }
   };
 
   const backgroundColor = (() => {

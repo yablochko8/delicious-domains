@@ -1,5 +1,5 @@
 import { DomainAssessment } from "shared/types";
-import { scoreExplanationDict, ScoreId } from "../assets/scoreExplanations";
+import { scoreExplanationDict, ScoreId, scoreIds } from "../assets/scoreExplanations";
 import { ScoreIcons } from "../assets/Icons";
 import { useSearchStateStore } from "../stores/searchStateStore";
 
@@ -44,7 +44,7 @@ const DomainScoreModalTile = ({
   return (
     <div
       className={`p-2 rounded-md cursor-pointer ${backgroundColor}`}
-      title={scoreExplanationDict[scoreId].description}
+      title={scoreExplanationDict[scoreId].shortDescription}
       onClick={handleClick}
     >
       {ScoreIcon}
@@ -76,15 +76,17 @@ const DomainScoreModalEntry = ({
     }
   })();
   return (
-    <div key={scoreId}>
-      <div className="flex flex-row gap-1 text-2xl items-center bg-base-200 rounded-md p-2">
+    <div key={scoreId} className="bg-base-200 rounded-md p-2">
+      <div className="flex flex-row gap-1 text-xl items-center rounded-md'">
         <p className={`text-lg font-bold ${textColor}`}>{score}/3 {scoreExplanationDict[scoreId].name}</p>
         <div className="flex flex-grow"></div>
         <DomainScoreModalTile scoreId={scoreId} actualScore={score} thisTileScore={1} domain={domain} />
         <DomainScoreModalTile scoreId={scoreId} actualScore={score} thisTileScore={2} domain={domain} />
         <DomainScoreModalTile scoreId={scoreId} actualScore={score} thisTileScore={3} domain={domain} />
       </div>
-      <p className="text-sm">{scoreExplanationDict[scoreId].description}</p>
+      <div className="flex flex-row items-center pt-2">
+        <p className="text-sm text-left">Criteria: {scoreExplanationDict[scoreId].shortDescription}</p>
+      </div>
     </div>
   );
 };
@@ -104,9 +106,11 @@ export const DomainScoreModal = ({
         <p className="py-4">Score Breakdown for {assessment.domain}</p>
         <div className="flex flex-col gap-4 text-justify">
           {assessment.scores &&
-            Object.entries(assessment.scores).map(([key, score]) => (
-              <DomainScoreModalEntry scoreId={key as ScoreId} score={score} domain={assessment.domain} />
-            ))}
+
+            scoreIds.map(scoreId => (
+              <DomainScoreModalEntry scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
+            ))
+          }
         </div>
         <div className="modal-action justify-center">
           <form method="dialog">

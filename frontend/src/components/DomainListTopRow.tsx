@@ -12,7 +12,7 @@ export const DomainListTopRow = () => {
         <div className="col-span-6">
           <div className="grid grid-cols-6 h-full gap-2 px-2">
             {scoreIds.map((id) => (
-              <div className="col-span-1">{id}</div>
+              <div className="col-span-1">{id.toUpperCase()}</div>
             ))}
           </div>
         </div>

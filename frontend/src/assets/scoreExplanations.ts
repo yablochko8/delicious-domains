@@ -13,6 +13,7 @@ type ScoreCategory = {
   id: ScoreId;
   name: string;
   description: string;
+  shortDescription: string;
 };
 
 export const scoreExplanations: ScoreCategory[] = [
@@ -21,34 +22,43 @@ export const scoreExplanations: ScoreCategory[] = [
     name: "Evocative",
     description:
       "Conveys at least a hint of what it's naming, ideally with a bit of flair and emotion.",
+    shortDescription:
+      "Conveys some meaning about what the product is, ideally with a bit of flair and emotion.",
   },
   {
     id: "brev",
     name: "Brief",
     description: "Shorter = better",
+    shortDescription: "Shorter = better",
   },
   {
     id: "pron",
     name: "Pronounceable",
     description:
       "You can read it out loud when you see it. Bonus points for alliteration or related patterns, including classy consonance, arrogant assonance, and explosive plosives.",
+    shortDescription:
+      "You can read it aloud when you see it. Bonus points for alliteration or related patterns.",
   },
   {
     id: "find",
     name: "Findable",
     description:
-      "Reasonably unique. For new brands you want to be findable via Google. For growing brands you want to be distinct enough to be recognised by an LLM without context. You definitely don't want to be at risk of being perceived as a copycat.",
+      "Reasonably unique. For new brands you want to be googlable. For growing brands you want to be distinct enough to be recognised by an LLM without context. You definitely don't want to be at risk of being perceived as a copycat.",
+    shortDescription: "Unique, findable on Google, not a copycat.",
   },
   {
     id: "spel",
     name: "Spellable",
     description:
       "You know how it's spelled when you hear it. The spelling should not be annoying.",
+    shortDescription: "You know how it's spelled when you hear it.",
   },
   {
     id: "legs",
     name: "Legs",
     description:
+      "Enables a wider branding or story scheme, has some obvious imagery",
+    shortDescription:
       "Enables a wider branding or story scheme, has some obvious imagery",
   },
 ];

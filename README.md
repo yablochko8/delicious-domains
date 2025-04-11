@@ -25,6 +25,9 @@ results
 - more emphasis on domain name
 - move score adjustment into modal
 - show/hide impossible domains
+- better selection (highlighting, full row)
+- show all actions on modal
+- smoother results loading
 
 input form
 
