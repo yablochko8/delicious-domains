@@ -20,13 +20,8 @@ Terminal 2:
 
 TO DO:
 
-- add "built by yablochko"
-
 results
 
-- adapt EVOC etc language
-- drop GREP & VERB
-- add in LEGS
 - more emphasis on domain name
 - move score adjustment into modal
 - show/hide impossible domains

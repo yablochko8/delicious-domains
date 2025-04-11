@@ -37,7 +37,7 @@ export const scoreExplanations: ScoreCategory[] = [
     id: "find",
     name: "Findable",
     description:
-      "Reasonably unique. For new brands you want to be googlable. For growing brands you want to be distinct enough to be recognised by an LLM without context. You definitely don't want to be at risk of being perceived as a copycat.",
+      "Reasonably unique. For new brands you want to be findable via Google. For growing brands you want to be distinct enough to be recognised by an LLM without context. You definitely don't want to be at risk of being perceived as a copycat.",
   },
   {
     id: "spel",
