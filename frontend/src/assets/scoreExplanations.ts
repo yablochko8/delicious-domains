@@ -23,7 +23,7 @@ export const scoreExplanations: ScoreCategory[] = [
     description:
       "Conveys at least a hint of what it's naming, ideally with a bit of flair and emotion.",
     shortDescription:
-      "Does it convey about what the product is? Ideally with a bit of flair and emotion.",
+      "Does it convey what the product is? Ideally with some flair and emotion.",
   },
   {
     id: "brev",
