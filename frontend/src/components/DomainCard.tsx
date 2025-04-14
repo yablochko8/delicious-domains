@@ -91,12 +91,12 @@ export const StatusMessage = ({
 };
 
 
-const RejectButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked: boolean, isRejected: boolean }) => {
+export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: { domain: string, isLiked: boolean, isRejected: boolean, showText?: boolean }) => {
   const { rejectDomain, unrejectDomain } = useSearchStateStore();
   const handleClick = () =>
     isRejected ? unrejectDomain(domain) : rejectDomain(domain);
 
-  const hoverText = `${isRejected ? "Add back" : "Reject"} ${domain}`;
+  const actionText = `${isRejected ? "Add back" : "Reject"} ${domain}`;
 
   const styling = (() => {
     switch (true) {
@@ -109,12 +109,13 @@ const RejectButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked
     }
   })();
   return (
-    <div className={`btn btn-square ${styling}`} onClick={handleClick} title={hoverText}>
+    <div className={`btn btn-square ${styling}`} onClick={handleClick} title={actionText}>
       {isRejected ? (
         <UnrejectIcon className="text-2xl" />
       ) : (
         <RejectIcon className="text-2xl" />
       )}
+      {showText && <div className="text-sm">{actionText}</div>}
     </div>
   );
 };

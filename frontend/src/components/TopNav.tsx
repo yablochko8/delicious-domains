@@ -22,7 +22,7 @@ export const TopNav = () => {
                         <li><a>Item 3</a></li>
                     </ul>
                 </div> */}
-                <a className="btn btn-ghost text-xl">delicious.domains</a>
+                <a className="btn btn-ghost text-xl text-slate-600">delicious.domains</a>
             </div>
             <div className="navbar-center hidden lg:flex">
             </div>
