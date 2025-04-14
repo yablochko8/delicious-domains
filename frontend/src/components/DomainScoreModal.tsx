@@ -1,6 +1,6 @@
 import { DomainAssessment } from "shared/types";
 import { scoreExplanationDict, ScoreId, scoreIds } from "../assets/scoreExplanations";
-import { RejectButton } from "./DomainCard";
+import { LikeButton, RejectButton } from "./DomainCard";
 
 
 
@@ -57,11 +57,11 @@ export const DomainScoreModal = ({
             ))
           }
         </div>
-        <div className="modal-action justify-center">
+        <div className="modal-action justify-center gap-2">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn">Back</button>
             <RejectButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
+            <LikeButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
           </form>
         </div>
       </div>

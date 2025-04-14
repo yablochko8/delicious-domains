@@ -96,9 +96,10 @@ export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: 
   const handleClick = () =>
     isRejected ? unrejectDomain(domain) : rejectDomain(domain);
 
-  const actionText = `${isRejected ? "Add back" : "Reject"} ${domain}`;
+  const actionText = `${isRejected ? "Add back" : "Reject"}`;
+  const hoverText = `${actionText} ${domain}`;
 
-  const styling = (() => {
+  const colorStyling = (() => {
     switch (true) {
       case isLiked:
         return "btn-soft";
@@ -108,24 +109,29 @@ export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: 
         return "btn-error";
     }
   })();
+
+  const shapeStyling = showText ? "btn-lg" : "btn-square";
+
   return (
-    <div className={`btn btn-square ${styling}`} onClick={handleClick} title={actionText}>
+    <button className={`btn ${shapeStyling} ${colorStyling}`} onClick={handleClick} title={hoverText}>
       {isRejected ? (
         <UnrejectIcon className="text-2xl" />
       ) : (
         <RejectIcon className="text-2xl" />
       )}
       {showText && <div className="text-sm">{actionText}</div>}
-    </div>
+    </button>
   );
 };
 
-const LikeButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked: boolean, isRejected: boolean }) => {
+export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { domain: string, isLiked: boolean, isRejected: boolean, showText?: boolean }) => {
   const { likeDomain, unlikeDomain } = useSearchStateStore();
   const handleClick = () =>
     isLiked ? unlikeDomain(domain) : likeDomain(domain);
 
-  const hoverText = `${isLiked ? "Unlike" : "Like"} ${domain}`;
+  const actionText = `${isLiked ? "Unlike" : "Like"}`;
+
+  const hoverText = `${actionText} ${domain}`;
 
   const styling = (() => {
     switch (true) {
@@ -138,9 +144,12 @@ const LikeButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked: 
     }
   })();
 
+  const shapeStyling = showText ? "btn-lg" : "btn-square";
+
+
   return (
-    <div
-      className={`btn btn-square ${styling}`}
+    <button
+      className={`btn ${shapeStyling} ${styling}`}
       onClick={handleClick}
       title={hoverText}
     >
@@ -149,7 +158,8 @@ const LikeButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked: 
       ) : (
         <UnlikedIcon className="text-2xl" />
       )}
-    </div>
+      {showText && <div className="text-sm">{actionText}</div>}
+    </button>
   );
 };
 
