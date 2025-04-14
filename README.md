@@ -20,11 +20,6 @@ Terminal 2:
 
 TO DO:
 
-results
-
-- show/hide impossible domains
-- smoother results loading
-
 input form
 
 - bug: input focus sometimes blocks button click - maybe gone?
@@ -45,11 +40,13 @@ BACKLOG:
 
 - different detail modal for invalid domains
 - don't fetch scores for invalid domains
+- show/hide impossible domains
 - fix flash during modal load
 - consider adding check for deal breakers (copycat, annoying, esoteric)
 - feedback survey
 - make scoring categories adjustable by end user
 - highlight selected vibes
+- smoother results loading
 
 DONE:
 
