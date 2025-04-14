@@ -6,8 +6,9 @@ import { FaSpellCheck as SpelIcon } from "react-icons/fa";
 import { GrRun as LegsIcon } from "react-icons/gr";
 import { FaXTwitter as TwitterIcon } from "react-icons/fa6";
 import { FaGithub as GithubIcon } from "react-icons/fa";
-
 import { ScoreId } from "./scoreExplanations";
+import { FaPlus as PlusIcon } from "react-icons/fa";
+import { FaMinus as MinusIcon } from "react-icons/fa";
 
 export const ScoreIcons: Record<ScoreId, JSX.Element> = {
   evoc: <EvocIcon />,
@@ -23,4 +24,9 @@ export const ScoreIcons: Record<ScoreId, JSX.Element> = {
 export const SocialIcons = {
   twitter: <TwitterIcon />,
   github: <GithubIcon />,
+};
+
+export const ActionIcons = {
+  plus: <PlusIcon />,
+  minus: <MinusIcon />,
 };

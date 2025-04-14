@@ -23,7 +23,7 @@ export const scoreExplanations: ScoreCategory[] = [
     description:
       "Conveys at least a hint of what it's naming, ideally with a bit of flair and emotion.",
     shortDescription:
-      "Conveys some meaning about what the product is, ideally with a bit of flair and emotion.",
+      "Does it convey what the product is? Ideally with some flair and emotion.",
   },
   {
     id: "brev",
@@ -37,21 +37,22 @@ export const scoreExplanations: ScoreCategory[] = [
     description:
       "You can read it out loud when you see it. Bonus points for alliteration or related patterns, including classy consonance, arrogant assonance, and explosive plosives.",
     shortDescription:
-      "You can read it aloud when you see it. Bonus points for alliteration or related patterns.",
+      "Can you read it aloud when you see it? Bonus points for alliteration or related patterns.",
   },
   {
     id: "find",
     name: "Findable",
     description:
       "Reasonably unique. For new brands you want to be googlable. For growing brands you want to be distinct enough to be recognised by an LLM without context. You definitely don't want to be at risk of being perceived as a copycat.",
-    shortDescription: "Unique, findable on Google, not a copycat.",
+    shortDescription:
+      "Is it unique enough to find on Google, without being mistaken for a copycat?",
   },
   {
     id: "spel",
     name: "Spellable",
     description:
       "You know how it's spelled when you hear it. The spelling should not be annoying.",
-    shortDescription: "You know how it's spelled when you hear it.",
+    shortDescription: "Is the spelling obvious when you hear it?",
   },
   {
     id: "legs",
@@ -59,7 +60,7 @@ export const scoreExplanations: ScoreCategory[] = [
     description:
       "Enables a wider branding or story scheme, has some obvious imagery",
     shortDescription:
-      "Enables a wider branding or story scheme, has some obvious imagery",
+      "Does it enable a wider branding or story scheme? Does it have some obvious imagery?",
   },
 ];
 

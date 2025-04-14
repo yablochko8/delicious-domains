@@ -3,7 +3,6 @@ import { DomainAssessment } from "shared/types";
 import { DomainCard } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
 import { useSearchStateStore } from "../stores/searchStateStore";
-import { ClearAllButton } from "./Buttons";
 
 export const DomainList = ({
   domainOptions,
@@ -61,7 +60,7 @@ export const DomainList = ({
   // console.log({ sortedDomainOptions });
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 w-full">
       <AnimatePresence>
         {sortedDomainOptions.map((domainAssessment) => (
           <motion.div
@@ -77,16 +76,12 @@ export const DomainList = ({
               damping: 30,
               layout: { duration: 0.3 },
             }}
+            className="flex w-full justify-center"
           >
             <DomainCard {...domainAssessment} />
           </motion.div>
         ))}
       </AnimatePresence>
-      {sortedDomainOptions.length > 0 && (
-        <div className="flex justify-center p-16">
-          <ClearAllButton />
-        </div>
-      )}
     </div>
   );
 };
