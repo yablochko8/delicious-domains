@@ -22,6 +22,7 @@ TO DO:
 
 results
 
+- make more clear what score is
 - hide input form after initial click
 - show/hide impossible domains
 - show all actions on modal
