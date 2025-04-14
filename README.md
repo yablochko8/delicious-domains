@@ -22,10 +22,11 @@ TO DO:
 
 results
 
+- hide input form after initial click
+- simplify domain card
+- better selection (highlighting full row)
 - more emphasis on domain name
-- move score adjustment into modal
 - show/hide impossible domains
-- better selection (highlighting, full row)
 - show all actions on modal
 - smoother results loading
 
@@ -49,5 +50,11 @@ go live
 
 BACKLOG:
 
+- fix flash during modal load
 - consider adding check for deal breakers (copycat, annoying, esoteric)
 - feedback survey
+- make scoring categories adjustable by end user
+
+DONE:
+
+- move score adjustment into modal
