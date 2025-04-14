@@ -43,12 +43,15 @@ export const DomainList = ({
     }))
     .sort((a, b) => {
       // First sort by valid/invalid
+      // Valid above invalid
       if (a.isValid && !b.isValid) return -1;
       if (!a.isValid && b.isValid) return 1;
       // Then sort by liked/rejected status
-      if (rejected.includes(a.domain) && !rejected.includes(b.domain)) return 1;
+      // Not rejected above rejected
       if (!rejected.includes(a.domain) && rejected.includes(b.domain))
         return -1;
+      if (rejected.includes(a.domain) && !rejected.includes(b.domain)) return 1;
+      // Liked above not liked
       if (liked.includes(a.domain) && !liked.includes(b.domain)) return -1;
       if (!liked.includes(a.domain) && liked.includes(b.domain)) return 1;
       // Then sort by total score

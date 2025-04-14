@@ -13,26 +13,21 @@ import { DomainScoreModal } from "./DomainScoreModal";
 
 const TotalScoreTile = ({
   totalScore,
+  onClick,
 }: {
   totalScore: number;
+  onClick: () => void;
 }) => {
   //   If the score is negative, we want to display zero
-  const displayScore = totalScore < 0 ? 0 : totalScore;
+  const positiveScore = totalScore < 0 ? 0 : totalScore;
+  const normalizedScore = (positiveScore * 10 / 18)
+  const displayScore = Math.round(normalizedScore)
 
-  const styling = (() => {
-    switch (true) {
-      case displayScore >= 16:
-        return "btn-outline";
-      case displayScore >= 14:
-        return "btn-outline";
-      default:
-        return "btn-outline";
-    }
-  })();
+
 
   return (
-    <div className={`btn btn-sm btn-circle ${styling}`}>
-      {displayScore}
+    <div className="h-8 w-8 flex align-middle justify-center items-center" onClick={onClick}>
+      {displayScore > 0 ? displayScore : ""}
     </div>
   );
 };
@@ -104,12 +99,11 @@ const RejectButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked
       case isLiked:
         return "btn-soft";
       case isRejected:
-        return "btn-error";
-      default:
         return "btn-soft btn-error";
+      default:
+        return "btn-error";
     }
   })();
-
   return (
     <div className={`btn btn-square ${styling}`} onClick={handleClick} title={hoverText}>
       {isRejected ? (
@@ -131,11 +125,11 @@ const LikeButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked: 
   const styling = (() => {
     switch (true) {
       case isLiked:
-        return "btn-success";
+        return "btn-soft  btn-success";
       case isRejected:
         return "btn-soft";
       default:
-        return "btn-soft btn-success";
+        return "btn-success";
     }
   })();
 
@@ -163,10 +157,10 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const isLiked = liked.includes(domain);
   const isValid = isPossible && isAvailable && isCheap;
 
-  const validStyling = "text-gray-800 border-gray-200";
+  const validStyling = "bg-base-100 text-gray-800 border-base-content";
   const likedStyling = "bg-green-50 border-green-200";
   const rejectedStyling = "bg-red-50 border-red-200";
-  const invalidStyling = "bg-base-200 border-base-content";
+  const invalidStyling = "bg-base-200 border-base-300 text-gray-400";
 
   const colorStyling = (() => {
     if (!isValid) return invalidStyling;
@@ -201,8 +195,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
     >
       <TotalScoreTile
         totalScore={getTotalScore(assessment)}
+        onClick={openScoreModal}
       />
-      <div className="flex-grow text-left p-2">
+      <div className="flex-grow text-left p-2 font-semibold text-lg tracking-tight hover:text-primary-focus transition-colors">
         {domain}
       </div>
       <StatusMessage

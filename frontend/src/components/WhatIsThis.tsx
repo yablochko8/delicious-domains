@@ -9,9 +9,9 @@ export const WhatIsThis = () => {
 
     return (
         <>
-            <h2 className="text-2xl font-bold text-center text-secondary">delicious.domains</h2>
+            <h1 className="text-center text-primary">delicious.domains</h1>
             <div className="flex flex-row justify-center">
-                <button className="btn btn-ghost text-xl" onClick={() => setIsOpen(!isOpen)}> what is this?</button>
+                <button className="btn btn-secondary" onClick={() => setIsOpen(!isOpen)}> what is this?</button>
             </div>
             <div className={`transform transition-all duration-500 ease-in-out overflow-hidden ${isOpen ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}`}>
                 <div className="flex flex-row mt-2">
