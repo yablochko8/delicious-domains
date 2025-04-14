@@ -39,9 +39,13 @@ export const DomainList = ({
     .map((domain, index) => ({
       ...domain,
       stableId: `${domain.domain}-${index}`, // Add stable ID
+      isValid: domain.isPossible && domain.isAvailable && domain.isCheap,
     }))
     .sort((a, b) => {
-      // First sort by liked/rejected status
+      // First sort by valid/invalid
+      if (a.isValid && !b.isValid) return -1;
+      if (!a.isValid && b.isValid) return 1;
+      // Then sort by liked/rejected status
       if (rejected.includes(a.domain) && !rejected.includes(b.domain)) return 1;
       if (!rejected.includes(a.domain) && rejected.includes(b.domain))
         return -1;
