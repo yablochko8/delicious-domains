@@ -3,7 +3,6 @@ import { DomainAssessment } from "shared/types";
 import { DomainCard } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
 import { useSearchStateStore } from "../stores/searchStateStore";
-import { ClearAllButton } from "./Buttons";
 
 export const DomainList = ({
   domainOptions,
@@ -83,11 +82,6 @@ export const DomainList = ({
           </motion.div>
         ))}
       </AnimatePresence>
-      {sortedDomainOptions.length > 0 && (
-        <div className="flex justify-center p-16">
-          <ClearAllButton />
-        </div>
-      )}
     </div>
   );
 };

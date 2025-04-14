@@ -6,6 +6,8 @@ import { useSearchStateStore } from "./stores/searchStateStore";
 import { TopNav } from "./components/TopNav";
 import { InputForm } from "./components/InputForm";
 import { useDisplayStateStore } from "./stores/displayStateStore";
+import { ActionButtons } from "./components/ActionButtons";
+import { RefineModal } from "./components/RefineModal";
 
 
 function App() {
@@ -28,12 +30,15 @@ function App() {
 
   const hasResults = assessedDomains.completed.length > 0;
 
+
   return (
     <>
       <TopNav />
       <div className="flex flex-col w-full space-y-4 p-4">
         {(!hasResults || isRefining) && (
-          <InputForm />
+          <div className="flex flex-col text-sm hidden md:block">
+            <InputForm />
+          </div>
         )}
 
         <div>
@@ -42,7 +47,7 @@ function App() {
               {/* EXPLAINER TEXT */}
               {assessedDomains.completed.length > 0 && (
                 <>
-                  <div className="text-sm">
+                  <div>
                     Domains ranked using AI scoring. Like and reject domains to get better results.
                   </div>
                 </>
@@ -69,10 +74,14 @@ function App() {
 
               {/* FAILED - TODO ADD IN LATER */}
 
+              <div className="flex flex-col w-full gap-2 flex md:hidden">
+                <ActionButtons />
+              </div>
+              <RefineModal />
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }

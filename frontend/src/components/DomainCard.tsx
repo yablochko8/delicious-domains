@@ -161,7 +161,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const isLiked = liked.includes(domain);
   const isValid = isPossible && isAvailable && isCheap;
 
-  const validStyling = "bg-base-100 text-gray-800 border-base-content hover:bg-yellow-200 hover:border-yellow-300";
+  const validStyling = "bg-base-200/40 text-gray-800 border-base-content hover:bg-yellow-200 hover:border-yellow-300";
   const likedStyling = "bg-green-50 border-green-200 hover:bg-green-200 hover:border-green-300";
   const rejectedStyling = "bg-red-50 border-red-200 hover:bg-red-200 hover:border-red-300";
   const invalidStyling = "bg-base-200 border-base-300 text-gray-400 hover:bg-slate-200 hover:border-slate-300";

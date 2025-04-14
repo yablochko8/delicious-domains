@@ -4,18 +4,20 @@ import { useSearchStateStore } from "../stores/searchStateStore";
 export const AddDomainsButton = ({
   onClick,
   isLoading,
+  isDisabled,
 }: {
   onClick: () => void;
   isLoading: boolean;
+  isDisabled: boolean;
 }) => {
   const { longlist } = useSearchStateStore();
 
   const cta = longlist.length > 0 ? "add more options" : "see domain ideas";
   return (
     <button
-      className="btn btn-primary w-[160px]"
+      className="btn btn-primary"
       onClick={onClick}
-      disabled={isLoading}
+      disabled={isLoading || isDisabled}
     >
       {isLoading ? <span className="loading loading-spinner"></span> : cta}
     </button>
@@ -58,11 +60,27 @@ export const RefineInputsButton = () => {
 
   const handleClick = () => {
     setIsRefining(!isRefining);
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   };
+
+  const handleMobileClick = () => {
+    setIsRefining(!isRefining);
+    const refineModal = document.getElementById(
+      `refine-modal`
+    ) as HTMLDialogElement;
+    if (refineModal) {
+      refineModal.showModal();
+    }
+  };
+
   return (
-    <button className="btn btn-outline" onClick={handleClick}>
-      refine inputs
-    </button>
+    <>
+      <button className="btn btn-outline hidden md:block" onClick={handleClick}>
+        refine inputs
+      </button>
+      <button className="btn btn-outline md:hidden" onClick={handleMobileClick}>
+        refine inputs
+      </button>
+    </>
   );
 };

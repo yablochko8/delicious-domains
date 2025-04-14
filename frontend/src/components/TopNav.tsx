@@ -26,7 +26,7 @@ export const TopNav = () => {
             </div>
             <div className="navbar-center hidden lg:flex">
             </div>
-            <div className="navbar-end gap-2">
+            <div className="navbar-end gap-2 hidden md:flex">
                 <ActionButtons />
             </div>
 

@@ -19,6 +19,7 @@ export const ActionButtons = () => {
 
     const hasResults = assessments.completed.length > 0;
 
+    const isDisabled = !purpose || !vibe;
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -69,7 +70,7 @@ export const ActionButtons = () => {
                     <RefineInputsButton />
                 </>
             )}
-            <AddDomainsButton onClick={handleSubmit} isLoading={isLoading} />
+            <AddDomainsButton onClick={handleSubmit} isLoading={isLoading} isDisabled={isDisabled} />
         </>
     );
 };
