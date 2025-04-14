@@ -12,6 +12,7 @@ export const AddDomainsButton = ({
 }) => {
   const { longlist } = useSearchStateStore();
 
+
   const cta = longlist.length > 0 ? "add more options" : "see domain ideas";
   return (
     <button

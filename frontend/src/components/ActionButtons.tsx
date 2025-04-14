@@ -6,7 +6,7 @@ import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 
 
-const SELECTED_MODEL = "gpt-4o-mini"
+export const SELECTED_MODEL = "gpt-4o-mini"
 
 
 /**Returns a sequence of Action Buttons, for the topnav (on desktop) or for end of list (on mobile) */

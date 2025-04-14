@@ -15,22 +15,34 @@ const DomainScoreModalEntry = ({
 
   const textColor = (() => {
     switch (true) {
-      case score < 5:
-        return "text-red-600";
-      case score < 7:
-        return "text-yellow-600";
+      case score < 6:
+        return "text-error-content";
+      case score < 8:
+        return "text-warning-content";
       default:
-        return "text-green-600";
+        return "text-success-content";
     }
   })();
+
+  const bgColor = (() => {
+    switch (true) {
+      case score < 6:
+        return "bg-error/20";
+      case score < 8:
+        return "bg-warning/20";
+      default:
+        return "bg-success/20";
+    }
+  })();
+
   return (
-    <div key={scoreId} className="bg-base-200 rounded-md p-2">
+    <div key={scoreId} className={`bg-base-200 rounded-md px-4 py-2 ${bgColor}`}>
       <div className="flex flex-row gap-1 text-xl items-center rounded-md">
-        <p className={`text-lg font-bold ${textColor}`}>{score}/10 {scoreExplanationDict[scoreId].name}</p>
+        <p className={`text-base font-bold ${textColor}`}>{score}/10 {scoreExplanationDict[scoreId].name}</p>
         <div className="flex flex-grow"></div>
       </div>
       <div className="flex flex-row items-center pt-2">
-        <p className="text-sm text-left">Criteria: {scoreExplanationDict[scoreId].shortDescription}</p>
+        <p className="text-xs text-justify text-gray-500">{scoreExplanationDict[scoreId].shortDescription}</p>
       </div>
     </div>
   );
@@ -47,18 +59,16 @@ export const DomainScoreModal = ({
       className="modal modal-bottom sm:modal-middle"
     >
       <div className="modal-box">
-        <h2 className="font-bold">{assessment.domain}</h2>
-        <p className="py-4">Scores assessed by AI.</p>
         <div className="flex flex-col gap-4 text-justify">
+          <h2 className="font-bold w-full text-center">{assessment.domain}</h2>
           {assessment.scores &&
-
             scoreIds.map(scoreId => (
               <DomainScoreModalEntry scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
             ))
           }
         </div>
         <div className="modal-action justify-center gap-2">
-          <form method="dialog">
+          <form method="dialog" className="flex gap-4">
             {/* if there is a button in form, it will close the modal */}
             <RejectButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
             <LikeButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
