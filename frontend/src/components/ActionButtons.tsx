@@ -3,6 +3,7 @@ import { AddDomainsButton, ClearAllButton, ExportSavedButton, RefineInputsButton
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { getDomainAssessment, getLongList } from "../serverCalls";
 import { useInputStateStore } from "../stores/inputStateStore";
+import { useDisplayStateStore } from "../stores/displayStateStore";
 
 
 const SELECTED_MODEL = "gpt-4o-mini"
@@ -17,12 +18,15 @@ export const ActionButtons = () => {
 
     const { purpose, vibe, seriousDomainsOnly } = useInputStateStore();
 
+    const { setIsRefining } = useDisplayStateStore();
+
     const hasResults = assessments.completed.length > 0;
 
     const isDisabled = !purpose || !vibe;
 
     const handleSubmit = async () => {
         setIsLoading(true);
+        setIsRefining(false);
         try {
             const feedback =
                 longlist.length > 0
@@ -70,10 +74,10 @@ export const ActionButtons = () => {
                     <RefineInputsButton />
                 </>
             )}
-            <AddDomainsButton onClick={handleSubmit} isLoading={isLoading} isDisabled={isDisabled} />
             {liked.length > 0 && (
                 <ExportSavedButton />
             )}
+            <AddDomainsButton onClick={handleSubmit} isLoading={isLoading} isDisabled={isDisabled} />
         </>
     );
 };

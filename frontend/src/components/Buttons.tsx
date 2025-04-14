@@ -15,7 +15,7 @@ export const AddDomainsButton = ({
   const cta = longlist.length > 0 ? "add more options" : "see domain ideas";
   return (
     <button
-      className="btn btn-secondary"
+      className="btn btn-primary"
       onClick={onClick}
       disabled={isLoading || isDisabled}
     >
@@ -102,7 +102,7 @@ export const ExportSavedButton = () => {
       });
   };
   return (
-    <button className="btn btn-primary" onClick={handleExport}>export</button>
+    <button className="btn btn-secondary" onClick={handleExport}>export</button>
   );
 };
 

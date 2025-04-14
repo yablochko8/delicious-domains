@@ -1,35 +1,36 @@
-import { VibeButton } from "./Buttons";
+// import { VibeButton } from "./Buttons";
 import { ExpandyInput } from "./ExpandyInput";
 import { useInputStateStore } from "../stores/inputStateStore";
-import { useState } from "react";
+// import { useState } from "react";
 
-const STARTING_VIBES = [
-    "fun",
-    "casual",
-    "professional",
-    "creative",
-    "unique",
-    "trendy",
-];
+// const STARTING_VIBES = [
+//     "fun",
+//     "casual",
+//     "professional",
+//     "creative",
+//     "unique",
+//     "trendy",
+// ];
 
 export const InputForm = () => {
 
     const { purpose, vibe, seriousDomainsOnly, setPurpose, setVibe, setSeriousDomainsOnly } = useInputStateStore();
 
-    const [suggestedVibes, setSuggestedVibes] =
-        useState<string[]>(STARTING_VIBES);
+    // const [suggestedVibes, setSuggestedVibes] =
+    //     useState<string[]>(STARTING_VIBES);
 
-    const appendVibe = (vibe: string) => {
-        setSuggestedVibes(
-            suggestedVibes.filter((suggestedVibe) => suggestedVibe !== vibe)
-        );
-    };
+    // const appendVibe = (vibe: string) => {
+    //     setSuggestedVibes(
+    //         suggestedVibes.filter((suggestedVibe) => suggestedVibe !== vibe)
+    //     );
+    // };
 
     return (
         <div className="flex flex-col gap-4 p-4">
 
             <ExpandyInput
-                question="what are you building? (for best results paste in a blob of text here)"
+                question="what are you building?"
+                subhead="for best results, paste in a blob of text here"
                 value={purpose}
                 onChange={(e) => {
                     setPurpose(e.target.value);
@@ -38,7 +39,7 @@ export const InputForm = () => {
             />
 
             <ExpandyInput
-                question="what kind of *vibe* do you want?"
+                question="what's the vibe?"
                 value={vibe}
                 onChange={(e) => {
                     setVibe(e.target.value);
@@ -46,11 +47,11 @@ export const InputForm = () => {
                 placeholder='e.g. "slick, sophisticated, fresh"'
             />
 
-            <div className="flex flex-row gap-2 flex-wrap">
+            {/* <div className="flex flex-row gap-2 flex-wrap">
                 {suggestedVibes.map((vibe) => (
                     <VibeButton vibe={vibe} onClick={appendVibe} key={vibe} />
                 ))}
-            </div>
+            </div> */}
             <div className="flex flex-row w-full justify-start items-center gap-2">
                 <input
                     type="checkbox"
