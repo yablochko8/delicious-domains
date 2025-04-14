@@ -102,7 +102,8 @@ export const DomainScoreModal = ({
       className="modal modal-bottom sm:modal-middle"
     >
       <div className="modal-box">
-        <p className="py-4">Score Breakdown for {assessment.domain}</p>
+        <h2 className="font-bold">{assessment.domain}</h2>
+        <p className="py-4">Scores assessed by AI. Use buttons to adjust.</p>
         <div className="flex flex-col gap-4 text-justify">
           {assessment.scores &&
 

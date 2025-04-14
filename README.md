@@ -23,12 +23,10 @@ TO DO:
 results
 
 - hide input form after initial click
-- simplify domain card
-- better selection (highlighting full row)
-- more emphasis on domain name
 - show/hide impossible domains
 - show all actions on modal
 - smoother results loading
+- fix input buttons on modal
 
 input form
 
@@ -58,3 +56,6 @@ BACKLOG:
 DONE:
 
 - move score adjustment into modal
+- simplify domain card
+- better selection (highlighting full row)
+- more emphasis on domain name

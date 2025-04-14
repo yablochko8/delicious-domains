@@ -3,7 +3,6 @@ import { DomainAssessment } from "shared/types";
 import { DomainCard } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
 import { useSearchStateStore } from "../stores/searchStateStore";
-import { DomainListTopRow } from "./DomainListTopRow";
 import { ClearAllButton } from "./Buttons";
 
 export const DomainList = ({
@@ -40,12 +39,19 @@ export const DomainList = ({
     .map((domain, index) => ({
       ...domain,
       stableId: `${domain.domain}-${index}`, // Add stable ID
+      isValid: domain.isPossible && domain.isAvailable && domain.isCheap,
     }))
     .sort((a, b) => {
-      // First sort by liked/rejected status
-      if (rejected.includes(a.domain) && !rejected.includes(b.domain)) return 1;
+      // First sort by valid/invalid
+      // Valid above invalid
+      if (a.isValid && !b.isValid) return -1;
+      if (!a.isValid && b.isValid) return 1;
+      // Then sort by liked/rejected status
+      // Not rejected above rejected
       if (!rejected.includes(a.domain) && rejected.includes(b.domain))
         return -1;
+      if (rejected.includes(a.domain) && !rejected.includes(b.domain)) return 1;
+      // Liked above not liked
       if (liked.includes(a.domain) && !liked.includes(b.domain)) return -1;
       if (!liked.includes(a.domain) && liked.includes(b.domain)) return 1;
       // Then sort by total score
@@ -55,8 +61,7 @@ export const DomainList = ({
   // console.log({ sortedDomainOptions });
 
   return (
-    <div>
-      <DomainListTopRow />
+    <div className="flex flex-col gap-3">
       <AnimatePresence>
         {sortedDomainOptions.map((domainAssessment) => (
           <motion.div
