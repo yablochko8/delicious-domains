@@ -1,3 +1,4 @@
+import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useSearchStateStore } from "../stores/searchStateStore";
 
 export const AddDomainsButton = ({
@@ -12,7 +13,7 @@ export const AddDomainsButton = ({
   const cta = longlist.length > 0 ? "add more options" : "see domain ideas";
   return (
     <button
-      className="btn btn-primary w-[200px]"
+      className="btn btn-primary w-[160px]"
       onClick={onClick}
       disabled={isLoading}
     >
@@ -46,8 +47,22 @@ export const ClearAllButton = () => {
     window.scrollTo(0, 0);
   };
   return (
-    <button className="btn btn-outline btn-info" onClick={handleClick}>
-      Clear All
+    <button className="btn btn-outline" onClick={handleClick}>
+      start again
+    </button>
+  );
+};
+
+export const RefineInputsButton = () => {
+  const { isRefining, setIsRefining } = useDisplayStateStore();
+
+  const handleClick = () => {
+    setIsRefining(!isRefining);
+    window.scrollTo(0, 0);
+  };
+  return (
+    <button className="btn btn-outline" onClick={handleClick}>
+      refine inputs
     </button>
   );
 };
