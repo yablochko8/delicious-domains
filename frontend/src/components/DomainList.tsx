@@ -3,7 +3,6 @@ import { DomainAssessment } from "shared/types";
 import { DomainCard } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
 import { useSearchStateStore } from "../stores/searchStateStore";
-import { DomainListTopRow } from "./DomainListTopRow";
 import { ClearAllButton } from "./Buttons";
 
 export const DomainList = ({
@@ -55,8 +54,7 @@ export const DomainList = ({
   // console.log({ sortedDomainOptions });
 
   return (
-    <div>
-      <DomainListTopRow />
+    <div className="flex flex-col gap-3">
       <AnimatePresence>
         {sortedDomainOptions.map((domainAssessment) => (
           <motion.div

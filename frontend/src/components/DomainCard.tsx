@@ -5,72 +5,10 @@ import {
   MdClose as RejectIcon,
   MdAdd as UnrejectIcon,
 } from "react-icons/md";
-import { ScoreIcons } from "../assets/Icons";
 import { DomainAssessment } from "shared/types";
-import { scoreExplanations, ScoreId, scoreIds } from "../assets/scoreExplanations";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { DomainScoreModal } from "./DomainScoreModal";
 
-const ScoreTile = ({
-  label,
-  score,
-  domain,
-}: {
-  label: ScoreId;
-  score: number;
-  domain: string;
-}) => {
-
-  const handleClick = () => {
-    const scoreModal = document.getElementById(
-      `domain-score-modal-${domain}`
-    ) as HTMLDialogElement;
-    if (scoreModal) {
-      scoreModal.showModal();
-    }
-  };
-
-  const backgroundColor = (() => {
-    switch (score) {
-      case 1:
-        return "bg-red-200";
-      case 2:
-        return "bg-yellow-200";
-      case 3:
-        return "bg-green-200";
-      default:
-        return "bg-gray-200";
-    }
-  })();
-
-  const textColor = (() => {
-    switch (score) {
-      case 1:
-        return "text-red-600";
-      case 2:
-        return "text-yellow-600";
-      case 3:
-        return "text-green-600";
-      default:
-        return "text-gray-600";
-    }
-  })();
-
-  const hoverText =
-    scoreExplanations.find(cat => cat.id === label)?.description || "";
-
-  const ScoreIcon = ScoreIcons[label as keyof typeof ScoreIcons];
-
-  return (
-    <div
-      className={`h-full w-full text-xs md:text-lg flex justify-center items-center font-semibold cursor-pointer rounded-md ${backgroundColor} ${textColor}`}
-      title={hoverText || ""}
-      onClick={handleClick}
-    >
-      {ScoreIcon}
-    </div>
-  );
-};
 
 const TotalScoreTile = ({
   totalScore,
@@ -85,11 +23,11 @@ const TotalScoreTile = ({
   const styling = (() => {
     switch (true) {
       case displayScore >= 16:
-        return "btn-success";
+        return "btn-outline";
       case displayScore >= 14:
-        return "btn-warning";
+        return "btn-outline";
       default:
-        return "btn-error";
+        return "btn-outline";
     }
   })();
 
@@ -100,7 +38,7 @@ const TotalScoreTile = ({
   );
 };
 
-export const ImpossibleBanner = ({
+export const StatusMessage = ({
   isPossible,
   isAvailable,
   isCheap,
@@ -114,57 +52,40 @@ export const ImpossibleBanner = ({
   const message = (() => {
     switch (true) {
       case isRejected:
-        return "Rejected";
+        return "rejected";
       case !isPossible:
-        return "Impossible";
+        return "impossible";
       case !isAvailable:
-        return "Unavailable";
+        return "unavailable";
       case !isCheap:
-        return "Premium Price";
+        return "premium $$$";
       default:
-        return "error";
+        return " ";
     }
   })();
 
   const styling = (() => {
     switch (true) {
       case isRejected:
-        return "bg-gray-400 text-gray-500";
+        return "text-gray-500";
       case !isPossible:
-        return "bg-gray-300 text-gray-400";
+        return "text-gray-400";
       case !isAvailable:
-        return "bg-gray-200 text-gray-400";
+        return "text-gray-400";
       case !isCheap:
-        return "bg-gray-100 text-gray-400";
+        return "text-gray-400";
       default:
-        return "error";
+        return " ";
     }
   })();
 
   return (
-    <div className={`col-span-8 rounded-md ${styling}`}>
-      <div className="h-full w-full text-xs content-center">{message}</div>
+    <div className={styling}>
+      {message}
     </div>
   );
 };
 
-export const ScoreRow = ({ assessment }: { assessment: DomainAssessment }) => {
-  const { scores, domain } = assessment;
-
-  return (
-    <div className="grid grid-cols-6 h-full gap-2 px-2">
-      {scores && (
-        <>
-          {scoreIds.map((id) => (
-            <div className="col-span-1">
-              <ScoreTile label={id} score={scores[id]} domain={domain} />
-            </div>
-          ))}
-        </>
-      )}
-    </div>
-  );
-};
 
 const RejectButton = ({ domain }: { domain: string }) => {
   const { rejected, rejectDomain, unrejectDomain } = useSearchStateStore();
@@ -175,11 +96,11 @@ const RejectButton = ({ domain }: { domain: string }) => {
   const hoverText = `${isRejected ? "Add back" : "Reject"} ${domain}`;
 
   return (
-    <div className="btn btn-square" onClick={handleClick} title={hoverText}>
+    <div className="btn btn-square btn-outline btn-error bg-red-100" onClick={handleClick} title={hoverText}>
       {isRejected ? (
-        <UnrejectIcon className="text-2xl text-gray-500" />
+        <UnrejectIcon className="text-2xl" />
       ) : (
-        <RejectIcon className="text-2xl text-gray-500" />
+        <RejectIcon className="text-2xl" />
       )}
     </div>
   );
@@ -195,14 +116,14 @@ const LikeButton = ({ domain }: { domain: string }) => {
 
   return (
     <div
-      className="btn btn-square btn-ghost"
+      className="btn btn-square btn-outline btn-success"
       onClick={handleClick}
       title={hoverText}
     >
       {isLiked ? (
-        <LikedIcon className="text-2xl text-red-500" />
+        <LikedIcon className="text-2xl" />
       ) : (
-        <UnlikedIcon className="text-2xl text-gray-500" />
+        <UnlikedIcon className="text-2xl" />
       )}
     </div>
   );
@@ -211,13 +132,23 @@ const LikeButton = ({ domain }: { domain: string }) => {
 export const DomainCard = (assessment: DomainAssessment) => {
   const { domain, isPossible, isAvailable, isCheap } = assessment;
 
-  const { rejected } = useSearchStateStore();
+  const { rejected, liked } = useSearchStateStore();
 
   const isRejected = rejected.includes(domain);
+  const isLiked = liked.includes(domain);
+  const isValid = isPossible && isAvailable && isCheap;
 
-  const isValid = isPossible && isAvailable && isCheap && !isRejected;
+  const validStyling = "text-gray-800 border-gray-200";
+  const likedStyling = "bg-green-50 border-green-200";
+  const rejectedStyling = "bg-red-50 border-red-200";
+  const invalidStyling = "bg-base-200 border-base-content";
 
-  const styling = isValid ? "text-gray-800" : " text-gray-400";
+  const styling = (() => {
+    if (!isValid) return invalidStyling;
+    if (isRejected) return rejectedStyling;
+    if (isLiked) return likedStyling;
+    return validStyling;
+  })();
 
   const openScoreModal = () => {
     const scoreModal = document.getElementById(
@@ -230,34 +161,26 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   return (
     <div
-      className={`grid grid-cols-5 md:grid-cols-12 shadow-md p-1 ${styling}`}
+      className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 border border-2 rounded-md ${styling}`}
     >
-      <div className="col-span-3 flex justify-start items-center gap-2 text-lg font-semibold pt-2 pb-1">
-        <RejectButton domain={domain} />
+      <TotalScoreTile
+        totalScore={getTotalScore(assessment)}
+        onClick={openScoreModal}
+      />
+      <div className="flex-grow text-left p-2">
         {domain}
       </div>
-      {isValid ? (
+      <StatusMessage
+        isPossible={isPossible}
+        isAvailable={isAvailable}
+        isCheap={isCheap}
+        isRejected={isRejected}
+      />
+      {isValid && (
         <>
-          <div className="hidden md:block md:col-span-6">
-            <ScoreRow assessment={assessment} />
-          </div>
-          <div className="col-span-1 flex justify-end items-center">
-            <TotalScoreTile
-              totalScore={getTotalScore(assessment)}
-              onClick={openScoreModal}
-            />
-          </div>
-          <div className="col-span-1 flex justify-center items-center">
-            <LikeButton domain={domain} />
-          </div>
+          <RejectButton domain={domain} />
+          <LikeButton domain={domain} />
         </>
-      ) : (
-        <ImpossibleBanner
-          isPossible={isPossible}
-          isAvailable={isAvailable}
-          isCheap={isCheap}
-          isRejected={isRejected}
-        />
       )}
       <DomainScoreModal assessment={assessment} />
     </div>
