@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto">
+      <div className="flex flex-col w-full max-w-2xl mx-auto mt-18">
         <div className="flex flex-col w-full space-y-4 p-2">
           {(!hasResults) && (
             <div className="flex flex-col text-sm">
@@ -50,7 +50,7 @@ function App() {
 
 
           <div>
-            <div className="flex flex-row w-full min-h-screen">
+            <div className="flex flex-row w-full">
               <div className="flex flex-col text-center justify-start items-center p-4 gap-4 w-full">
                 {/* EXPLAINER TEXT */}
                 {assessedDomains.completed.length > 0 && (
