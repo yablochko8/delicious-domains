@@ -22,17 +22,12 @@ TO DO:
 
 results
 
-- make more clear what score is
-- hide input form after initial click
 - show/hide impossible domains
-- show all actions on modal
 - smoother results loading
-- fix input buttons on modal
 
 input form
 
-- highlight selected vibes
-- bug: input focus sometimes blocks button click
+- bug: input focus sometimes blocks button click - maybe gone?
 
 outcome
 
@@ -45,14 +40,16 @@ go live
 - add favicon
 - connect netlify to actual domain
 - upgrade server to paid
-- remove dev mode
 
 BACKLOG:
 
+- different detail modal for invalid domains
+- don't fetch scores for invalid domains
 - fix flash during modal load
 - consider adding check for deal breakers (copycat, annoying, esoteric)
 - feedback survey
 - make scoring categories adjustable by end user
+- highlight selected vibes
 
 DONE:
 
@@ -60,3 +57,7 @@ DONE:
 - simplify domain card
 - better selection (highlighting full row)
 - more emphasis on domain name
+- make more clear what score is
+- hide input form after initial click
+- show all actions on modal
+- remove dev mode
