@@ -36,7 +36,7 @@ function App() {
   // User inputs
   const [inputPurpose, setInputPurpose] = useState("");
   const [inputVibe, setInputVibe] = useState("");
-  const [inputShortlist, setInputShortlist] = useState("");
+  // const [inputShortlist, setInputShortlist] = useState("");
   const [selectedModel, setSelectedModel] = useState<(typeof models)[number]>(
     models[0]
   );
@@ -78,15 +78,15 @@ function App() {
       const feedback =
         longlist.length > 0
           ? {
-              viewed: longlist,
-              liked: liked,
-              rejected: rejected,
-            }
+            viewed: longlist,
+            liked: liked,
+            rejected: rejected,
+          }
           : undefined;
       const fetchedLonglist = await getLongList({
         purpose: inputPurpose,
         vibe: inputVibe,
-        shortlist: inputShortlist,
+        shortlist: null,
         model: selectedModel,
         preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
         feedback,
@@ -163,14 +163,14 @@ function App() {
           ))}
         </div>
 
-        <ExpandyInput
+        {/* <ExpandyInput
           question="shortlist/longlist: paste in any ideas you've had so far (optional)"
           value={inputShortlist}
           onChange={(e) => {
             setInputShortlist(e.target.value);
           }}
           placeholder='e.g. "farm.com", "cows.com", "cows.farm"'
-        />
+        /> */}
 
         <div className="flex flex-row w-full justify-start items-center">
           <input
@@ -205,9 +205,8 @@ function App() {
               {/* HEADLINE */}
               {assessedDomains.completed.length > 0 && (
                 <>
-                  <div>
-                    {longlist.length} domain names considered. Names with
-                    hallucinated TLDs are omitted.
+                  <div className="text-sm p-4">
+                    Domains ranked using AI scoring. Like and reject domains to get better results.
                   </div>
                 </>
               )}

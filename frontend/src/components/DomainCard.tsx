@@ -20,14 +20,18 @@ const TotalScoreTile = ({
 }) => {
   //   If the score is negative, we want to display zero
   const positiveScore = totalScore < 0 ? 0 : totalScore;
-  const normalizedScore = (positiveScore * 10 / 18)
+  const normalizedScore = (positiveScore * 100 / 60)
   const displayScore = Math.round(normalizedScore)
-
 
 
   return (
     <div className="h-8 w-8 flex align-middle justify-center items-center" onClick={onClick}>
-      {displayScore > 0 ? displayScore : ""}
+      {displayScore > 0 ? (
+        <>
+          <div className="text-gray-500">{displayScore}</div>
+          <div className="text-xs text-gray-500">%</div>
+        </>
+      ) : ""}
     </div>
   );
 };
@@ -157,10 +161,10 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const isLiked = liked.includes(domain);
   const isValid = isPossible && isAvailable && isCheap;
 
-  const validStyling = "bg-base-100 text-gray-800 border-base-content";
-  const likedStyling = "bg-green-50 border-green-200";
-  const rejectedStyling = "bg-red-50 border-red-200";
-  const invalidStyling = "bg-base-200 border-base-300 text-gray-400";
+  const validStyling = "bg-base-100 text-gray-800 border-base-content hover:bg-yellow-200 hover:border-yellow-300";
+  const likedStyling = "bg-green-50 border-green-200 hover:bg-green-200 hover:border-green-300";
+  const rejectedStyling = "bg-red-50 border-red-200 hover:bg-red-200 hover:border-red-300";
+  const invalidStyling = "bg-base-200 border-base-300 text-gray-400 hover:bg-slate-200 hover:border-slate-300";
 
   const colorStyling = (() => {
     if (!isValid) return invalidStyling;
@@ -188,7 +192,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   return (
     <div
-      className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 border-2 rounded-xl cursor-pointer hover:bg-yellow-100 hover:border-yellow-200 ${colorStyling}`}
+      className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 border-2 rounded-xl cursor-pointer  ${colorStyling}`}
       onClick={(e) => {
         handleCardClick(e);
       }}
