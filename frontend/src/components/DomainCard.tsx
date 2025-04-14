@@ -1,4 +1,4 @@
-import { getTotalScore } from "../utils/getTotalScore";
+import { getTotalScore, TOTAL_SCORE_MAX } from "../utils/getTotalScore";
 import {
   MdFavorite as LikedIcon,
   MdFavoriteBorder as UnlikedIcon,
@@ -20,7 +20,7 @@ const TotalScoreTile = ({
 }) => {
   //   If the score is negative, we want to display zero
   const positiveScore = totalScore < 0 ? 0 : totalScore;
-  const normalizedScore = (positiveScore * 100 / 60)
+  const normalizedScore = (positiveScore * 100 / TOTAL_SCORE_MAX)
   const displayScore = Math.round(normalizedScore)
 
 
