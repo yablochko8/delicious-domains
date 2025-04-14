@@ -3,7 +3,8 @@ import {
   MdFavorite as LikedIcon,
   MdFavoriteBorder as UnlikedIcon,
   MdClose as RejectIcon,
-  MdAdd as UnrejectIcon,
+  MdClose as UnrejectIcon,
+  // MdAdd as UnrejectIcon,
 } from "react-icons/md";
 import { DomainAssessment } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStore";
@@ -12,10 +13,8 @@ import { DomainScoreModal } from "./DomainScoreModal";
 
 const TotalScoreTile = ({
   totalScore,
-  onClick,
 }: {
   totalScore: number;
-  onClick: () => void;
 }) => {
   //   If the score is negative, we want to display zero
   const displayScore = totalScore < 0 ? 0 : totalScore;
@@ -32,7 +31,7 @@ const TotalScoreTile = ({
   })();
 
   return (
-    <div className={`btn btn-sm btn-circle ${styling}`} onClick={onClick}>
+    <div className={`btn btn-sm btn-circle ${styling}`}>
       {displayScore}
     </div>
   );
@@ -43,16 +42,20 @@ export const StatusMessage = ({
   isAvailable,
   isCheap,
   isRejected,
+  isLiked,
 }: {
   isPossible: boolean;
   isAvailable: boolean;
   isCheap: boolean;
   isRejected: boolean;
+  isLiked: boolean;
 }) => {
   const message = (() => {
     switch (true) {
       case isRejected:
         return "rejected";
+      case isLiked:
+        return "liked";
       case !isPossible:
         return "impossible";
       case !isAvailable:
@@ -67,7 +70,9 @@ export const StatusMessage = ({
   const styling = (() => {
     switch (true) {
       case isRejected:
-        return "text-gray-500";
+        return "text-error";
+      case isLiked:
+        return "text-success";
       case !isPossible:
         return "text-gray-400";
       case !isAvailable:
@@ -87,16 +92,26 @@ export const StatusMessage = ({
 };
 
 
-const RejectButton = ({ domain }: { domain: string }) => {
-  const { rejected, rejectDomain, unrejectDomain } = useSearchStateStore();
-  const isRejected = rejected.includes(domain);
+const RejectButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked: boolean, isRejected: boolean }) => {
+  const { rejectDomain, unrejectDomain } = useSearchStateStore();
   const handleClick = () =>
     isRejected ? unrejectDomain(domain) : rejectDomain(domain);
 
   const hoverText = `${isRejected ? "Add back" : "Reject"} ${domain}`;
 
+  const styling = (() => {
+    switch (true) {
+      case isLiked:
+        return "btn-soft";
+      case isRejected:
+        return "btn-error";
+      default:
+        return "btn-soft btn-error";
+    }
+  })();
+
   return (
-    <div className="btn btn-square btn-outline btn-error bg-red-100" onClick={handleClick} title={hoverText}>
+    <div className={`btn btn-square ${styling}`} onClick={handleClick} title={hoverText}>
       {isRejected ? (
         <UnrejectIcon className="text-2xl" />
       ) : (
@@ -106,17 +121,27 @@ const RejectButton = ({ domain }: { domain: string }) => {
   );
 };
 
-const LikeButton = ({ domain }: { domain: string }) => {
-  const { liked, likeDomain, unlikeDomain } = useSearchStateStore();
-  const isLiked = liked.includes(domain);
+const LikeButton = ({ domain, isLiked, isRejected }: { domain: string, isLiked: boolean, isRejected: boolean }) => {
+  const { likeDomain, unlikeDomain } = useSearchStateStore();
   const handleClick = () =>
     isLiked ? unlikeDomain(domain) : likeDomain(domain);
 
   const hoverText = `${isLiked ? "Unlike" : "Like"} ${domain}`;
 
+  const styling = (() => {
+    switch (true) {
+      case isLiked:
+        return "btn-success";
+      case isRejected:
+        return "btn-soft";
+      default:
+        return "btn-soft btn-success";
+    }
+  })();
+
   return (
     <div
-      className="btn btn-square btn-outline btn-success"
+      className={`btn btn-square ${styling}`}
       onClick={handleClick}
       title={hoverText}
     >
@@ -143,7 +168,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const rejectedStyling = "bg-red-50 border-red-200";
   const invalidStyling = "bg-base-200 border-base-content";
 
-  const styling = (() => {
+  const colorStyling = (() => {
     if (!isValid) return invalidStyling;
     if (isRejected) return rejectedStyling;
     if (isLiked) return likedStyling;
@@ -159,13 +184,23 @@ export const DomainCard = (assessment: DomainAssessment) => {
     }
   };
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Check if the clicked element or its parents have the 'btn' class
+    const clickedButton = (e.target as HTMLElement).closest('.btn');
+    if (!clickedButton) {
+      openScoreModal();
+    }
+  };
+
   return (
     <div
-      className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 border border-2 rounded-md ${styling}`}
+      className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 border-2 rounded-xl cursor-pointer hover:bg-yellow-100 hover:border-yellow-200 ${colorStyling}`}
+      onClick={(e) => {
+        handleCardClick(e);
+      }}
     >
       <TotalScoreTile
         totalScore={getTotalScore(assessment)}
-        onClick={openScoreModal}
       />
       <div className="flex-grow text-left p-2">
         {domain}
@@ -175,11 +210,12 @@ export const DomainCard = (assessment: DomainAssessment) => {
         isAvailable={isAvailable}
         isCheap={isCheap}
         isRejected={isRejected}
+        isLiked={isLiked}
       />
       {isValid && (
         <>
-          <RejectButton domain={domain} />
-          <LikeButton domain={domain} />
+          <RejectButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
+          <LikeButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
         </>
       )}
       <DomainScoreModal assessment={assessment} />
