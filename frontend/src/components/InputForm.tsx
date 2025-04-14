@@ -26,7 +26,7 @@ export const InputForm = () => {
     };
 
     return (
-        <>
+        <div className="flex flex-col gap-4 p-4">
 
             <ExpandyInput
                 question="what are you building? (for best results paste in a blob of text here)"
@@ -63,6 +63,6 @@ export const InputForm = () => {
                 </label>
             </div>
 
-        </>
+        </div>
     )
 }

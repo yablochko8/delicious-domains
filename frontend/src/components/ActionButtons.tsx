@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AddDomainsButton, ClearAllButton, RefineInputsButton } from "./Buttons";
+import { AddDomainsButton, ClearAllButton, ExportSavedButton, RefineInputsButton } from "./Buttons";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { getDomainAssessment, getLongList } from "../serverCalls";
 import { useInputStateStore } from "../stores/inputStateStore";
@@ -71,6 +71,9 @@ export const ActionButtons = () => {
                 </>
             )}
             <AddDomainsButton onClick={handleSubmit} isLoading={isLoading} isDisabled={isDisabled} />
+            {liked.length > 0 && (
+                <ExportSavedButton />
+            )}
         </>
     );
 };

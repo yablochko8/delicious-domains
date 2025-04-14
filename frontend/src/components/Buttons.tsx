@@ -15,7 +15,7 @@ export const AddDomainsButton = ({
   const cta = longlist.length > 0 ? "add more options" : "see domain ideas";
   return (
     <button
-      className="btn btn-primary"
+      className="btn btn-secondary"
       onClick={onClick}
       disabled={isLoading || isDisabled}
     >
@@ -76,11 +76,33 @@ export const RefineInputsButton = () => {
   return (
     <>
       <button className="btn btn-outline hidden md:block" onClick={handleClick}>
-        refine inputs
+        refine
       </button>
       <button className="btn btn-outline md:hidden" onClick={handleMobileClick}>
-        refine inputs
+        refine
       </button>
     </>
   );
 };
+
+
+export const ExportSavedButton = () => {
+  const { liked } = useSearchStateStore();
+  const handleExport = () => {
+    if (liked.length === 0) return;
+
+    const likedDomainsText = liked.join('\n');
+    navigator.clipboard.writeText(likedDomainsText)
+      .then(() => {
+        alert('Liked domains copied to clipboard!');
+      })
+      .catch(err => {
+        console.error('Failed to copy domains to clipboard:', err);
+        alert('Failed to copy domains to clipboard. Please try again.');
+      });
+  };
+  return (
+    <button className="btn btn-primary" onClick={handleExport}>export</button>
+  );
+};
+
