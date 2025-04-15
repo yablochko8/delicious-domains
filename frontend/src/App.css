@@ -11,17 +11,32 @@
   text-align: left;
 }
 
+/* Page Headers */
 h1 {
   font-size: 2rem;
   font-weight: bold;
 }
 
+/* Domain Names in Modal */
 h2 {
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: bold;
 }
 
+/* Context for h2, e.g. overall score in modal */
+.text-subheader {
+  font-size: 1rem;
+  color: #888;
+}
+
+/* Individual score names in modal */
 h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Context for h3, e.g. score explanation in modal */
+.text-description {
+  font-size: 0.75rem;
+  color: #555;
 }

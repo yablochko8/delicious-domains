@@ -13,7 +13,7 @@ export const AddDomainsButton = ({
   const { longlist } = useSearchStateStore();
 
 
-  const cta = longlist.length > 0 ? "add more options" : "see domain ideas";
+  const cta = longlist.length > 0 ? "generate more" : "generate domain ideas";
   return (
     <button
       className="btn btn-primary"
