@@ -107,7 +107,7 @@ export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: 
       case isRejected:
         return "btn-soft btn-error";
       default:
-        return "btn-error";
+        return "btn-soft btn-error";
     }
   })();
 
@@ -141,7 +141,7 @@ export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { 
       case isRejected:
         return "btn-soft";
       default:
-        return "btn-success";
+        return "btn-soft btn-success";
     }
   })();
 

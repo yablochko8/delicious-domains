@@ -35,8 +35,8 @@ function App() {
   return (
     <>
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto pt-16 pb-12 max-h-[100dvh] overflow-y-auto">
-        <div className="flex flex-col w-full space-y-4 p-4">
+      <div className="flex flex-col w-full max-w-2xl mx-auto pt-20 pb-14 md:pb-0 max-h-[100dvh]">
+        <div className="flex flex-col w-full space-y-4 px-4 overflow-y-auto">
           {(!hasResults) && (
             <div className="flex flex-col text-sm">
               <InputForm />
@@ -82,7 +82,7 @@ function App() {
             </div>
           </div>
         </div >
-        <div className="flex fixed bottom-0 w-full gap-2 border-t bg-base-200 border-base-content/20 p-2 justify-center md:justify-end md:hidden">
+        <div className="flex fixed bottom-0 w-full gap-2 border-t bg-base-100 border-base-content/20 p-2 justify-center md:justify-end md:hidden">
           <ActionButtons />
         </div>
       </div>

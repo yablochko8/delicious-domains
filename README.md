@@ -26,7 +26,6 @@ input form
 
 results
 
-- mobile: score modal: make actions visible
 - add in end-of-journey Action (eg go buy domain)
 
 go live
@@ -62,3 +61,4 @@ DONE:
 - remove dev mode
 - server caching
 - mobile: results: make actions visible
+- mobile: score modal: make actions visible
