@@ -26,6 +26,7 @@ TO DO:
 - connect netlify to actual domain
 - upgrade server to paid
 - add plausible analytics
+- misc details into index.html
 - add success measurements
 
 BACKLOG:
