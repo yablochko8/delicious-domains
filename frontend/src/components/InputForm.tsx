@@ -35,7 +35,7 @@ export const InputForm = () => {
                 onChange={(e) => {
                     setPurpose(e.target.value);
                 }}
-                placeholder='e.g. "linkedin for cattle farms"'
+                placeholder='e.g. "linkedin for wheat farmers"'
             />
 
             <ExpandyInput
