@@ -1,6 +1,7 @@
 import { DomainAssessment } from "shared/types";
 import { scoreExplanationDict, ScoreId, scoreIds } from "../assets/scoreExplanations";
 import { LikeButton, RejectButton } from "./DomainCard";
+import { getTotalScore } from "../utils/getTotalScore";
 
 
 
@@ -13,36 +14,32 @@ const DomainScoreModalEntry = ({
   domain: string;
 }) => {
 
-  const textColor = (() => {
+  const progressStyle = (() => {
     switch (true) {
       case score < 6:
-        return "text-error-content";
+        return "progress-error";
       case score < 8:
-        return "text-warning-content";
+        return "progress-warning";
       default:
-        return "text-success-content";
-    }
-  })();
-
-  const bgColor = (() => {
-    switch (true) {
-      case score < 6:
-        return "bg-error/20";
-      case score < 8:
-        return "bg-warning/20";
-      default:
-        return "bg-success/20";
+        return "progress-success";
     }
   })();
 
   return (
-    <div key={scoreId} className={`bg-base-200 rounded-md px-4 py-2 ${bgColor}`}>
-      <div className="flex flex-row gap-1 text-xl items-center rounded-md">
-        <p className={`text-base font-bold ${textColor}`}>{score}/10 {scoreExplanationDict[scoreId].name}</p>
-        <div className="flex flex-grow"></div>
+    <div key={scoreId}>
+      <h3 className="flex flex-row items-center justify-between">
+        <span>
+          {scoreExplanationDict[scoreId].name}
+        </span>
+        <span>
+          {score}/10
+        </span>
+      </h3>
+      <div className="flex flex-row py-1">
+        <progress className={`progress ${progressStyle} w-full`} value={score} max="10"></progress>
       </div>
-      <div className="flex flex-row items-center pt-2">
-        <p className="text-xs text-justify text-gray-500">{scoreExplanationDict[scoreId].shortDescription}</p>
+      <div className="flex flex-row text-description">
+        {scoreExplanationDict[scoreId].shortDescription}
       </div>
     </div>
   );
@@ -59,12 +56,17 @@ export const DomainScoreModal = ({
       className="modal modal-bottom sm:modal-middle"
     >
       <div className="modal-box">
-        <div className="flex flex-col gap-4 text-justify">
+        <div className="flex flex-col gap-4 text-justify px-4">
           <h2 className="font-bold w-full text-center">{assessment.domain}</h2>
+          <p className="text-subheader text-center">
+            Overall Score: {assessment.scores ? getTotalScore(assessment) : 0}%
+          </p>
           {assessment.scores &&
-            scoreIds.map(scoreId => (
-              <DomainScoreModalEntry scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
-            ))
+            [...scoreIds]
+              .sort((a: ScoreId, b: ScoreId) => (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0))
+              .map((scoreId: ScoreId) => (
+                <DomainScoreModalEntry scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
+              ))
           }
         </div>
         <div className="modal-action justify-center gap-2">
