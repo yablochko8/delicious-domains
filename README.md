@@ -22,10 +22,12 @@ TO DO:
 
 input form
 
-- bug: input focus sometimes blocks button click - maybe gone?
+- lose the focus expansion for input form (terrible on mobile)
 
-outcome
+results
 
+- mobile: score modal: make actions visible
+- mobile: results: make actions visible
 - add in end-of-journey Action (eg go buy domain)
 
 go live
@@ -35,15 +37,17 @@ go live
 - add favicon
 - connect netlify to actual domain
 - upgrade server to paid
+- add plausible analytics
 
 BACKLOG:
 
+- better coloring on like & reject buttons
 - different detail modal for invalid domains
 - don't fetch scores for invalid domains
 - show/hide impossible domains
 - fix flash during modal load
 - consider adding check for deal breakers (copycat, annoying, esoteric)
-- feedback survey
+- turn options into a feedback survey
 - make scoring categories adjustable by end user
 - highlight selected vibes
 - smoother results loading
