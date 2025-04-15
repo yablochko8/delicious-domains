@@ -31,6 +31,7 @@ TO DO:
 
 BACKLOG:
 
+- ensure gpt 4.1 mini is being used
 - different detail modal for invalid domains
 - don't fetch scores for invalid domains
 - show/hide impossible domains
@@ -42,6 +43,7 @@ BACKLOG:
 - smoother results loading
 - refactor all those button components to something clearer
 - shorten the about page
+- use whois call to remove calls to domainr for domains that are definitely taken
 
 DONE:
 
