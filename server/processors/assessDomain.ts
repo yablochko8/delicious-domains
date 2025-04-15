@@ -1,6 +1,10 @@
 import { DomainAssessment, DomainScores } from "shared/types";
 import { sendLLMRequest } from "utils/sendLLMRequest";
 import { scoreExplanationDict } from "../../frontend/src/assets/scoreExplanations";
+import {
+  addDomainScoresCache,
+  checkDomainScoresCache,
+} from "caching/domainScoresCache";
 
 const assessmentPromptSystem = `
 You are a brand name assessor. Your task is to assess a domain name and provide a score for each of the following criteria:
@@ -35,6 +39,13 @@ export const addScoresToDomain = async (
 
 /** 0 is unassessed. 1 is red, 2 is yellow, 3 is green */
 export const scoreDomain = async (domain: string): Promise<DomainScores> => {
+  //0th pass - check cache
+  const cachedScores = checkDomainScoresCache(domain);
+  if (cachedScores) {
+    console.log("Success! Cached domain scores found for:", domain);
+    return cachedScores;
+  }
+
   // First pass - try to get all scores from LLM
   const attemptedScores = await sendLLMRequest(
     "gpt-4o-mini",
@@ -67,5 +78,9 @@ export const scoreDomain = async (domain: string): Promise<DomainScores> => {
     10
   );
 
-  return { ...aiScores, brev: calculatedBrevScore };
+  const finalScores = { ...aiScores, brev: calculatedBrevScore };
+
+  addDomainScoresCache(domain, finalScores);
+
+  return finalScores;
 };

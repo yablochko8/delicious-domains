@@ -1,6 +1,6 @@
 import { DomainAssessment } from "shared/types";
 
-const CACHE_TTL_IN_MS = 1000 * 60 * 60 * 24; // 24 hours
+const STATUS_CACHE_TTL = 1000 * 60 * 60 * 24; // 24 hours
 
 // Simple in-memory cache (will do for now, later we can use Redis)
 // Cache key is domain name
@@ -13,7 +13,7 @@ export const checkDomainStatusCache = (
   domain: string
 ): DomainAssessment | null => {
   const cached = domainStatusCache.get(domain);
-  if (cached && Date.now() - cached.timestamp < CACHE_TTL_IN_MS) {
+  if (cached && Date.now() - cached.timestamp < STATUS_CACHE_TTL) {
     return cached.domainStatus;
   }
   return null;
