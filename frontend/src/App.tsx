@@ -82,7 +82,7 @@ function App() {
             </div>
           </div>
         </div >
-        <div className="flex sticky bottom-0 w-full gap-2 border-t bg-base-200 border-base-content/20 p-2 justify-end md:hidden">
+        <div className="flex fixed bottom-0 w-full gap-2 border-t bg-base-200 border-base-content/20 p-2 justify-center md:justify-end md:hidden">
           <ActionButtons />
         </div>
       </div>
