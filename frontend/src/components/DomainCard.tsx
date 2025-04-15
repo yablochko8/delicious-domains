@@ -1,4 +1,4 @@
-import { getTotalScore, TOTAL_SCORE_MAX } from "../utils/getTotalScore";
+import { getTotalScore } from "../utils/getTotalScore";
 import {
   MdFavorite as LikedIcon,
   MdFavoriteBorder as UnlikedIcon,
@@ -9,6 +9,7 @@ import {
 import { DomainAssessment } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { DomainScoreModal } from "./DomainScoreModal";
+import { TOTAL_SCORE_MAX } from "../config";
 
 
 const TotalScoreTile = ({

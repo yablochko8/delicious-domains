@@ -16,13 +16,17 @@ import { FaGithub as GithubIcon } from "react-icons/fa";
 // Action Icons
 import { FaPlus as PlusIcon } from "react-icons/fa";
 import { FaMinus as MinusIcon } from "react-icons/fa";
-// import { MdRefresh as StartAgainIcon } from "react-icons/md";
+
 
 import { HiOutlineDocument as StartAgainIcon } from "react-icons/hi2";
 import { HiOutlinePencil as EditIcon } from "react-icons/hi2";
 import { HiOutlineShare as ShareIcon } from "react-icons/hi2";
+import { MdContentCopy as CopyIcon } from "react-icons/md";
 
-import { FaArrowUpRightFromSquare as ExportIcon } from "react-icons/fa6";
+import { AiOutlineExport as ExportIcon } from "react-icons/ai";
+import { HiOutlineSparkles as GenerateIcon } from "react-icons/hi2";
+
+
 
 export const ScoreIcons: Record<ScoreId, JSX.Element> = {
   evoc: <EvocIcon />,
@@ -47,4 +51,6 @@ export const ActionIcons = {
   editInputs: <EditIcon />,
   export: <ExportIcon />,
   share: <ShareIcon />,
+  copy: <CopyIcon />,
+  generate: <GenerateIcon />,
 };

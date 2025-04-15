@@ -74,7 +74,7 @@ export const ActionButtons = () => {
                     <RefineInputsButton />
                 </>
             )}
-            {liked.length > 0 && (
+            {liked.length > 4 && (
                 <ExportSavedButton />
             )}
             <AddDomainsButton onClick={handleSubmit} isLoading={isLoading} isDisabled={isDisabled} />

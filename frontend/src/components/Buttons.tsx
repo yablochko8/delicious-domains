@@ -1,3 +1,4 @@
+import { WEBSITE_NAME } from "../config";
 import { ActionIcons } from "../assets/Icons";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useSearchStateStore } from "../stores/searchStateStore";
@@ -21,7 +22,14 @@ export const AddDomainsButton = ({
       onClick={onClick}
       disabled={isLoading || isDisabled}
     >
-      {isLoading ? <span className="loading loading-spinner"></span> : cta}
+      {isLoading ? <span className="loading loading-spinner"></span> :
+        <>
+          <div className="flex flex-row w-full justify-between gap-2 items-center">
+            <div className="text-xl">{ActionIcons.generate}</div>
+            {cta}
+          </div>
+        </>
+      }
     </button>
   );
 };
@@ -54,7 +62,10 @@ export const ClearAllButton = () => {
   return (
     <>
       <button className="btn btn-outline hidden md:block" onClick={handleClick}>
-        start again
+        <div className="flex flex-row w-full justify-between gap-2 items-center">
+          <div className="text-xl">{ActionIcons.startAgain}</div>
+          start again
+        </div>
       </button>
       <button className="btn btn-outline btn-square md:hidden text-2xl" onClick={handleClick}>
         {ActionIcons.startAgain}
@@ -84,7 +95,10 @@ export const RefineInputsButton = () => {
   return (
     <>
       <button className="btn btn-outline hidden md:block" onClick={handleClick}>
-        edit inputs
+        <div className="flex flex-row w-full justify-between gap-2 items-center">
+          <div className="text-xl">{ActionIcons.editInputs}</div>
+          edit inputs
+        </div>
       </button>
       <button className="btn btn-outline btn-square md:hidden text-2xl" onClick={handleClickMobile}>
         {ActionIcons.editInputs}
@@ -111,7 +125,8 @@ export const ExportSavedButton = () => {
   const handleClickDesktop = () => {
     if (liked.length === 0) return;
     const likedDomainsText = liked.join('\n');
-    copyToClipboard(likedDomainsText);
+    const copyPrefix = `${WEBSITE_NAME} - My Liked Domains: \n`;
+    copyToClipboard(copyPrefix + likedDomainsText);
   };
 
   const handleClickMobile = () => {
@@ -120,7 +135,7 @@ export const ExportSavedButton = () => {
 
     if (navigator.share) {
       navigator.share({
-        title: 'My Liked Domains',
+        title: `${WEBSITE_NAME} - My Liked Domains`,
         text: likedDomainsText
       })
         .catch(err => {
@@ -144,7 +159,11 @@ export const ExportSavedButton = () => {
   return (
     <>
       <button className="btn btn-secondary hidden md:block" onClick={handleClickDesktop} title="Copy to clipboard">
-        copy
+
+        <div className="flex flex-row w-full justify-between gap-2 items-center">
+          <div className="text-xl">{ActionIcons.export}</div>
+          export
+        </div>
       </button>
       <button className="btn btn-outline btn-square md:hidden text-2xl" onClick={handleClickMobile} title="Share">
         {ActionIcons.share}
