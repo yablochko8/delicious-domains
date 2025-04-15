@@ -61,14 +61,16 @@ export const DomainScoreModal = ({
           <p className="text-subheader text-center">
             Overall Score: {assessment.scores ? getTotalScore(assessment) : 0}%
           </p>
-          <div className="overflow-y-auto max-h-[60vh] gap-1">
-            {assessment.scores &&
-              [...scoreIds]
-                .sort((a: ScoreId, b: ScoreId) => (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0))
-                .map((scoreId: ScoreId) => (
-                  <DomainScoreModalEntry scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
-                ))
-            }
+          <div className="max-h-[60vh] pb-16">
+            <div className="overflow-y-auto max-h-[60vh] gap-1">
+              {assessment.scores &&
+                [...scoreIds]
+                  .sort((a: ScoreId, b: ScoreId) => (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0))
+                  .map((scoreId: ScoreId) => (
+                    <DomainScoreModalEntry scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
+                  ))
+              }
+            </div>
           </div>
         </div>
         <div className="modal-action justify-center gap-2">

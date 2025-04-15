@@ -23,7 +23,7 @@ export const ExpandyInput = ({ question, subhead, value, onChange, placeholder }
                 <textarea
                     className="textarea textarea-accent w-full max-w-500 transition-all duration-200 ease-in-out text-base"
                     style={{
-                        height: isFocused ? '8rem' : '3rem',
+                        height: isFocused ? '10rem' : '5rem',
                         fontSize: '16px' // Prevent mobile zoom
                     }}
                     placeholder={placeholder}

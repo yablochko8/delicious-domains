@@ -20,25 +20,17 @@ Terminal 2:
 
 TO DO:
 
-input form
-
-- lose the focus expansion for input form (terrible on mobile)
-
-results
-
 - add in end-of-journey Action (eg go buy domain)
-
-go live
-
 - choose actual domain
 - add favicon
 - connect netlify to actual domain
 - upgrade server to paid
 - add plausible analytics
+- misc details into index.html
+- add success measurements
 
 BACKLOG:
 
-- better coloring on like & reject buttons
 - different detail modal for invalid domains
 - don't fetch scores for invalid domains
 - show/hide impossible domains
@@ -64,3 +56,5 @@ DONE:
 - server caching
 - mobile: results: make actions visible
 - mobile: score modal: make actions visible
+- fix the focus expansion for input form on mobile
+- better coloring on like & reject buttons
