@@ -102,12 +102,14 @@ export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: 
 
   const colorStyling = (() => {
     switch (true) {
+      case showText:
+        return "btn-soft btn-error border-error";
       case isLiked:
-        return "btn-soft";
+        return "btn-outline btn-success";
       case isRejected:
-        return "btn-soft btn-error";
+        return "btn-error";
       default:
-        return "btn-soft btn-error";
+        return "btn-soft btn-error border-error";
     }
   })();
 
@@ -136,12 +138,14 @@ export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { 
 
   const styling = (() => {
     switch (true) {
+      case showText:
+        return "btn-soft btn-success border-success";
       case isLiked:
-        return "btn-soft  btn-success";
+        return "btn-success";
       case isRejected:
-        return "btn-soft";
+        return "btn-outline btn-error";
       default:
-        return "btn-soft btn-success";
+        return "btn-soft btn-success border-success";
     }
   })();
 

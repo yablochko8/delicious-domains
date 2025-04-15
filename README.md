@@ -30,7 +30,6 @@ TO DO:
 
 BACKLOG:
 
-- better coloring on like & reject buttons
 - different detail modal for invalid domains
 - don't fetch scores for invalid domains
 - show/hide impossible domains
@@ -57,3 +56,4 @@ DONE:
 - mobile: results: make actions visible
 - mobile: score modal: make actions visible
 - fix the focus expansion for input form on mobile
+- better coloring on like & reject buttons
