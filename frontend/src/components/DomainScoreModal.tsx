@@ -59,7 +59,7 @@ export const DomainScoreModal = ({
         <div className="flex flex-col gap-2 text-justify px-4">
           <h2 className="font-bold w-full text-center">{assessment.domain}</h2>
           <p className="text-subheader text-center">
-            Overall Score: {assessment.scores ? getTotalScore(assessment) : 0}%
+            Overall Score: {assessment.scores ? getTotalScore(assessment, true) : 0}%
           </p>
           <div className="max-h-[60vh] pb-16">
             <div className="overflow-y-auto max-h-[60vh] gap-1">

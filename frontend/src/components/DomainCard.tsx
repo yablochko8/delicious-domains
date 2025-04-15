@@ -9,7 +9,6 @@ import {
 import { DomainAssessment } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { DomainScoreModal } from "./DomainScoreModal";
-import { TOTAL_SCORE_MAX } from "../config";
 
 
 const TotalScoreTile = ({
@@ -21,15 +20,13 @@ const TotalScoreTile = ({
 }) => {
   //   If the score is negative, we want to display zero
   const positiveScore = totalScore < 0 ? 0 : totalScore;
-  const normalizedScore = (positiveScore * 100 / TOTAL_SCORE_MAX)
-  const displayScore = Math.round(normalizedScore)
 
 
   return (
     <div className="h-8 w-8 flex align-middle justify-center items-center" onClick={onClick}>
-      {displayScore > 0 ? (
+      {positiveScore > 0 ? (
         <>
-          <div className="text-gray-500">{displayScore}</div>
+          <div className="text-gray-500">{positiveScore}</div>
           <div className="text-xs text-gray-500">%</div>
         </>
       ) : ""}
@@ -214,7 +211,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
       }}
     >
       <TotalScoreTile
-        totalScore={getTotalScore(assessment)}
+        totalScore={getTotalScore(assessment, true)}
         onClick={openScoreModal}
       />
       <div className="flex-grow text-left py-2 font-semibold text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
