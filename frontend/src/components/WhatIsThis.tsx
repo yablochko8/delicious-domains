@@ -5,7 +5,7 @@ import { SocialIcons } from "../assets/Icons";
 export const WhatIsThisContents = () => {
     return (
         <>
-            <div className="mb-4 text-lg font-medium">This tool gives you website domain name ideas, but only shows domains that are available.</div>
+            <div className="mb-4 text-lg font-medium">This tool gives you website domain name ideas, but only shows cheap, available domains.</div>
 
             <div className="mb-3">It includes lots of BRAND.THING style domains. Conventional wisdom says these are a terrible idea (according to Paul Graham in <a href="http://aux.messymatters.com/pgnames.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">2006</a> and again in <a href="https://paulgraham.com/name.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">2015</a>).</div>
 

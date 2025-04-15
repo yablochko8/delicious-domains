@@ -7,10 +7,12 @@ export const TopNav = () => {
             <div className="navbar max-w-7xl mx-auto w-full px-4">
                 <div className="navbar-start justify-between w-full">
                     <a className="btn btn-ghost text-xl text-slate-600">delicious.domains</a>
+                </div>
+                <div className="navbar-end md:hidden">
                     <AboutButton />
                 </div>
-
                 <div className="navbar-end gap-2 hidden md:flex">
+                    <AboutButton />
                     <ActionButtons />
                 </div>
             </div>
