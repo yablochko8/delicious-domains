@@ -56,21 +56,23 @@ export const DomainScoreModal = ({
       className="modal modal-bottom sm:modal-middle"
     >
       <div className="modal-box">
-        <div className="flex flex-col gap-4 text-justify px-4">
+        <div className="flex flex-col gap-2 text-justify px-4">
           <h2 className="font-bold w-full text-center">{assessment.domain}</h2>
           <p className="text-subheader text-center">
             Overall Score: {assessment.scores ? getTotalScore(assessment) : 0}%
           </p>
-          {assessment.scores &&
-            [...scoreIds]
-              .sort((a: ScoreId, b: ScoreId) => (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0))
-              .map((scoreId: ScoreId) => (
-                <DomainScoreModalEntry scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
-              ))
-          }
+          <div className="overflow-y-auto max-h-[60vh] gap-1">
+            {assessment.scores &&
+              [...scoreIds]
+                .sort((a: ScoreId, b: ScoreId) => (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0))
+                .map((scoreId: ScoreId) => (
+                  <DomainScoreModalEntry scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
+                ))
+            }
+          </div>
         </div>
         <div className="modal-action justify-center gap-2">
-          <form method="dialog" className="flex gap-4">
+          <form method="dialog" className="fixed bottom-0 flex gap-4 bg-base-100 w-full justify-center p-4">
             {/* if there is a button in form, it will close the modal */}
             <RejectButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
             <LikeButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />

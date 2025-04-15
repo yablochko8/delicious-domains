@@ -78,7 +78,7 @@ export const RefineModal = () => {
                 </div>
             </div>
             <form method="dialog" className="modal-backdrop">
-                <button>Add</button>
+                <button>Close</button>
             </form>
         </dialog>
     );

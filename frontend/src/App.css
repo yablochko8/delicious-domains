@@ -1,7 +1,9 @@
 @import "tailwindcss";
 @plugin "daisyui" {
   /* themes: bumblebee --default; */
-  themes: all;
+  /* themes: fantasy --default; */
+  themes: light --default;
+  /* themes: all; */
 }
 
 #root {

@@ -26,8 +26,6 @@ input form
 
 results
 
-- mobile: score modal: make actions visible
-- mobile: results: make actions visible
 - add in end-of-journey Action (eg go buy domain)
 
 go live
@@ -50,6 +48,8 @@ BACKLOG:
 - make scoring categories adjustable by end user
 - highlight selected vibes
 - smoother results loading
+- refactor all those button components to something clearer
+- shorten the about page
 
 DONE:
 
@@ -62,3 +62,5 @@ DONE:
 - show all actions on modal
 - remove dev mode
 - server caching
+- mobile: results: make actions visible
+- mobile: score modal: make actions visible

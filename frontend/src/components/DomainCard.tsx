@@ -1,4 +1,4 @@
-import { getTotalScore, TOTAL_SCORE_MAX } from "../utils/getTotalScore";
+import { getTotalScore } from "../utils/getTotalScore";
 import {
   MdFavorite as LikedIcon,
   MdFavoriteBorder as UnlikedIcon,
@@ -9,6 +9,7 @@ import {
 import { DomainAssessment } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { DomainScoreModal } from "./DomainScoreModal";
+import { TOTAL_SCORE_MAX } from "../config";
 
 
 const TotalScoreTile = ({
@@ -106,7 +107,7 @@ export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: 
       case isRejected:
         return "btn-soft btn-error";
       default:
-        return "btn-error";
+        return "btn-soft btn-error";
     }
   })();
 
@@ -140,7 +141,7 @@ export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { 
       case isRejected:
         return "btn-soft";
       default:
-        return "btn-success";
+        return "btn-soft btn-success";
     }
   })();
 
@@ -173,8 +174,8 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const isValid = isPossible && isAvailable && isCheap;
 
   const validStyling = "bg-base-200/40 text-gray-800 border-base-content hover:bg-base-200 hover:border-slate-900";
-  const likedStyling = "bg-green-50 border-green-200 hover:bg-green-200 hover:border-green-300";
-  const rejectedStyling = "bg-red-50 border-red-200 hover:bg-red-200 hover:border-red-300";
+  const likedStyling = "bg-success/20 border-success/20 hover:bg-success/30 hover:border-success/30";
+  const rejectedStyling = "bg-error/20 border-error/20 hover:bg-error/30 hover:border-error/30";
   const invalidStyling = "bg-base-200 border-base-300 text-gray-400 hover:bg-slate-200 hover:border-slate-300";
 
   const colorStyling = (() => {

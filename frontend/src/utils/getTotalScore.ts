@@ -1,7 +1,5 @@
 import { DomainAssessment } from "shared/types";
 
-export const TOTAL_SCORE_MAX = 60;
-
 export const getTotalScore = (
   assessment: DomainAssessment | undefined
 ): number => {
