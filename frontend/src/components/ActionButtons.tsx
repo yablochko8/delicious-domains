@@ -7,7 +7,7 @@ import { useDisplayStateStore } from "../stores/displayStateStore";
 import { closeModal } from "../utils/openModal";
 
 
-export const SELECTED_MODEL = "gpt-4o-mini"
+export const SELECTED_MODEL = "gpt-4.1-mini"
 
 
 /**Returns a sequence of Action Buttons, for the topnav (on desktop) or for end of list (on mobile) */

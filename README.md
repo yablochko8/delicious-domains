@@ -31,7 +31,6 @@ TO DO:
 
 BACKLOG:
 
-- ensure gpt 4.1 mini is being used
 - different detail modal for invalid domains
 - don't fetch scores for invalid domains
 - show/hide impossible domains
@@ -60,3 +59,4 @@ DONE:
 - mobile: score modal: make actions visible
 - fix the focus expansion for input form on mobile
 - better coloring on like & reject buttons
+- switch to gpt 4.1 mini
