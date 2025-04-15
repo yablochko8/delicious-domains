@@ -8,6 +8,7 @@ import { InputForm } from "./components/InputForm";
 import { useDisplayStateStore } from "./stores/displayStateStore";
 import { ActionButtons } from "./components/ActionButtons";
 import { RefineModal } from "./components/RefineModal";
+import { WhatIsThisModal } from "./components/WhatIsThisModal";
 
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
   return (
     <>
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto pt-16 max-h-[100dvh] overflow-y-auto">
+      <div className="flex flex-col w-full max-w-2xl mx-auto pt-16 pb-12 max-h-[100dvh] overflow-y-auto">
         <div className="flex flex-col w-full space-y-4 p-4">
           {(!hasResults) && (
             <div className="flex flex-col text-sm">
@@ -77,7 +78,6 @@ function App() {
                   </>
                 )}
 
-                <RefineModal />
               </div>
             </div>
           </div>
@@ -86,6 +86,8 @@ function App() {
           <ActionButtons />
         </div>
       </div>
+      <RefineModal />
+      <WhatIsThisModal />
     </>
   );
 }

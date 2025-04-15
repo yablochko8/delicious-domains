@@ -2,6 +2,7 @@ import { WEBSITE_NAME } from "../config";
 import { ActionIcons } from "../assets/Icons";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useSearchStateStore } from "../stores/searchStateStore";
+import { openModal } from "../utils/openModal";
 
 export const AddDomainsButton = ({
   onClick,
@@ -83,12 +84,7 @@ export const RefineInputsButton = () => {
 
   const handleClickMobile = () => {
     setIsRefining(!isRefining);
-    const refineModal = document.getElementById(
-      `refine-modal`
-    ) as HTMLDialogElement;
-    if (refineModal) {
-      refineModal.showModal();
-    }
+    openModal(`refine-modal`);
   };
 
   const cta = "edit inputs";
@@ -169,3 +165,15 @@ export const ExportSavedButton = () => {
   );
 };
 
+
+
+export const AboutButton = () => {
+  const handleClick = () => {
+    openModal(`what-is-this-modal`);
+  }
+  return (
+    <button className="btn btn-shadow btn-circle text-xl" onClick={handleClick}>
+      {ActionIcons.about}
+    </button>
+  );
+};

@@ -26,6 +26,7 @@ import { MdContentCopy as CopyIcon } from "react-icons/md";
 import { AiOutlineExport as ExportIcon } from "react-icons/ai";
 import { HiOutlineSparkles as GenerateIcon } from "react-icons/hi2";
 
+import { MdQuestionMark as AboutIcon } from "react-icons/md";
 
 
 export const ScoreIcons: Record<ScoreId, JSX.Element> = {
@@ -53,4 +54,5 @@ export const ActionIcons = {
   share: <ShareIcon />,
   copy: <CopyIcon />,
   generate: <GenerateIcon />,
+  about: <AboutIcon />,
 };
