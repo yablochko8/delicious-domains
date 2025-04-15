@@ -6,6 +6,7 @@ import { useSearchStateStore } from "../stores/searchStateStore";
 import { getDomainAssessment, getLongList } from "../serverCalls";
 import { SELECTED_MODEL } from "./ActionButtons";
 import { AddDomainsButton } from "./Buttons";
+import { closeModal } from "../utils/openModal";
 
 export const RefineModal = () => {
 
@@ -23,6 +24,7 @@ export const RefineModal = () => {
 
         setIsLoading(true);
         setIsRefining(false);
+        closeModal("refine-modal");
         try {
             const feedback =
                 longlist.length > 0

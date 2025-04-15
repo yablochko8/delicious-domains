@@ -4,6 +4,7 @@ import { useSearchStateStore } from "../stores/searchStateStore";
 import { getDomainAssessment, getLongList } from "../serverCalls";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
+import { closeModal } from "../utils/openModal";
 
 
 export const SELECTED_MODEL = "gpt-4o-mini"
@@ -27,6 +28,8 @@ export const ActionButtons = () => {
     const handleSubmit = async () => {
         setIsLoading(true);
         setIsRefining(false);
+        closeModal("refine-modal");
+
         try {
             const feedback =
                 longlist.length > 0
