@@ -32,7 +32,6 @@ results
 
 go live
 
-- server caching
 - choose actual domain
 - add favicon
 - connect netlify to actual domain
@@ -62,3 +61,4 @@ DONE:
 - hide input form after initial click
 - show all actions on modal
 - remove dev mode
+- server caching
