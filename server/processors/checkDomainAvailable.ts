@@ -4,6 +4,10 @@
 
 import { DomainAssessment } from "shared/types";
 import { validTlds } from "../tlds";
+import {
+  addDomainStatusCache,
+  checkDomainStatusCache,
+} from "caching/domainStatusCache";
 
 export const getDomainStatusParallel = async (
   domains: string[],
@@ -53,6 +57,12 @@ export const getDomainStatus = async (
   domain: string
 ): Promise<DomainAssessment> => {
   console.log("Checking domain availability for:", domain);
+
+  const cachedDomainStatus = checkDomainStatusCache(domain);
+  if (cachedDomainStatus) {
+    console.log("Success! Cached domain status found for:", domain);
+    return cachedDomainStatus;
+  }
 
   const tld = domain.split(".")[1];
 
@@ -117,13 +127,16 @@ export const getDomainStatus = async (
       domainrStatus.includes(tag)
     );
 
-    return {
+    const domainStatus: DomainAssessment = {
       ...defaultResult,
       isPossible: !impossibleTagFound,
       isAvailable: inactiveTagFound,
       isCheap: !premiumTagFound,
       status: `Domainr status: ${domainrStatus}`,
     };
+
+    addDomainStatusCache(domain, domainStatus);
+    return domainStatus;
   } catch (error) {
     return {
       ...defaultResult,

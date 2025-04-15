@@ -77,10 +77,10 @@ export const RefineInputsButton = () => {
   return (
     <>
       <button className="btn btn-outline hidden md:block" onClick={handleClick}>
-        refine
+        edit inputs
       </button>
       <button className="btn btn-outline md:hidden" onClick={handleMobileClick}>
-        refine
+        edit inputs
       </button>
     </>
   );
