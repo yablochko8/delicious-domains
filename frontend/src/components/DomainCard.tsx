@@ -203,7 +203,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   return (
     <div
-      className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 border-2 rounded-xl cursor-pointer  ${colorStyling}`}
+      className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 border-1 rounded-xl cursor-pointer  ${colorStyling}`}
       onClick={(e) => {
         handleCardClick(e);
       }}

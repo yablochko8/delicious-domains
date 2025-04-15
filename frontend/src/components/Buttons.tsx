@@ -1,3 +1,4 @@
+import { ActionIcons } from "../assets/Icons";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useSearchStateStore } from "../stores/searchStateStore";
 
@@ -49,10 +50,16 @@ export const ClearAllButton = () => {
     clearAll();
     window.scrollTo(0, 0);
   };
+
   return (
-    <button className="btn btn-outline" onClick={handleClick}>
-      start again
-    </button>
+    <>
+      <button className="btn btn-outline hidden md:block" onClick={handleClick}>
+        start again
+      </button>
+      <button className="btn btn-outline btn-square md:hidden text-2xl" onClick={handleClick}>
+        {ActionIcons.startAgain}
+      </button>
+    </>
   );
 };
 
@@ -64,7 +71,7 @@ export const RefineInputsButton = () => {
     // window.scrollTo(0, 0);
   };
 
-  const handleMobileClick = () => {
+  const handleClickMobile = () => {
     setIsRefining(!isRefining);
     const refineModal = document.getElementById(
       `refine-modal`
@@ -79,8 +86,8 @@ export const RefineInputsButton = () => {
       <button className="btn btn-outline hidden md:block" onClick={handleClick}>
         edit inputs
       </button>
-      <button className="btn btn-outline md:hidden" onClick={handleMobileClick}>
-        edit inputs
+      <button className="btn btn-outline btn-square md:hidden text-2xl" onClick={handleClickMobile}>
+        {ActionIcons.editInputs}
       </button>
     </>
   );
@@ -89,11 +96,9 @@ export const RefineInputsButton = () => {
 
 export const ExportSavedButton = () => {
   const { liked } = useSearchStateStore();
-  const handleExport = () => {
-    if (liked.length === 0) return;
 
-    const likedDomainsText = liked.join('\n');
-    navigator.clipboard.writeText(likedDomainsText)
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
       .then(() => {
         alert('Liked domains copied to clipboard!');
       })
@@ -102,8 +107,49 @@ export const ExportSavedButton = () => {
         alert('Failed to copy domains to clipboard. Please try again.');
       });
   };
+
+  const handleClickDesktop = () => {
+    if (liked.length === 0) return;
+    const likedDomainsText = liked.join('\n');
+    copyToClipboard(likedDomainsText);
+  };
+
+  const handleClickMobile = () => {
+    if (liked.length === 0) return;
+    const likedDomainsText = liked.join('\n');
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'My Liked Domains',
+        text: likedDomainsText
+      })
+        .catch(err => {
+          console.error('Error sharing domains:', err);
+          // Fallback to clipboard if sharing fails
+          navigator.clipboard.writeText(likedDomainsText)
+            .then(() => {
+              alert('Liked domains copied to clipboard!');
+            })
+            .catch(clipErr => {
+              console.error('Failed to copy domains to clipboard:', clipErr);
+              alert('Failed to share domains. Please try again.');
+            });
+        });
+    } else {
+      // Fallback for browsers that don't support sharing
+      copyToClipboard(likedDomainsText);
+    }
+  };
+
   return (
-    <button className="btn btn-secondary" onClick={handleExport}>export</button>
+    <>
+      <button className="btn btn-secondary hidden md:block" onClick={handleClickDesktop} title="Copy to clipboard">
+        copy
+      </button>
+      <button className="btn btn-outline btn-square md:hidden text-2xl" onClick={handleClickMobile} title="Share">
+        {ActionIcons.share}
+      </button>
+    </>
   );
 };
 

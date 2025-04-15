@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto mt-16">
+      <div className="flex flex-col w-full max-w-2xl mx-auto pt-16 max-h-[100dvh] overflow-y-auto">
         <div className="flex flex-col w-full space-y-4 p-4">
           {(!hasResults) && (
             <div className="flex flex-col text-sm">
@@ -77,16 +77,14 @@ function App() {
                   </>
                 )}
 
-                {/* FAILED - TODO ADD IN LATER */}
-
-                <div className="flex flex-col w-full gap-2 flex md:hidden">
-                  <ActionButtons />
-                </div>
                 <RefineModal />
               </div>
             </div>
           </div>
         </div >
+        <div className="flex sticky bottom-0 w-full gap-2 border-t bg-base-200 border-base-content/20 p-2 justify-end md:hidden">
+          <ActionButtons />
+        </div>
       </div>
     </>
   );
