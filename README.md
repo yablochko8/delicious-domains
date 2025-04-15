@@ -48,6 +48,8 @@ BACKLOG:
 - make scoring categories adjustable by end user
 - highlight selected vibes
 - smoother results loading
+- refactor all those button components to something clearer
+- shorten the about page
 
 DONE:
 
