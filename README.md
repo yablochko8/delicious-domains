@@ -42,6 +42,7 @@ BACKLOG:
 - smoother results loading
 - refactor all those button components to something clearer
 - shorten the about page
+- use whois call to remove calls to domainr for domains that are definitely taken
 
 DONE:
 
@@ -58,3 +59,4 @@ DONE:
 - mobile: score modal: make actions visible
 - fix the focus expansion for input form on mobile
 - better coloring on like & reject buttons
+- switch to gpt 4.1 mini

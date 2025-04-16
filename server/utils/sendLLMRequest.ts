@@ -3,6 +3,7 @@ import { openaiClient } from "./clientOpenai";
 
 const SUPPORTED_MODELS = [
   "gpt-4o-mini",
+  "gpt-4.1-mini",
   "o1-mini",
   "deepseek-chat",
   "deepseek-reasoner",
