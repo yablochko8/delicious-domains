@@ -30,7 +30,7 @@ export const InputForm = () => {
 
             <ExpandyInput
                 question="what are you building?"
-                subhead="for best results, paste in a blob of text here"
+                subhead="for best results, paste in a full description here"
                 value={purpose}
                 onChange={(e) => {
                     setPurpose(e.target.value);

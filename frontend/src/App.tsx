@@ -54,7 +54,7 @@ function App() {
                 {assessedDomains.completed.length > 0 && (
                   <>
                     <div className="text-sm text-gray-500">
-                      Domains ranked using AI scoring. Like and reject domains to get better results.
+                      Like and reject domains to get better results.
                     </div>
                   </>
                 )}
