@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SocialIcons } from "../assets/Icons";
+import { WEBSITE_NAME } from "../config";
 
 
 export const WhatIsThisContents = () => {
@@ -47,7 +48,7 @@ export const WhatIsThis = () => {
 
     return (
         <>
-            <h1 className="text-center text-primary">delicious.domains</h1>
+            <h1 className="text-center text-primary">{WEBSITE_NAME}</h1>
             <div className="flex flex-row justify-center">
                 <button className="btn btn-secondary" onClick={() => setIsOpen(!isOpen)}> what is this?</button>
             </div>
