@@ -79,7 +79,9 @@ export const RefineInputsButton = () => {
 
   const handleClick = () => {
     setIsRefining(!isRefining);
-    // window.scrollTo(0, 0);
+    // Scroll the main content area to the top
+    // TODO: Make this more robust and not dependent on a tailwind class
+    document.querySelector('.overflow-y-auto')?.scrollTo(0, 0);
   };
 
   const handleClickMobile = () => {

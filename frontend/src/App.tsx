@@ -54,6 +54,7 @@ function App() {
                 {assessedDomains.completed.length > 0 && (
                   <>
                     <div className="text-sm text-gray-500">
+                      Tap the domain to see how it scored.
                       Like and reject domains to get better results.
                     </div>
                   </>
