@@ -1,13 +1,10 @@
 import { getTotalScore } from "../utils/getTotalScore";
-import {
-  MdFavorite as LikedIcon,
-  MdFavoriteBorder as UnlikedIcon,
-  MdClose as RejectIcon,
-  MdClose as UnrejectIcon,
-} from "react-icons/md";
+import { ActionIcons } from "../assets/Icons";
 import { DomainAssessment } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { DomainScoreModal } from "./DomainScoreModal";
+import { NETIM_PARTNER_ID } from "../config";
+import { trackEventSafe } from "../utils/plausible";
 
 
 const TotalScoreTile = ({
@@ -112,9 +109,9 @@ export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: 
   return (
     <button className={`btn ${shapeStyling} ${colorStyling}`} onClick={handleClick} title={hoverText}>
       {isRejected ? (
-        <UnrejectIcon className="text-2xl" />
+        ActionIcons.unreject
       ) : (
-        <RejectIcon className="text-2xl" />
+        ActionIcons.reject
       )}
       {showText && <div className="text-sm">{actionText}</div>}
     </button>
@@ -151,12 +148,33 @@ export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { 
       onClick={handleClick}
       title={hoverText}
     >
-      {isLiked ? (
-        <LikedIcon className="text-2xl" />
-      ) : (
-        <UnlikedIcon className="text-2xl" />
-      )}
+      {isLiked ?
+        ActionIcons.unlike
+        :
+        ActionIcons.like
+      }
       {showText && <div className="text-sm">{actionText}</div>}
+    </button>
+  );
+};
+
+export const RegisterButton = ({ domain, showText = false }: { domain: string, showText?: boolean }) => {
+
+  const handleClick = () => {
+    trackEventSafe("ClickRegister");
+    window.open(`https://www.netim.com/en/domain-name/search?partnerid=${NETIM_PARTNER_ID}&domain=${domain}`, '_blank');
+  };
+  const shapeStyling = showText ? "btn-lg" : "btn-square";
+  const hoverText = `Register ${domain}`
+
+  return (
+    <button
+      className={`btn btn-primary ${shapeStyling}`}
+      onClick={handleClick}
+      title={hoverText}
+    >
+      {ActionIcons.register}
+      {showText && <div className="text-sm">Register</div>}
     </button>
   );
 };

@@ -18,14 +18,20 @@ import { FaEnvelope as EmailIcon } from "react-icons/fa";
 import { FaHome as HomeIcon } from "react-icons/fa";
 
 // Action Icons
-import { FaPlus as PlusIcon } from "react-icons/fa";
-import { FaMinus as MinusIcon } from "react-icons/fa";
-import { HiOutlineDocument as StartAgainIcon } from "react-icons/hi2";
-import { HiOutlinePencil as EditIcon } from "react-icons/hi2";
-import { HiOutlineShare as ShareIcon } from "react-icons/hi2";
-import { MdContentCopy as CopyIcon } from "react-icons/md";
+import {
+  MdFavoriteBorder as LikeIcon,
+  MdFavorite as UnlikeIcon,
+  MdClose as RejectIcon,
+  MdClose as UnrejectIcon,
+  MdShoppingCartCheckout as RegisterIcon,
+} from "react-icons/md";
+import {
+  HiOutlineDocument as StartAgainIcon,
+  HiOutlinePencil as EditIcon,
+  HiOutlineShare as ShareIcon,
+  HiOutlineSparkles as GenerateIcon,
+} from "react-icons/hi2";
 import { AiOutlineExport as ExportIcon } from "react-icons/ai";
-import { HiOutlineSparkles as GenerateIcon } from "react-icons/hi2";
 import { MdQuestionMark as AboutIcon } from "react-icons/md";
 
 
@@ -47,13 +53,15 @@ export const SocialIcons = {
 };
 
 export const ActionIcons = {
-  plus: <PlusIcon />,
-  minus: <MinusIcon />,
-  startAgain: <StartAgainIcon />,
-  editInputs: <EditIcon />,
+  like: <LikeIcon className="text-2xl" />,
+  unlike: <UnlikeIcon className="text-2xl" />,
+  reject: <RejectIcon className="text-2xl" />,
+  unreject: <UnrejectIcon className="text-2xl" />,
+  register: <RegisterIcon className="text-2xl" />,
+  startAgain: <StartAgainIcon className="text-2xl" />,
+  editInputs: <EditIcon className="text-2xl" />,
   export: <ExportIcon />,
   share: <ShareIcon />,
-  copy: <CopyIcon />,
   generate: <GenerateIcon />,
   about: <AboutIcon />,
 };

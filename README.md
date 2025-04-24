@@ -20,7 +20,6 @@ Terminal 2:
 
 TO DO:
 
-- add in end-of-journey Action (eg go buy domain)
 - misc details into index.html
 - add favicon
 - Enter equals generate always
@@ -69,3 +68,4 @@ DONE:
 - Plausible custom events
 - upgrade server to paid
 - shorten the about page
+- add in end-of-journey Action (eg go buy domain)

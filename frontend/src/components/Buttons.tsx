@@ -9,7 +9,7 @@ import { trackEventSafe } from "../utils/plausible";
 export const AddDomainsButton = () => {
   const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
   const { longlist } = useSearchStateStore();
-  const cta = longlist.length > 0 ? "add more ideas" : "dream up some domains";
+  const cta = longlist.length > 0 ? "dream some more" : "dream up some domains";
 
   return (
     <button
