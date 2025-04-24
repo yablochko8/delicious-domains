@@ -31,6 +31,7 @@ TO DO:
 - logging
 - different detail modal for invalid domains
 - shorten the about page
+- fix scrolling on EditInputsButton
 
 BACKLOG:
 

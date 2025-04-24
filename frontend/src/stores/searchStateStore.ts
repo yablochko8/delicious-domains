@@ -146,6 +146,6 @@ export const useSearchStateStore = create<SearchStateStore>()(
           },
         })),
     }),
-    { name: "search-state-25-04-14" }
+    { name: "search-state-25-04-24" }
   )
 );

@@ -4,7 +4,6 @@ import {
   MdFavoriteBorder as UnlikedIcon,
   MdClose as RejectIcon,
   MdClose as UnrejectIcon,
-  // MdAdd as UnrejectIcon,
 } from "react-icons/md";
 import { DomainAssessment } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStore";
@@ -20,7 +19,6 @@ const TotalScoreTile = ({
 }) => {
   //   If the score is negative, we want to display zero
   const positiveScore = totalScore < 0 ? 0 : totalScore;
-
 
   return (
     <div className="h-8 w-8 flex align-middle justify-center items-center" onClick={onClick}>
@@ -88,7 +86,6 @@ export const StatusMessage = ({
   );
 };
 
-
 export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: { domain: string, isLiked: boolean, isRejected: boolean, showText?: boolean }) => {
   const { rejectDomain, unrejectDomain } = useSearchStateStore();
   const handleClick = () =>
@@ -148,7 +145,6 @@ export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { 
 
   const shapeStyling = showText ? "btn-lg" : "btn-square";
 
-
   return (
     <button
       className={`btn ${shapeStyling} ${styling}`}
@@ -167,7 +163,6 @@ export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { 
 
 export const DomainCard = (assessment: DomainAssessment) => {
   const { domain, isPossible, isAvailable, isCheap } = assessment;
-
   const { rejected, liked } = useSearchStateStore();
 
   const isRejected = rejected.includes(domain);

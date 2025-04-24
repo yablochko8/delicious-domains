@@ -1,9 +1,5 @@
 import Plausible from "plausible-tracker";
 
-// const plausible = Plausible({
-//   domain: "dreamy.domains",
-// });
-
 const { trackEvent } = Plausible();
 
 type PlausibleEvent =
