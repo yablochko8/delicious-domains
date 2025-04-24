@@ -3,25 +3,17 @@ import { ActionIcons } from "../assets/Icons";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { openModal } from "../utils/openModal";
+import { useDomainGeneration } from "../hooks/useDomainGeneration";
 
-export const AddDomainsButton = ({
-  onClick,
-  isLoading,
-  isDisabled,
-}: {
-  onClick: () => void;
-  isLoading: boolean;
-  isDisabled: boolean;
-}) => {
-
+export const AddDomainsButton = () => {
+  const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
   const { longlist } = useSearchStateStore();
-
-
   const cta = longlist.length > 0 ? "generate more" : "generate domain ideas";
+
   return (
     <button
       className="btn btn-primary"
-      onClick={onClick}
+      onClick={generateDomains}
       disabled={isLoading || isDisabled}
     >
       {isLoading ? <span className="loading loading-spinner"></span> :
@@ -49,17 +41,26 @@ export const ClearAllButton = () => {
 
   return (
     <>
-      <button className="btn btn-outline hidden md:block" onClick={handleClick} title={cta}>
+      {/* Desktop version */}
+      <button
+        className="btn btn-outline hidden md:block"
+        onClick={handleClick}
+        title={cta}>
         {cta}
       </button>
-      <button className="btn btn-outline btn-square md:hidden text-2xl" onClick={handleClick} title={cta}>
+
+      {/* Mobile version */}
+      <button
+        className="btn btn-outline btn-square md:hidden text-2xl"
+        onClick={handleClick}
+        title={cta}>
         {ActionIcons.startAgain}
       </button>
     </>
   );
 };
 
-export const RefineInputsButton = () => {
+export const EditInputsButton = () => {
   const { isRefining, setIsRefining } = useDisplayStateStore();
 
   const handleClick = () => {
@@ -77,10 +78,19 @@ export const RefineInputsButton = () => {
   const cta = "edit inputs";
   return (
     <>
-      <button className="btn btn-outline hidden md:block" onClick={handleClick} title={cta}>
+      {/* Desktop version */}
+      <button
+        className="btn btn-outline hidden md:block"
+        onClick={handleClick}
+        title={cta}>
         {cta}
       </button>
-      <button className="btn btn-outline btn-square md:hidden text-2xl" onClick={handleClickMobile} title={cta}>
+
+      {/* Mobile version */}
+      <button
+        className="btn btn-outline btn-square md:hidden text-2xl"
+        onClick={handleClickMobile}
+        title={cta}>
         {ActionIcons.editInputs}
       </button>
     </>
