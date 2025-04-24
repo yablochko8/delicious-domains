@@ -5,7 +5,7 @@ import { getDomainAssessment, getLongList } from "../serverCalls";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { closeModal } from "../utils/openModal";
-import { trackEventSafe } from "@/utils/plausible";
+import { trackEventSafe } from "../utils/plausible";
 
 
 export const SELECTED_MODEL = "gpt-4.1-mini"
