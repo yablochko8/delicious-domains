@@ -20,18 +20,18 @@ Terminal 2:
 
 TO DO:
 
-- Plausible custom events
+- add in end-of-journey Action (eg go buy domain)
+- misc details into index.html
+- add favicon
+
+- make prompting better
 - if name included in description, insist on it being in the results
 - try a higher quality AI model
-- newest results should be coloured differently
-- add in end-of-journey Action (eg go buy domain)
-- add favicon
-- upgrade server to paid
-- misc details into index.html
 - logging
-- different detail modal for invalid domains
-- shorten the about page
+
 - fix scrolling on EditInputsButton
+- different detail modal for invalid domains
+- newest results should be coloured differently
 
 BACKLOG:
 
@@ -43,7 +43,6 @@ BACKLOG:
 - make scoring categories adjustable by end user
 - add back in suggested vibes (with highlighting)
 - smoother results loading
-- refactor all those button components to something clearer
 - use whois call to remove calls to domainr for domains that are definitely taken
 
 DONE:
@@ -65,3 +64,7 @@ DONE:
 - choose actual domain
 - connect netlify to actual domain
 - add plausible analytics
+- refactor all those button components to something clearer
+- Plausible custom events
+- upgrade server to paid
+- shorten the about page

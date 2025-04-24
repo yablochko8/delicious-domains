@@ -14,6 +14,8 @@ import { GrRun as LegsIcon } from "react-icons/gr";
 import { FaXTwitter as TwitterIcon } from "react-icons/fa6";
 import { FaGithub as GithubIcon } from "react-icons/fa";
 import { FaBluesky as BlueskyIcon } from "react-icons/fa6";
+import { FaEnvelope as EmailIcon } from "react-icons/fa";
+import { FaHome as HomeIcon } from "react-icons/fa";
 
 // Action Icons
 import { FaPlus as PlusIcon } from "react-icons/fa";
@@ -40,6 +42,8 @@ export const SocialIcons = {
   twitter: <TwitterIcon />,
   github: <GithubIcon />,
   bluesky: <BlueskyIcon />,
+  email: <EmailIcon />,
+  home: <HomeIcon />,
 };
 
 export const ActionIcons = {

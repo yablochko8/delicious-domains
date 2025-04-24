@@ -20,6 +20,18 @@ h1 {
   font-weight: bold;
 }
 
+@media (max-width: 640px) {
+  h1 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.2rem;
+  }
+}
+
 /* Domain Names in Modal */
 h2 {
   font-size: 1.5rem;

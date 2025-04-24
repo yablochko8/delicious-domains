@@ -6,8 +6,8 @@ import { InputForm } from "./components/InputForm";
 import { useDisplayStateStore } from "./stores/displayStateStore";
 import { ActionButtons } from "./components/ActionButtons";
 import { RefineModal } from "./components/RefineModal";
-import { WhatIsThisModal } from "./components/WhatIsThisModal";
 import { ProgressMessage } from "./components/ProgressMessage";
+import { AboutModal } from "./components/AboutModal";
 
 
 function App() {
@@ -61,7 +61,7 @@ function App() {
 
       {/* MODALS */}
       <RefineModal />
-      <WhatIsThisModal />
+      <AboutModal />
     </>
   );
 }
