@@ -6,9 +6,8 @@ import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { closeModal } from "../utils/openModal";
 import { trackEventSafe } from "../utils/plausible";
+import { SELECTED_MODEL } from "../config";
 
-
-export const SELECTED_MODEL = "gpt-4.1-mini"
 
 
 /**Returns a sequence of Action Buttons, for the topnav (on desktop) or for end of list (on mobile) */

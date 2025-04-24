@@ -4,7 +4,7 @@ import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { getDomainAssessment, getLongList } from "../serverCalls";
-import { SELECTED_MODEL } from "./ActionButtons";
+import { SELECTED_MODEL } from "../config";
 import { AddDomainsButton } from "./Buttons";
 import { closeModal } from "../utils/openModal";
 
