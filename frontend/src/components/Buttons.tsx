@@ -13,6 +13,7 @@ export const AddDomainsButton = ({
   isLoading: boolean;
   isDisabled: boolean;
 }) => {
+
   const { longlist } = useSearchStateStore();
 
 
@@ -35,22 +36,6 @@ export const AddDomainsButton = ({
   );
 };
 
-export const VibeButton = ({
-  vibe,
-  onClick,
-}: {
-  vibe: string;
-  onClick: (vibe: string) => void;
-}) => {
-  return (
-    <button
-      className="btn btn-xs btn-outline btn-info"
-      onClick={() => onClick(vibe)}
-    >
-      {vibe}
-    </button>
-  );
-};
 
 export const ClearAllButton = () => {
   const { clearAll } = useSearchStateStore();
@@ -166,7 +151,6 @@ export const ExportSavedButton = () => {
     </>
   );
 };
-
 
 
 export const AboutButton = () => {
