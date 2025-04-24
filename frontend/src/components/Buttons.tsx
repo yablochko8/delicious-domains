@@ -4,6 +4,7 @@ import { useSearchStateStore } from "../stores/searchStateStore";
 import { openModal } from "../utils/openModal";
 import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { useExport } from "../hooks/useExport";
+import { trackEventSafe } from "../utils/plausible";
 
 export const AddDomainsButton = () => {
   const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
@@ -33,6 +34,7 @@ export const ClearAllButton = () => {
   const { clearAll } = useSearchStateStore();
 
   const handleClick = () => {
+    trackEventSafe("ClickRestart");
     clearAll();
     window.scrollTo(0, 0);
   };
@@ -63,15 +65,19 @@ export const ClearAllButton = () => {
 export const EditInputsButton = () => {
   const { isRefining, setIsRefining } = useDisplayStateStore();
 
-  const handleClick = () => {
+  const handleClickShared = () => {
+    trackEventSafe("ClickEdit");
     setIsRefining(!isRefining);
+  }
+  const handleClickDesktop = () => {
+    handleClickShared();
     // Scroll the main content area to the top
     // TODO: Make this more robust and not dependent on a tailwind class
     document.querySelector('.overflow-y-auto')?.scrollTo(0, 0);
   };
 
   const handleClickMobile = () => {
-    setIsRefining(!isRefining);
+    handleClickShared();
     openModal(`refine-modal`);
   };
 
@@ -81,7 +87,7 @@ export const EditInputsButton = () => {
       {/* Desktop version */}
       <button
         className="btn btn-outline hidden md:block"
-        onClick={handleClick}
+        onClick={handleClickDesktop}
         title={cta}>
         {cta}
       </button>
@@ -126,6 +132,7 @@ export const ExportSavedButton = () => {
 
 export const AboutButton = () => {
   const handleClick = () => {
+    trackEventSafe("ClickAbout");
     openModal(`what-is-this-modal`);
   }
   return (

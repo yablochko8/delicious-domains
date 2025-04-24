@@ -1,5 +1,6 @@
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { WEBSITE_NAME } from "../config";
+import { trackEventSafe } from "../utils/plausible";
 
 export const useExport = () => {
   const { liked } = useSearchStateStore();
@@ -14,7 +15,12 @@ export const useExport = () => {
     }
   };
 
+  const trackEventShared = () => {
+    trackEventSafe("ClickExport", { domainCount: liked.length });
+  };
+
   const handleDesktopExport = async () => {
+    trackEventShared();
     if (liked.length === 0) return;
     const likedDomainsText = liked.join("\n");
     const copyPrefix = `${WEBSITE_NAME} - My Liked Domains: \n`;
@@ -22,6 +28,7 @@ export const useExport = () => {
   };
 
   const handleMobileExport = async () => {
+    trackEventShared();
     if (liked.length === 0) return;
     const likedDomainsText = liked.join("\n");
 
