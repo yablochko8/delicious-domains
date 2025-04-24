@@ -43,3 +43,13 @@ h3 {
   font-size: 0.75rem;
   color: #555;
 }
+
+/* Link styling */
+a {
+  color: #155dfc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
