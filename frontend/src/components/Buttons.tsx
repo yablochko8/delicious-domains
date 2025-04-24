@@ -133,7 +133,7 @@ export const ExportSavedButton = () => {
 export const AboutButton = () => {
   const handleClick = () => {
     trackEventSafe("ClickAbout");
-    openModal(`what-is-this-modal`);
+    openModal(`about-modal`);
   }
   return (
     <button className="btn btn-shadow btn-circle text-xl" onClick={handleClick}>
