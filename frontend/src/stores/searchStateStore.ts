@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { DomainAssessment, DomainScores } from "shared/types";
+import { trackEventSafe } from "../utils/plausible";
 
 export type SearchState = {
   longlist: string[];
@@ -79,23 +80,27 @@ export const useSearchStateStore = create<SearchStateStore>()(
             failed: [...state.assessments.failed, { domain, error }],
           },
         })),
-      likeDomain: (domain: string) =>
+      likeDomain: (domain: string) => {
+        trackEventSafe("ClickLike", { domain });
         set((state) => ({
           ...state,
           liked: [...state.liked, domain],
           rejected: state.rejected.filter((d) => d !== domain),
-        })),
+        }));
+      },
       unlikeDomain: (domain: string) =>
         set((state) => ({
           ...state,
           liked: state.liked.filter((d) => d !== domain),
         })),
-      rejectDomain: (domain: string) =>
+      rejectDomain: (domain: string) => {
+        trackEventSafe("ClickReject", { domain });
         set((state) => ({
           ...state,
           rejected: [...state.rejected, domain],
           liked: state.liked.filter((d) => d !== domain),
-        })),
+        }));
+      },
       unrejectDomain: (domain: string) =>
         set((state) => ({
           ...state,
