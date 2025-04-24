@@ -8,7 +8,7 @@ import { useExport } from "../hooks/useExport";
 export const AddDomainsButton = () => {
   const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
   const { longlist } = useSearchStateStore();
-  const cta = longlist.length > 0 ? "generate more" : "generate domain ideas";
+  const cta = longlist.length > 0 ? "add more ideas" : "generate domain ideas";
 
   return (
     <button
@@ -96,7 +96,6 @@ export const EditInputsButton = () => {
     </>
   );
 };
-
 
 export const ExportSavedButton = () => {
   const { handleDesktopExport, handleMobileExport } = useExport();

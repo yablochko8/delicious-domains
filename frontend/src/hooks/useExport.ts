@@ -1,4 +1,3 @@
-// frontend/src/hooks/useExportDomains.ts
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { WEBSITE_NAME } from "../config";
 

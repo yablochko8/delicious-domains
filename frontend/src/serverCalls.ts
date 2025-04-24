@@ -11,23 +11,6 @@ type UserInput = {
   feedback?: Feedback;
 };
 
-export const sendInputsAndReturnDomains = async (
-  userInput: UserInput
-): Promise<DomainAssessment[]> => {
-  const response = await fetch(`${SERVER_PATH}/find-domains`, {
-    method: "POST",
-    body: JSON.stringify({ userInput }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const json = await response.json();
-  const results: DomainAssessment[] = json.domainAssessments;
-  console.log("The json response was:", json);
-  console.log("The processed response was:", results);
-  return results;
-};
-
 export const getLongList = async (userInput: UserInput): Promise<string[]> => {
   const response = await fetch(`${SERVER_PATH}/domain-longlist`, {
     method: "POST",
@@ -52,10 +35,4 @@ export const getDomainAssessment = async (
   });
   const json = await response.json();
   return json.domainAssessment;
-};
-
-export const checkLimits = async (): Promise<number> => {
-  const response = await fetch(`${SERVER_PATH}/limits`);
-  const json = await response.json();
-  return json.maxDomains;
 };

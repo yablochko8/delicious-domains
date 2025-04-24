@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import "./App.css";
-import { checkLimits } from "./serverCalls";
 import { DomainList } from "./components/DomainList";
 import { useSearchStateStore } from "./stores/searchStateStore";
 import { TopNav } from "./components/TopNav";
@@ -9,39 +7,29 @@ import { useDisplayStateStore } from "./stores/displayStateStore";
 import { ActionButtons } from "./components/ActionButtons";
 import { RefineModal } from "./components/RefineModal";
 import { WhatIsThisModal } from "./components/WhatIsThisModal";
+import { ProgressMessage } from "./components/ProgressMessage";
 
 
 function App() {
-
-  // Request state and output
-
   const { assessments: assessedDomains } = useSearchStateStore();
   const { isRefining } = useDisplayStateStore();
 
-
-  // Wake the server when the page loads (because this is on Free plan on Render)
-  useEffect(() => {
-    const wakeTheServer = async () => {
-      const reportedMaxDomains = await checkLimits();
-      console.log("Max domains:", reportedMaxDomains);
-      // This will prob be useful on the frontend eventually
-    };
-    wakeTheServer();
-  }, []);
-
   const hasResults = assessedDomains.completed.length > 0;
-
 
   return (
     <>
       <TopNav />
       <div className="flex flex-col w-full max-w-2xl mx-auto pt-20 pb-14 md:pb-0 max-h-[100dvh]">
         <div className="flex flex-col w-full space-y-4 px-4 overflow-y-auto">
+
+          {/* INPUT FORM */}
           {(!hasResults) && (
             <div className="flex flex-col text-sm">
               <InputForm />
             </div>
           )}
+
+          {/* DESKTOP REFINE FORM (mobile is in RefineModal) */}
           {(hasResults && isRefining) && (
             <div className="flex flex-col text-sm hidden md:block">
               <InputForm />
@@ -50,43 +38,28 @@ function App() {
           <div>
             <div className="flex flex-row w-full">
               <div className="flex flex-col text-center justify-start items-center p-4 gap-4 w-full">
-                {/* EXPLAINER TEXT */}
-                {assessedDomains.completed.length > 0 && (
-                  <>
-                    <div className="text-sm text-gray-500">
-                      Tap the domain to see how it scored.
-                      Like and reject domains to get better results.
-                    </div>
-                  </>
-                )}
-
                 {/* RESULTS */}
                 {assessedDomains.completed.length > 0 && (
                   <DomainList domainOptions={assessedDomains.completed} />
                 )}
 
                 {/* IN PROGRESS */}
-
                 {assessedDomains.inProgress.length > 0 && (
-                  <>
-                    <div>
-                      Gathering scores for {assessedDomains.inProgress.length}{" "}
-                      domains...
-                    </div>
-                    {assessedDomains.inProgress.map((domain) => (
-                      <div key={domain}>{domain}</div>
-                    ))}
-                  </>
+                  <ProgressMessage domains={assessedDomains.inProgress} />
                 )}
 
               </div>
             </div>
           </div>
         </div >
+
+        {/* MOBILE ACTION BUTTONS (desktop ones are in the top nav) */}
         <div className="flex fixed bottom-0 w-full gap-2 border-t bg-base-100 border-base-content/20 p-2 justify-center md:justify-end md:hidden">
           <ActionButtons />
         </div>
       </div>
+
+      {/* MODALS */}
       <RefineModal />
       <WhatIsThisModal />
     </>

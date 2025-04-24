@@ -24,6 +24,6 @@ export const useInputStateStore = create<InputStateStore>()(
       setSeriousDomainsOnly: (seriousDomainsOnly: boolean) =>
         set({ seriousDomainsOnly }),
     }),
-    { name: "input-state-25-04-14" }
+    { name: "input-state-25-04-24" }
   )
 );

@@ -1,9 +1,7 @@
 import { ExpandyInput } from "./ExpandyInput";
 import { useInputStateStore } from "../stores/inputStateStore";
 
-
 export const InputForm = () => {
-
     const { purpose, vibe, seriousDomainsOnly, setPurpose, setVibe, setSeriousDomainsOnly } = useInputStateStore();
 
     return (

@@ -1,5 +1,6 @@
 import { ScoreId } from "./scoreExplanations";
-// Try keep each icon set from the same library
+
+// Try to keep each icon set from the same library!
 
 // Score Icons
 import { IoFlower as EvocIcon } from "react-icons/io5";
@@ -12,20 +13,17 @@ import { GrRun as LegsIcon } from "react-icons/gr";
 // Social Icons
 import { FaXTwitter as TwitterIcon } from "react-icons/fa6";
 import { FaGithub as GithubIcon } from "react-icons/fa";
+import { FaBluesky as BlueskyIcon } from "react-icons/fa6";
 
 // Action Icons
 import { FaPlus as PlusIcon } from "react-icons/fa";
 import { FaMinus as MinusIcon } from "react-icons/fa";
-
-
 import { HiOutlineDocument as StartAgainIcon } from "react-icons/hi2";
 import { HiOutlinePencil as EditIcon } from "react-icons/hi2";
 import { HiOutlineShare as ShareIcon } from "react-icons/hi2";
 import { MdContentCopy as CopyIcon } from "react-icons/md";
-
 import { AiOutlineExport as ExportIcon } from "react-icons/ai";
 import { HiOutlineSparkles as GenerateIcon } from "react-icons/hi2";
-
 import { MdQuestionMark as AboutIcon } from "react-icons/md";
 
 
@@ -38,11 +36,10 @@ export const ScoreIcons: Record<ScoreId, JSX.Element> = {
   find: <FindIcon />,
 };
 
-
-
 export const SocialIcons = {
   twitter: <TwitterIcon />,
   github: <GithubIcon />,
+  bluesky: <BlueskyIcon />,
 };
 
 export const ActionIcons = {

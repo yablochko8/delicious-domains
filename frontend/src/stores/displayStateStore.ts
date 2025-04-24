@@ -19,6 +19,6 @@ export const useDisplayStateStore = create<DisplayStateStore>()(
       setIsRefining: (isRefining: boolean) => set({ isRefining }),
       setIsLoading: (isLoading: boolean) => set({ isLoading }),
     }),
-    { name: "display-state-25-04-14" }
+    { name: "display-state-25-04-24" }
   )
 );

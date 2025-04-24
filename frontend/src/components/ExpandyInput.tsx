@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 type ExpandyInputProps = {
     question: string;
     subhead?: string;
@@ -11,7 +10,6 @@ type ExpandyInputProps = {
 
 export const ExpandyInput = ({ question, subhead, value, onChange, placeholder }: ExpandyInputProps) => {
     const [isFocused, setIsFocused] = useState(false);
-
 
     return (
         <div className="space-y-2">

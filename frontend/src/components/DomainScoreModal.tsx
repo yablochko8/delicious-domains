@@ -4,7 +4,6 @@ import { LikeButton, RejectButton } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
 
 
-
 const DomainScoreModalEntry = ({
   scoreId,
   score,
