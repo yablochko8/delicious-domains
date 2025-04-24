@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
@@ -8,7 +7,7 @@ import { trackEventSafe } from "../utils/plausible";
 import { SELECTED_MODEL } from "../config";
 
 export const useDomainGeneration = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, setIsLoading } = useDisplayStateStore();
 
   const {
     longlist,

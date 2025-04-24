@@ -1,6 +1,6 @@
 import { DomainAssessment } from "shared/types";
 import { scoreExplanationDict, ScoreId, scoreIds } from "../assets/scoreExplanations";
-import { LikeButton, RejectButton } from "./DomainCard";
+import { LikeButton, RegisterButton, RejectButton } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
 
 
@@ -77,6 +77,7 @@ export const DomainScoreModal = ({
             {/* if there is a button in form, it will close the modal */}
             <RejectButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
             <LikeButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
+            <RegisterButton domain={assessment.domain} showText={true} />
           </form>
         </div>
       </div>
