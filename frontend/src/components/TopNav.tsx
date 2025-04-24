@@ -4,7 +4,7 @@ import { AboutButton } from "./Buttons";
 
 export const TopNav = () => {
     return (
-        <div className="navbar bg-base-100 shadow-sm fixed top-0 left-0 z-50">
+        <div className="navbar bg-base-100 dark:bg-base-300 shadow-sm fixed top-0 left-0 z-50">
             <div className="navbar max-w-7xl mx-auto w-full px-4">
                 <div className="navbar-start justify-start w-full cursor-pointer gap-2">
                     <img src="/logo-transparent.png" alt={WEBSITE_NAME} className="w-10 h-10" />
