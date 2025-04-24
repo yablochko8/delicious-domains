@@ -21,8 +21,8 @@ const TotalScoreTile = ({
     <div className="h-8 w-8 flex align-middle justify-center items-center" onClick={onClick}>
       {positiveScore > 0 ? (
         <>
-          <div className="text-gray-500">{positiveScore}</div>
-          <div className="text-xs text-gray-500">%</div>
+          <div className="text-base-content/80">{positiveScore}</div>
+          <div className="text-xs text-base-content/40">%</div>
         </>
       ) : ""}
     </div>
@@ -66,11 +66,11 @@ export const StatusMessage = ({
       case isLiked:
         return "text-success";
       case !isPossible:
-        return "text-gray-400";
+        return "text-base-content/40";
       case !isAvailable:
-        return "text-gray-400";
+        return "text-base-content/40";
       case !isCheap:
-        return "text-gray-400";
+        return "text-base-content/40";
       default:
         return " ";
     }
@@ -187,10 +187,10 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const isLiked = liked.includes(domain);
   const isValid = isPossible && isAvailable && isCheap;
 
-  const validStyling = "bg-base-200/40 text-gray-800 border-base-content hover:bg-base-200 hover:border-slate-900";
+  const validStyling = "bg-base-200/40 text-base-content/80 border-base-content hover:bg-base-200 hover:border-base-content/80";
   const likedStyling = "bg-success/20 border-success/20 hover:bg-success/30 hover:border-success/30";
   const rejectedStyling = "bg-error/20 border-error/20 hover:bg-error/30 hover:border-error/30";
-  const invalidStyling = "bg-base-200 border-base-300 text-gray-400 hover:bg-slate-200 hover:border-slate-300";
+  const invalidStyling = "bg-base-200 border-base-300 text-base-content/40 hover:bg-base-200 hover:border-base-content/40";
 
   const colorStyling = (() => {
     if (!isValid) return invalidStyling;

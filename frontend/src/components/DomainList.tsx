@@ -61,7 +61,7 @@ export const DomainList = ({
 
   return (
     <div className="flex flex-col gap-3 w-full">
-      <div className="text-sm text-gray-500">
+      <div className="text-sm text-base-content/80">
         Tap the domain to see how it scored.
         Like and reject domains to get better results.
       </div>
