@@ -78,3 +78,14 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* Disable modal animations. I think they're inherited from daisyui? As of 2025-04-24 they were bouncing terribly on mobile when loading. */
+.modal {
+  animation: none !important;
+  transition: none !important;
+}
+
+.modal-box {
+  animation: none !important;
+  transition: none !important;
+}
