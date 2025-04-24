@@ -20,28 +20,29 @@ Terminal 2:
 
 TO DO:
 
+- Plausible custom events
+- if name included in description, insist on it being in the results
+- try a higher quality AI model
+- newest results should be coloured differently
 - add in end-of-journey Action (eg go buy domain)
-- choose actual domain
 - add favicon
-- connect netlify to actual domain
 - upgrade server to paid
-- add plausible analytics
 - misc details into index.html
-- add success measurements
+- logging
+- different detail modal for invalid domains
+- shorten the about page
 
 BACKLOG:
 
-- different detail modal for invalid domains
 - don't fetch scores for invalid domains
+- turn export into a "seek feedback" button
 - show/hide impossible domains
 - fix flash during modal load
 - consider adding check for deal breakers (copycat, annoying, esoteric)
-- turn options into a feedback survey
 - make scoring categories adjustable by end user
-- highlight selected vibes
+- add back in suggested vibes (with highlighting)
 - smoother results loading
 - refactor all those button components to something clearer
-- shorten the about page
 - use whois call to remove calls to domainr for domains that are definitely taken
 
 DONE:
@@ -60,3 +61,6 @@ DONE:
 - fix the focus expansion for input form on mobile
 - better coloring on like & reject buttons
 - switch to gpt 4.1 mini
+- choose actual domain
+- connect netlify to actual domain
+- add plausible analytics
