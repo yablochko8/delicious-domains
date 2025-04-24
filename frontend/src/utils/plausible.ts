@@ -9,7 +9,8 @@ type PlausibleEvent =
   | "ClickEdit"
   | "ClickReject"
   | "ClickLike"
-  | "ClickRegister";
+  | "ClickRegister"
+  | "ClickExport";
 
 // Define a mapping from event name to its props (if any)
 type PlausibleEventProps = {
@@ -20,6 +21,7 @@ type PlausibleEventProps = {
   ClickReject: { domain: string };
   ClickLike: { domain: string };
   ClickRegister: { domain: string };
+  ClickExport: { domainCount: number };
 };
 
 // Utility function to trigger events (type-safe)
