@@ -20,8 +20,6 @@ Terminal 2:
 
 TO DO:
 
-- Enter equals generate always
-
 - make prompting better
 - if name included in description, insist on it being in the results
 - try a higher quality AI model
@@ -69,3 +67,4 @@ DONE:
 - add in end-of-journey Action (eg go buy domain)
 - misc details into index.html
 - add favicon
+- Enter equals generate always
