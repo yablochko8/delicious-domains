@@ -20,8 +20,6 @@ Terminal 2:
 
 TO DO:
 
-- misc details into index.html
-- add favicon
 - Enter equals generate always
 
 - make prompting better
@@ -69,3 +67,5 @@ DONE:
 - upgrade server to paid
 - shorten the about page
 - add in end-of-journey Action (eg go buy domain)
+- misc details into index.html
+- add favicon
