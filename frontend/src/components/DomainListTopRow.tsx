@@ -2,7 +2,7 @@ import { scoreIds } from "../assets/scoreExplanations";
 
 export const DomainListTopRow = () => {
   const textStyling =
-    "justify-center text-xs md:text-base font-bold text-slate-400";
+    "justify-center text-xs md:text-base font-bold text-base-content/40";
   return (
     <>
       <div
