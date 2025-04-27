@@ -98,11 +98,7 @@ export const getDomainLongList = async (
     feedback
   );
 
-  console.log("Sending prompts:", { systemPrompt, userPrompt });
-
   const response = await sendLLMRequest(model, systemPrompt, userPrompt);
-
-  console.log("Response:", response);
 
   return jsonToArray(response, "domains");
 };

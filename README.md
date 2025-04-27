@@ -20,8 +20,8 @@ Terminal 2:
 
 TO DO:
 
-- try a higher quality AI model
-- logging
+- log queries
+- log likes & rejections
 
 - fix scrolling on EditInputsButton
 - different detail modal for invalid domains
@@ -69,3 +69,4 @@ DONE:
 - Enter equals generate always
 - if name included in description, insist on it being in the results
 - make prompting better
+- move to a higher quality AI model

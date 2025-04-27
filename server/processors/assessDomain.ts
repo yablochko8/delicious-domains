@@ -63,7 +63,6 @@ export const scoreDomain = async (domain: string): Promise<DomainScores> => {
 
   const aiScores = {
     evoc: Number(parsedScores?.evoc) || 0,
-    // brev: Number(parsedScores?.brev) || 0,
     pron: Number(parsedScores?.pron) || 0,
     find: Number(parsedScores?.find) || 0,
     spel: Number(parsedScores?.spel) || 0,

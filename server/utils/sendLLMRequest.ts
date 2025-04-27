@@ -33,28 +33,18 @@ export const sendLLMRequest = async (
       ],
       model: model,
     });
-
-    // console.log("Raw API response:", JSON.stringify(completion, null, 2));
-
     const response = completion.choices[0];
-    console.log("First choice:", response);
-
     if (!response?.message?.content) {
       console.error("No content in response");
       return "";
     }
-
     const content = response.message.content;
-    console.log("Content to parse:", content);
 
     // Remove any markdown code block syntax, handling various formats
     const cleanedContent = content
       .replace(/```(?:json)?\n?/g, "")
       .replace(/`/g, "")
       .trim();
-
-    console.log("Cleaned content:", cleanedContent);
-
     return cleanedContent;
   } catch (error) {
     console.error("Error calling LLM:", error);
