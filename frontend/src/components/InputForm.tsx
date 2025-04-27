@@ -37,7 +37,7 @@ export const InputForm = () => {
                 onChange={(e) => {
                     setPurpose(e.target.value);
                 }}
-                placeholder={randomPurpose}
+                placeholder={`e.g. "${randomPurpose}"`}
             />
 
             <ExpandyInput
@@ -46,7 +46,7 @@ export const InputForm = () => {
                 onChange={(e) => {
                     setVibe(e.target.value);
                 }}
-                placeholder={randomVibe}
+                placeholder={`e.g. "${randomVibe}"`}
             />
             <div className="flex flex-row w-full justify-start items-center gap-2">
                 <input
