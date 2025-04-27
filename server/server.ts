@@ -1,12 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { getDomainLongList } from "./processors/getDomainLongList";
-import {
-  getDomainStatus,
-  getDomainStatusParallel,
-} from "./processors/checkDomainAvailable";
-import { validTlds } from "./tlds";
-import { addScoresToDomain } from "processors/assessDomain";
+import { getDomainStatus } from "./processors/checkDomainAvailable";
+import { addScoresToDomain } from "./processors/assessDomain";
 
 export const PORT = 4101;
 
