@@ -40,7 +40,6 @@ export const useDomainGeneration = () => {
       const fetchedLonglist = await getLongList({
         purpose,
         vibe,
-        shortlist: null,
         model: SELECTED_MODEL,
         preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
         feedback,

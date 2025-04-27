@@ -5,7 +5,6 @@ const SERVER_PATH = import.meta.env.VITE_SERVER_URL;
 type UserInput = {
   purpose: string;
   vibe: string;
-  shortlist: string | null;
   model: string;
   preferredTlds?: string[];
   feedback?: Feedback;

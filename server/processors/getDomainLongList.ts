@@ -31,19 +31,10 @@ Important: Ensure the response is valid JSON and all TLDs are from the provided 
 const generateUserPrompt = (
   purpose: string,
   vibe: string,
-  shortlist: string,
-  theme: string,
   targetQuantity: number,
   preferredTlds?: string[],
   feedback?: Feedback
 ) => {
-  const themeInsertion = theme
-    ? `\nIdeally choose examples relevant to this theme: ${theme}`
-    : "";
-  const shortlistInsertion = shortlist
-    ? `\nNote the user has already drafted this list of ideas: ${shortlist} (though we don't need to stick to these).`
-    : "";
-
   const tldInsertion = preferredTlds?.length
     ? `\nIf possible, use these TLDs: ${preferredTlds}`
     : "";
@@ -57,7 +48,7 @@ const generateUserPrompt = (
 
   return `Generate ${targetQuantity} domain names with these requirements:
 - Purpose: ${purpose}
-- Desired vibe: ${vibe}${themeInsertion}
+- Desired vibe: ${vibe}
 
 The domains should be:
 - Memorable and brandable
@@ -67,7 +58,6 @@ The domains should be:
 
 Prioritize originality and names that are unlikely to already be registered. Avoid obvious or popular trademarks. Some of the suggestions can be quirky, but not all.
 
-${shortlistInsertion}
 ${tldInsertion}
 ${feedbackInsertion}
 
@@ -79,8 +69,6 @@ ${purpose}
 export const getDomainLongList = async (
   purpose: string,
   vibe: string,
-  shortlist: string,
-  theme: string,
   model: string,
   targetQuantity: number,
   preferredTlds?: string[],
@@ -91,8 +79,6 @@ export const getDomainLongList = async (
   const userPrompt = generateUserPrompt(
     purpose,
     vibe,
-    shortlist,
-    theme,
     targetQuantity,
     preferredTlds,
     feedback

@@ -28,8 +28,6 @@ app.post("/domain-longlist", async (req, res) => {
   const domains = await getDomainLongList(
     userInput.purpose,
     userInput.vibe,
-    userInput.shortlist,
-    userInput.theme,
     userInput.model,
     MAX_DOMAINS,
     userInput.preferredTlds,
