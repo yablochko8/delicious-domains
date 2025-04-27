@@ -13,32 +13,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Person {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  nickname  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+model CandidatesRequest {
+  id              Int       @id @default(autoincrement())
+  purpose         String
+  vibe            String
+  model           String
+  targetQuantity  Int
+  preferredTlds   String[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
+  likedDomains    String[]
+  rejectedDomains String[]
+  unratedDomains  String[] // domains that have been viewed but not yet rated
 
-  // relationships
-  things Thing[]
-
-  @@map("person")
-}
-
-model Thing {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  genre     String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  rating    Int       @default(0)
-
-  // relational ids
-  personId Int
-
-  // relationships
-  person Person @relation(fields: [personId], references: [id])
-
-  @@map("thing")
+  @@map("candidates_request")
 }

@@ -1,7 +1,7 @@
 import { sendLLMRequest } from "utils/sendLLMRequest";
 import { validTlds } from "../tlds";
 import { jsonToArray } from "utils/jsonToArray";
-import { Feedback } from "shared/types";
+import { CandidatesRequest } from "shared/types";
 
 const MAX_ROOT_LENGTH = 10;
 
@@ -28,21 +28,43 @@ All domain names must strictly follow the rules above. If a domain does not meet
 
 Important: Ensure the response is valid JSON and all TLDs are from the provided list.`;
 
-const generateUserPrompt = (
-  purpose: string,
-  vibe: string,
-  targetQuantity: number,
-  preferredTlds?: string[],
-  feedback?: Feedback
-) => {
+type GenerateUserPromptParams = Omit<CandidatesRequest, "model">;
+
+const generateUserPrompt = ({
+  purpose,
+  vibe,
+  targetQuantity,
+  preferredTlds,
+  likedDomains,
+  rejectedDomains,
+  unratedDomains,
+}: GenerateUserPromptParams) => {
   const tldInsertion = preferredTlds?.length
     ? `\nIf possible, use these TLDs: ${preferredTlds}`
     : "";
 
-  const feedbackInsertion = feedback
-    ? `\nPreviously viewed domains: ${feedback.viewed.join(", ")} 
-      \n- Liked: ${feedback.liked.join(", ")} 
-      \n- Rejected: ${feedback.rejected.join(", ")} 
+  const hasFeedback =
+    (likedDomains && likedDomains.length > 0) ||
+    (rejectedDomains && rejectedDomains.length > 0) ||
+    (unratedDomains && unratedDomains.length > 0);
+
+  const likedDomainsInsertion = likedDomains
+    ? `\n- Liked domains: ${likedDomains.join(", ")}`
+    : "";
+
+  const rejectedDomainsInsertion = rejectedDomains
+    ? `\n- Rejected domains: ${rejectedDomains.join(", ")}`
+    : "";
+
+  const unratedDomainsInsertion = unratedDomains
+    ? `\n- Unrated domains: ${unratedDomains.join(", ")}`
+    : "";
+
+  const feedbackInsertion = hasFeedback
+    ? `\nThe user has already reviewed these domains:
+      ${likedDomainsInsertion}
+      ${rejectedDomainsInsertion}
+      ${unratedDomainsInsertion}
       \nAvoid all of the above in your suggestions..`
     : "";
 
@@ -66,23 +88,27 @@ ${purpose}
 `;
 };
 
-export const getDomainLongList = async (
-  purpose: string,
-  vibe: string,
-  model: string,
-  targetQuantity: number,
-  preferredTlds?: string[],
-  feedback?: Feedback
-): Promise<string[]> => {
+export const getDomainCandidates = async ({
+  purpose,
+  vibe,
+  model,
+  targetQuantity,
+  preferredTlds,
+  likedDomains,
+  rejectedDomains,
+  unratedDomains,
+}: CandidatesRequest): Promise<string[]> => {
   const tldList = preferredTlds?.length ? preferredTlds : validTlds;
   const systemPrompt = generateSystemPrompt(tldList);
-  const userPrompt = generateUserPrompt(
+  const userPrompt = generateUserPrompt({
     purpose,
     vibe,
     targetQuantity,
     preferredTlds,
-    feedback
-  );
+    likedDomains,
+    rejectedDomains,
+    unratedDomains,
+  });
 
   const response = await sendLLMRequest(model, systemPrompt, userPrompt);
 

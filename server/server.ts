@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
-import { getDomainLongList } from "./processors/getDomainLongList";
+import { getDomainCandidates } from "./processors/getDomainCandidates";
 import { getDomainStatus } from "./processors/checkDomainAvailable";
 import { addScoresToDomain } from "./processors/assessDomain";
+import { CandidatesRequest } from "shared/types";
+import { createCandidatesRequest } from "dbCreators/createCandidatesRequest";
 
 export const PORT = 4101;
 
@@ -19,16 +21,17 @@ app.get("/heartbeat", async (_req, res) => {
   res.json({ message: "Hello from the server" });
 });
 
-app.post("/domain-longlist", async (req, res) => {
-  const userInput = req.body.userInput;
-  const domains = await getDomainLongList(
-    userInput.purpose,
-    userInput.vibe,
-    userInput.model,
-    MAX_DOMAINS,
-    userInput.preferredTlds,
-    userInput.feedback
-  );
+app.post("/domain-candidates", async (req, res) => {
+  const userInput: CandidatesRequest = req.body.userInput;
+  const domains = await getDomainCandidates({
+    ...userInput,
+    targetQuantity: MAX_DOMAINS,
+  });
+
+  // Do NOT await this, fire and forget
+  createCandidatesRequest(userInput).catch((err) => {
+    console.error("Failed to create candidates request:", err);
+  });
 
   res.json({ domains });
 });

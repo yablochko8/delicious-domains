@@ -1,17 +1,11 @@
-import { DomainAssessment, Feedback } from "shared/types";
+import { CandidatesRequest, DomainAssessment } from "shared/types";
 
 const SERVER_PATH = import.meta.env.VITE_SERVER_URL;
 
-type UserInput = {
-  purpose: string;
-  vibe: string;
-  model: string;
-  preferredTlds?: string[];
-  feedback?: Feedback;
-};
-
-export const getLongList = async (userInput: UserInput): Promise<string[]> => {
-  const response = await fetch(`${SERVER_PATH}/domain-longlist`, {
+export const getDomainCandidates = async (
+  userInput: CandidatesRequest
+): Promise<string[]> => {
+  const response = await fetch(`${SERVER_PATH}/domain-candidates`, {
     method: "POST",
     body: JSON.stringify({ userInput }),
     headers: {
