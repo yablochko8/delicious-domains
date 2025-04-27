@@ -75,7 +75,7 @@ const generateUserPrompt = ({
 The domains should be:
 - Memorable and brandable
 - Reflect the stated purpose and vibe
-- Use appropriate TLDs from the provided list
+- Use appropriate TLDs from the provided list (and use a variety of different TLDs)
 - Currently feasible (avoid obvious trademarks)
 
 Prioritize originality and names that are unlikely to already be registered. Avoid obvious or popular trademarks. Some of the suggestions can be quirky, but not all.
