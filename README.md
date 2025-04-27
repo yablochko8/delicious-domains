@@ -20,15 +20,13 @@ Terminal 2:
 
 TO DO:
 
-- try a higher quality AI model
-- logging
-
 - fix scrolling on EditInputsButton
 - different detail modal for invalid domains
 - newest results should be coloured differently
 
 BACKLOG:
 
+- log specific likes & rejections
 - fetch TLD shortlist first, not in main call
 - don't fetch scores for invalid domains
 - turn export into a "seek feedback" button
@@ -69,3 +67,5 @@ DONE:
 - Enter equals generate always
 - if name included in description, insist on it being in the results
 - make prompting better
+- move to a higher quality AI model
+- log queries

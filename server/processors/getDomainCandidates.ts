@@ -1,7 +1,7 @@
 import { sendLLMRequest } from "utils/sendLLMRequest";
 import { validTlds } from "../tlds";
 import { jsonToArray } from "utils/jsonToArray";
-import { Feedback } from "shared/types";
+import { CandidatesRequest } from "shared/types";
 
 const MAX_ROOT_LENGTH = 10;
 
@@ -28,46 +28,58 @@ All domain names must strictly follow the rules above. If a domain does not meet
 
 Important: Ensure the response is valid JSON and all TLDs are from the provided list.`;
 
-const generateUserPrompt = (
-  purpose: string,
-  vibe: string,
-  shortlist: string,
-  theme: string,
-  targetQuantity: number,
-  preferredTlds?: string[],
-  feedback?: Feedback
-) => {
-  const themeInsertion = theme
-    ? `\nIdeally choose examples relevant to this theme: ${theme}`
-    : "";
-  const shortlistInsertion = shortlist
-    ? `\nNote the user has already drafted this list of ideas: ${shortlist} (though we don't need to stick to these).`
-    : "";
+type GenerateUserPromptParams = Omit<CandidatesRequest, "model">;
 
+const generateUserPrompt = ({
+  purpose,
+  vibe,
+  targetQuantity,
+  preferredTlds,
+  likedDomains,
+  rejectedDomains,
+  unratedDomains,
+}: GenerateUserPromptParams) => {
   const tldInsertion = preferredTlds?.length
     ? `\nIf possible, use these TLDs: ${preferredTlds}`
     : "";
 
-  const feedbackInsertion = feedback
-    ? `\nPreviously viewed domains: ${feedback.viewed.join(", ")} 
-      \n- Liked: ${feedback.liked.join(", ")} 
-      \n- Rejected: ${feedback.rejected.join(", ")} 
+  const hasFeedback =
+    (likedDomains && likedDomains.length > 0) ||
+    (rejectedDomains && rejectedDomains.length > 0) ||
+    (unratedDomains && unratedDomains.length > 0);
+
+  const likedDomainsInsertion = likedDomains
+    ? `\n- Liked domains: ${likedDomains.join(", ")}`
+    : "";
+
+  const rejectedDomainsInsertion = rejectedDomains
+    ? `\n- Rejected domains: ${rejectedDomains.join(", ")}`
+    : "";
+
+  const unratedDomainsInsertion = unratedDomains
+    ? `\n- Unrated domains: ${unratedDomains.join(", ")}`
+    : "";
+
+  const feedbackInsertion = hasFeedback
+    ? `\nThe user has already reviewed these domains:
+      ${likedDomainsInsertion}
+      ${rejectedDomainsInsertion}
+      ${unratedDomainsInsertion}
       \nAvoid all of the above in your suggestions..`
     : "";
 
   return `Generate ${targetQuantity} domain names with these requirements:
 - Purpose: ${purpose}
-- Desired vibe: ${vibe}${themeInsertion}
+- Desired vibe: ${vibe}
 
 The domains should be:
 - Memorable and brandable
 - Reflect the stated purpose and vibe
-- Use appropriate TLDs from the provided list
+- Use appropriate TLDs from the provided list (and use a variety of different TLDs)
 - Currently feasible (avoid obvious trademarks)
 
 Prioritize originality and names that are unlikely to already be registered. Avoid obvious or popular trademarks. Some of the suggestions can be quirky, but not all.
 
-${shortlistInsertion}
 ${tldInsertion}
 ${feedbackInsertion}
 
@@ -76,33 +88,29 @@ ${purpose}
 `;
 };
 
-export const getDomainLongList = async (
-  purpose: string,
-  vibe: string,
-  shortlist: string,
-  theme: string,
-  model: string,
-  targetQuantity: number,
-  preferredTlds?: string[],
-  feedback?: Feedback
-): Promise<string[]> => {
+export const getDomainCandidates = async ({
+  purpose,
+  vibe,
+  model,
+  targetQuantity,
+  preferredTlds,
+  likedDomains,
+  rejectedDomains,
+  unratedDomains,
+}: CandidatesRequest): Promise<string[]> => {
   const tldList = preferredTlds?.length ? preferredTlds : validTlds;
   const systemPrompt = generateSystemPrompt(tldList);
-  const userPrompt = generateUserPrompt(
+  const userPrompt = generateUserPrompt({
     purpose,
     vibe,
-    shortlist,
-    theme,
     targetQuantity,
     preferredTlds,
-    feedback
-  );
-
-  console.log("Sending prompts:", { systemPrompt, userPrompt });
+    likedDomains,
+    rejectedDomains,
+    unratedDomains,
+  });
 
   const response = await sendLLMRequest(model, systemPrompt, userPrompt);
-
-  console.log("Response:", response);
 
   return jsonToArray(response, "domains");
 };

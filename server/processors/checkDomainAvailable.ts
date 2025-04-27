@@ -56,8 +56,6 @@ export const getDomainStatusParallel = async (
 export const getDomainStatus = async (
   domain: string
 ): Promise<DomainAssessment> => {
-  console.log("Checking domain availability for:", domain);
-
   const cachedDomainStatus = checkDomainStatusCache(domain);
   if (cachedDomainStatus) {
     console.log("Success! Cached domain status found for:", domain);

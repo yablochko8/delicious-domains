@@ -1,7 +1,7 @@
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
-import { getDomainAssessment, getLongList } from "../serverCalls";
+import { getDomainAssessment, getDomainCandidates } from "../serverCalls";
 import { closeModal } from "../utils/openModal";
 import { trackEventSafe } from "../utils/plausible";
 import { SELECTED_MODEL } from "../config";
@@ -28,22 +28,15 @@ export const useDomainGeneration = () => {
     trackEventSafe("ClickGenerate");
 
     try {
-      const feedback =
-        longlist.length > 0
-          ? {
-              viewed: longlist,
-              liked: liked,
-              rejected: rejected,
-            }
-          : undefined;
-
-      const fetchedLonglist = await getLongList({
+      const fetchedLonglist = await getDomainCandidates({
         purpose,
         vibe,
-        shortlist: null,
         model: SELECTED_MODEL,
+        targetQuantity: 10,
         preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
-        feedback,
+        likedDomains: liked,
+        rejectedDomains: rejected,
+        unratedDomains: longlist,
       });
 
       addToLonglist(fetchedLonglist);
@@ -54,7 +47,6 @@ export const useDomainGeneration = () => {
           try {
             await new Promise((resolve) => setTimeout(resolve, index * 200));
             const assessment = await getDomainAssessment(domain);
-            console.log("Adding Assessment:", assessment);
             addAssessment(assessment);
           } catch (error) {
             console.error(`Failed to assess domain ${domain}:`, error);

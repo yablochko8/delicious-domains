@@ -19,3 +19,15 @@ export type Feedback = {
   liked: string[];
   rejected: string[];
 };
+
+// This should match the schema.prisma CandidatesRequest type (except for id, createdAt etc)
+export type CandidatesRequest = {
+  purpose: string;
+  vibe: string;
+  model: string;
+  targetQuantity: number;
+  preferredTlds?: string[];
+  likedDomains?: string[];
+  rejectedDomains?: string[];
+  unratedDomains?: string[];
+};
