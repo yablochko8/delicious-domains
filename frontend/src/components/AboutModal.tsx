@@ -72,6 +72,12 @@ const AboutContents = () => {
                     </a>
 
                 </div>
+                <div className="flex flex-row items-center text-sm">
+                    or...
+                    <a href="https://airtable.com/appsNMKNh2267ygc4/shrvsd0gMivg4DbBN" target="_blank" rel="noopener noreferrer" aria-label="Feedback">
+                        send anonymous feedback
+                    </a>.
+                </div>
             </div>
         </div>
     );
