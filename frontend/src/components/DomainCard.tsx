@@ -170,12 +170,12 @@ export const RegisterButton = ({ domain, showText = false }: { domain: string, s
 
   return (
     <a
-      className={`btn btn-primary ${shapeStyling}`}
-      onClick={handleClick}
-      title={hoverText}
       href={targetUrl}
       target="_blank"
       rel="noopener noreferrer"
+      className={`btn btn-primary ${shapeStyling}`}
+      onClick={handleClick}
+      title={hoverText}
     >
       {ActionIcons.register}
       {showText && <div className="text-sm">Register</div>}
