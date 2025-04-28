@@ -174,6 +174,8 @@ export const RegisterButton = ({ domain, showText = false }: { domain: string, s
       onClick={handleClick}
       title={hoverText}
       href={targetUrl}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       {ActionIcons.register}
       {showText && <div className="text-sm">Register</div>}
