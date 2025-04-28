@@ -3,12 +3,28 @@ import { DomainAssessment } from "shared/types";
 import { DomainCard } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
 import { useSearchStateStore } from "../stores/searchStateStore";
+import { useState } from "react";
+
+
+const ShowUnavailableDomainsButton = ({ isShowing, howMany, onClick }: { isShowing: boolean, howMany: number, onClick: () => void }) => {
+  if (howMany === 0) return null
+
+  const buttonStyle = "btn btn-outline"
+  if (isShowing) return <button className={buttonStyle} onClick={onClick}>
+    Hide unavailable / premium
+  </button>
+
+  return <button className={buttonStyle} onClick={onClick}>
+    Show {howMany} unavailable / premium
+  </button>
+}
 
 export const DomainList = ({
   domainOptions,
 }: {
   domainOptions: DomainAssessment[];
 }) => {
+  const [isShowingUnavailableDomains, setIsShowingUnavailableDomains] = useState(false)
   // Filter out impossible domains (mainly hallucinated TLDs)
   const filteredDomainOptions = domainOptions.filter(
     (domain) => domain.isPossible
@@ -57,7 +73,14 @@ export const DomainList = ({
       return getTotalScore(b) - getTotalScore(a);
     });
 
+  const howManyUnavailableDomains = sortedDomainOptions.filter(
+    (domain) => !domain.isValid
+  ).length;
   // console.log({ sortedDomainOptions });
+
+  const displayDomainOptions = isShowingUnavailableDomains ? sortedDomainOptions : sortedDomainOptions.filter(
+    (domain) => domain.isValid
+  );
 
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -66,7 +89,7 @@ export const DomainList = ({
         Like and reject domains to get better results.
       </div>
       <AnimatePresence>
-        {sortedDomainOptions.map((domainAssessment) => (
+        {displayDomainOptions.map((domainAssessment) => (
           <motion.div
             key={domainAssessment.stableId}
             layout
@@ -85,6 +108,13 @@ export const DomainList = ({
             <DomainCard {...domainAssessment} />
           </motion.div>
         ))}
+        <div className="flex w-full justify-center">
+          <ShowUnavailableDomainsButton
+            isShowing={isShowingUnavailableDomains}
+            howMany={howManyUnavailableDomains}
+            onClick={() => setIsShowingUnavailableDomains(!isShowingUnavailableDomains)}
+          />
+        </div>
       </AnimatePresence>
     </div>
   );
