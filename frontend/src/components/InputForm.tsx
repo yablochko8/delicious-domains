@@ -76,7 +76,7 @@ const TLD_OPTIONS = [
 
 export const InputForm = () => {
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false)
-    const { purpose, vibe, preferredTlds: prefferedTlds, setPurpose, setVibe, togglePreferredTld: togglePrefferedTld } = useInputStateStore();
+    const { purpose, vibe, preferredTlds, setPurpose, setVibe, togglePreferredTld } = useInputStateStore();
 
     // useMemo to avoid re-rendering with a new random purpose on every interaction
     const randomPurpose = useMemo(
@@ -117,7 +117,7 @@ export const InputForm = () => {
                     </div>
                     <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
                         {TLD_OPTIONS.map((tld) => (
-                            <InputTldCheckbox key={tld} tld={tld} checked={prefferedTlds.includes(tld)} onChange={() => togglePrefferedTld(tld)} />
+                            <InputTldCheckbox key={tld} tld={tld} checked={preferredTlds.includes(tld)} onChange={() => togglePreferredTld(tld)} />
                         ))}
                     </div>
                 </>
