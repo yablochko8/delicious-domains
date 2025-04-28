@@ -11,11 +11,11 @@ const ShowUnavailableDomainsButton = ({ isShowing, howMany, onClick }: { isShowi
 
   const buttonStyle = "btn btn-default btn-sm"
   if (isShowing) return <button className={buttonStyle} onClick={onClick}>
-    Hide unavailable / premium
+    hide unavailable / premium
   </button>
 
   return <button className={buttonStyle} onClick={onClick}>
-    Show {howMany} unavailable / premium
+    show {howMany} unavailable / premium
   </button>
 }
 

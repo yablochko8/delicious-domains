@@ -18,7 +18,7 @@ export const useDomainGeneration = () => {
     addFailure,
   } = useSearchStateStore();
 
-  const { purpose, vibe, seriousDomainsOnly } = useInputStateStore();
+  const { purpose, vibe, preferredTlds } = useInputStateStore();
   const { setIsRefining } = useDisplayStateStore();
 
   const generateDomains = async () => {
@@ -33,7 +33,7 @@ export const useDomainGeneration = () => {
         vibe,
         model: SELECTED_MODEL,
         targetQuantity: 10,
-        preferredTlds: seriousDomainsOnly ? ["com", "ai", "io"] : undefined,
+        preferredTlds: preferredTlds,
         likedDomains: liked,
         rejectedDomains: rejected,
         unratedDomains: longlist,
@@ -65,6 +65,6 @@ export const useDomainGeneration = () => {
   return {
     isLoading,
     generateDomains,
-    isDisabled: !purpose || !vibe,
+    isDisabled: !purpose,
   };
 };

@@ -24,7 +24,7 @@ export const ExpandyInput = ({ question, subhead, value, onChange, placeholder }
         <div className="space-y-2">
             <div>
                 <h3>{question}</h3>
-                {subhead && <p className="text-sm text-base-content/80">{subhead}</p>}
+                {subhead && <p className="text-sm text-base-content/60">{subhead}</p>}
             </div>
             <div>
                 <textarea
