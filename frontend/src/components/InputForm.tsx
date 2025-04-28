@@ -1,5 +1,7 @@
 import { ExpandyInput } from "./ExpandyInput";
 import { useInputStateStore } from "../stores/inputStateStore";
+import { useMemo, useState } from "react";
+import { InputTldCheckbox } from "./InputTldCheckbox";
 
 const EXAMPLE_PURPOSES = [
     "linkedin for cats",
@@ -21,11 +23,70 @@ const EXAMPLE_VIBES = [
     "playful, youthful, energetic",
 ]
 
-export const InputForm = () => {
-    const { purpose, vibe, seriousDomainsOnly, setPurpose, setVibe, setSeriousDomainsOnly } = useInputStateStore();
+const TLD_OPTIONS = [
+    ".com",
+    ".ai",
+    ".io",
+    ".app",
+    ".dev",
+    ".xyz",
+    ".net",
+    ".org",
+    ".agency",
+    ".art",
+    ".biz",
+    ".blog",
+    ".center",
+    ".click",
+    ".cloud",
+    ".club",
+    ".co",
+    ".company",
+    ".consulting",
+    ".data",
+    ".design",
+    ".digital",
+    ".diy",
+    ".expert",
+    ".fun",
+    ".global",
+    ".group",
+    ".info",
+    ".ink",
+    ".life",
+    ".live",
+    ".me",
+    ".media",
+    ".network",
+    ".news",
+    ".online",
+    ".pro",
+    ".shop",
+    ".site",
+    ".solutions",
+    ".space",
+    ".store",
+    ".studio",
+    ".tech",
+    ".team",
+    ".today",
+    ".works",
+    ".world"
+]
 
-    const randomPurpose = EXAMPLE_PURPOSES[Math.floor(Math.random() * EXAMPLE_PURPOSES.length)];
-    const randomVibe = EXAMPLE_VIBES[Math.floor(Math.random() * EXAMPLE_VIBES.length)];
+export const InputForm = () => {
+    const [showAdvancedOptions, setShowAdvancedOptions] = useState(false)
+    const { purpose, vibe, preferredTlds: prefferedTlds, setPurpose, setVibe, togglePreferredTld: togglePrefferedTld } = useInputStateStore();
+
+    // useMemo to avoid re-rendering with a new random purpose on every interaction
+    const randomPurpose = useMemo(
+        () => EXAMPLE_PURPOSES[Math.floor(Math.random() * EXAMPLE_PURPOSES.length)],
+        []
+    );
+    const randomVibe = useMemo(
+        () => EXAMPLE_VIBES[Math.floor(Math.random() * EXAMPLE_VIBES.length)],
+        []
+    );
 
     return (
         <div className="flex flex-col gap-4 p-4">
@@ -48,18 +109,24 @@ export const InputForm = () => {
                 }}
                 placeholder={`e.g. "${randomVibe}"`}
             />
-            <div className="flex flex-row w-full justify-start items-center gap-2">
-                <input
-                    type="checkbox"
-                    className="checkbox checkbox-success"
-                    checked={seriousDomainsOnly}
-                    onChange={() => setSeriousDomainsOnly(!seriousDomainsOnly)}
-                />
-                <label className="label cursor-pointer flex items-center">
-                    serious domains only (.com / .ai / .io)
-                </label>
+            {showAdvancedOptions && (
+                <>
+                    <div>
+                        <h3>preferred top-level domains?</h3>
+                        <p className="text-sm text-base-content/60">tick nothing to stick to a longer list of ~350 options</p>
+                    </div>
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+                        {TLD_OPTIONS.map((tld) => (
+                            <InputTldCheckbox key={tld} tld={tld} checked={prefferedTlds.includes(tld)} onChange={() => togglePrefferedTld(tld)} />
+                        ))}
+                    </div>
+                </>
+            )}
+            <div className="flex flex-row w-full justify-end items-center gap-2">
+                <button className="btn btn-sm" onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
+                    {showAdvancedOptions ? "hide advanced options" : "advanced options"}
+                </button>
             </div>
-
         </div>
     )
 }

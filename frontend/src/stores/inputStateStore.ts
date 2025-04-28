@@ -4,13 +4,13 @@ import { persist } from "zustand/middleware";
 export type InputState = {
   purpose: string;
   vibe: string;
-  seriousDomainsOnly: boolean;
+  preferredTlds: string[];
 };
 
 type InputStateStore = InputState & {
   setPurpose: (purpose: string) => void;
   setVibe: (vibe: string) => void;
-  setSeriousDomainsOnly: (seriousDomainsOnly: boolean) => void;
+  togglePreferredTld: (tld: string) => void;
 };
 
 export const useInputStateStore = create<InputStateStore>()(
@@ -18,11 +18,15 @@ export const useInputStateStore = create<InputStateStore>()(
     (set) => ({
       purpose: "",
       vibe: "",
-      seriousDomainsOnly: false,
+      preferredTlds: [],
       setPurpose: (purpose: string) => set({ purpose }),
       setVibe: (vibe: string) => set({ vibe }),
-      setSeriousDomainsOnly: (seriousDomainsOnly: boolean) =>
-        set({ seriousDomainsOnly }),
+      togglePreferredTld: (tld: string) =>
+        set((state) => ({
+          preferredTlds: state.preferredTlds.includes(tld)
+            ? state.preferredTlds.filter((t) => t !== tld)
+            : [...state.preferredTlds, tld],
+        })),
     }),
     { name: "input-state-25-04-24" }
   )
