@@ -9,7 +9,7 @@ import { useState } from "react";
 const ShowUnavailableDomainsButton = ({ isShowing, howMany, onClick }: { isShowing: boolean, howMany: number, onClick: () => void }) => {
   if (howMany === 0) return null
 
-  const buttonStyle = "btn btn-outline"
+  const buttonStyle = "btn btn-default btn-sm"
   if (isShowing) return <button className={buttonStyle} onClick={onClick}>
     Hide unavailable / premium
   </button>
