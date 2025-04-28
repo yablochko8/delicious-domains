@@ -162,20 +162,22 @@ export const RegisterButton = ({ domain, showText = false }: { domain: string, s
 
   const handleClick = () => {
     trackEventSafe("ClickRegister");
-    window.open(`https://www.netim.com/en/domain-name/search?partnerid=${NETIM_PARTNER_ID}&domain=${domain}`, '_blank', 'noopener,noreferrer');
   };
   const shapeStyling = showText ? "btn-lg" : "btn-square";
   const hoverText = `Register ${domain}`
+  const targetUrl = `https://www.netim.com/en/domain-name/search?partnerid=${NETIM_PARTNER_ID}&domain=${domain}`;
+
 
   return (
-    <button
+    <a
       className={`btn btn-primary ${shapeStyling}`}
       onClick={handleClick}
       title={hoverText}
+      href={targetUrl}
     >
       {ActionIcons.register}
       {showText && <div className="text-sm">Register</div>}
-    </button>
+    </a>
   );
 };
 
