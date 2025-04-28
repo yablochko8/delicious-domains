@@ -25,7 +25,7 @@ export const AboutModal = () => {
 
 const AboutContents = () => {
     return (
-        <div className="flex flex-col gap-4 text-sm text-justify">
+        <div className="flex flex-col gap-4 text-sm text-justify text-about">
             <h3>This tool gives you website name ideas, but only shows cheap, available domains.</h3>
 
             <div>

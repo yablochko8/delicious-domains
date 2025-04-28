@@ -69,13 +69,13 @@ h3 {
   color: #555;
 }
 
-/* Link styling */
-a {
+/* Link styling only applies within text-about */
+.text-about a {
   color: #155dfc;
   text-decoration: none;
 }
 
-a:hover {
+.text-about a:hover {
   text-decoration: underline;
 }
 
