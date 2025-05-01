@@ -39,7 +39,7 @@ function App() {
           )}
           <div>
             <div className="flex flex-row w-full">
-              <div className="flex flex-col text-center justify-start items-center p-y4 gap-4 w-full">
+              <div className="flex flex-col text-center justify-start items-center py-4 gap-4 w-full">
                 {/* RESULTS */}
                 {assessedDomains.completed.length > 0 && (
                   <DomainList domainOptions={assessedDomains.completed} />

@@ -136,8 +136,8 @@ export const AboutButton = () => {
     openModal(`about-modal`);
   }
   return (
-    <div className="subtle-topnav cursor-pointer " onClick={handleClick}>
+    <button className="subtle-topnav cursor-pointer " onClick={handleClick}>
       About
-    </div>
+    </button>
   );
 };
