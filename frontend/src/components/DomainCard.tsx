@@ -238,7 +238,8 @@ export const DomainCard = (assessment: DomainAssessment) => {
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Check if the clicked element or its parents have the 'btn' class
+    // Check if the clicked element or its parents has a class that reveals it's an action button
+    // Only if it isn't should we treat this as a card click
     const clickedCircle = (e.target as HTMLElement).closest('.circle-button');
     const clickedRegister = (e.target as HTMLElement).closest('.register-button');
     if (!clickedCircle && !clickedRegister) {
