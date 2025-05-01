@@ -53,7 +53,7 @@ export const ClearAllButton = () => {
 
       {/* Mobile version */}
       <button
-        className="btn btn-neutral btn-square md:hidden text-2xl"
+        className="btn btn-outline btn-square md:hidden text-2xl"
         onClick={handleClick}
         title={cta}>
         {ActionIcons.startAgain}
@@ -94,7 +94,7 @@ export const EditInputsButton = () => {
 
       {/* Mobile version */}
       <button
-        className="btn btn-info btn-square md:hidden text-2xl"
+        className="btn btn-outline btn-square md:hidden text-2xl"
         onClick={handleClickMobile}
         title={cta}>
         {ActionIcons.editInputs}

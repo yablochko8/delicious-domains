@@ -1,4 +1,4 @@
-import { ExpandyInput } from "./ExpandyInput";
+import { InputRefreshed } from "./ExpandyInput";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useMemo, useState } from "react";
 import { InputTldCheckbox } from "./InputTldCheckbox";
@@ -98,14 +98,14 @@ export const InputForm = () => {
     return (
         <div className="flex flex-col gap-4 py-4 pt-20">
 
-            <ExpandyInput
-                question="what are you building?"
-                subhead="for best results, paste in a full description here"
+            <InputRefreshed
+                question="What are you building?"
+                subhead="For best results, paste in a full description here"
                 value={purpose}
                 onChange={(e) => {
                     setPurpose(e.target.value);
                 }}
-                placeholder={`e.g. "${randomPurpose}"`}
+                placeholder={`E.g. "${randomPurpose}"`}
             />
 
             {/* <ExpandyInput

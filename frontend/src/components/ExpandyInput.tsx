@@ -1,5 +1,4 @@
 import { useDomainGeneration } from "../hooks/useDomainGeneration";
-import { useState } from "react";
 
 type ExpandyInputProps = {
     question: string;
@@ -9,8 +8,7 @@ type ExpandyInputProps = {
     placeholder?: string;
 }
 
-export const ExpandyInput = ({ question, subhead, value, onChange, placeholder }: ExpandyInputProps) => {
-    const [isFocused, setIsFocused] = useState(false);
+export const InputRefreshed = ({ question, subhead, value, onChange, placeholder }: ExpandyInputProps) => {
     const { generateDomains } = useDomainGeneration();
 
     // If a user hits Enter in this input, we want to trigger generate domains
@@ -20,6 +18,7 @@ export const ExpandyInput = ({ question, subhead, value, onChange, placeholder }
             generateDomains();
         }
     }
+
     return (
         <div className="space-y-2">
             <div>
@@ -28,16 +27,10 @@ export const ExpandyInput = ({ question, subhead, value, onChange, placeholder }
             </div>
             <div>
                 <textarea
-                    className="textarea textarea-accent w-full max-w-500 transition-all duration-200 ease-in-out text-base"
-                    style={{
-                        height: isFocused ? '10rem' : '5rem',
-                        fontSize: '16px' // Prevent mobile zoom
-                    }}
+                    className="input-background w-full max-w-500 transition-all duration-200 ease-in-out text-base p-3 border-1 border-black rounded-2xl drop-shadow focus:drop-shadow-lg"
                     placeholder={placeholder}
                     value={value}
                     onChange={onChange}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
                     onKeyDown={handleKeyDown}
                 />
             </div>
