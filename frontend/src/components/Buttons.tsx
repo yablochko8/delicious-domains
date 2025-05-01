@@ -141,3 +141,23 @@ export const AboutButton = () => {
     </button>
   );
 };
+
+
+export const EnterButton = () => {
+  const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
+
+  return (
+    <button
+      aria-label="Submit"
+      className="btn btn-circle h-7 w-7 text-sm bg-[#B5C7FE] text-white border shadow-none border-none"
+      onClick={generateDomains}
+      disabled={isLoading || isDisabled}
+    >
+      {isLoading ? <span className="loading loading-spinner"></span> :
+        <>
+          {ActionIcons.enter}
+        </>
+      }
+    </button>
+  );
+};

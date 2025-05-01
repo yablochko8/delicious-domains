@@ -1,4 +1,4 @@
-import { AddDomainsButton, ClearAllButton, ExportSavedButton, EditInputsButton } from "./Buttons";
+import { ClearAllButton, ExportSavedButton, EditInputsButton } from "./Buttons";
 import { useSearchStateStore } from "../stores/searchStateStore";
 
 /**Returns a sequence of Action Buttons, for the topnav (on desktop) or for end of list (on mobile) */
@@ -16,7 +16,6 @@ export const ActionButtons = () => {
             {liked.length > 4 && (
                 <ExportSavedButton />
             )}
-            <AddDomainsButton />
         </>
     );
 };

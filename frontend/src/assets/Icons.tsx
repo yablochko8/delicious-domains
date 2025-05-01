@@ -16,6 +16,7 @@ import { FaGithub as GithubIcon } from "react-icons/fa";
 import { FaBluesky as BlueskyIcon } from "react-icons/fa6";
 import { FaEnvelope as EmailIcon } from "react-icons/fa";
 import { FaHome as HomeIcon } from "react-icons/fa";
+import { FaChevronRight as EnterIcon } from "react-icons/fa";
 
 // Action Icons
 import {
@@ -64,4 +65,5 @@ export const ActionIcons = {
   share: <ShareIcon />,
   generate: <GenerateIcon />,
   about: <AboutIcon />,
+  enter: <EnterIcon />,
 };

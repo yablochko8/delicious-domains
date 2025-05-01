@@ -1,15 +1,24 @@
 export const InputTldCheckbox = ({ tld, checked, onChange }: { tld: string, checked: boolean, onChange: (checked: boolean) => void }) => {
     return (
-        <div className="flex flex-row gap-2 items-center">
-            <label className="label cursor-pointer flex items-center">
-                <input
-                    type="checkbox"
-                    className="checkbox checkbox-success"
-                    checked={checked}
-                    onChange={() => onChange(!checked)}
-                />
-                {tld}
-            </label>
-        </div>
+        <button
+            className={`
+                btn btn-sm
+                cursor-pointer 
+                rounded-lg 
+                px-3 
+                h-7 
+                text-sm 
+                flex items-center
+                transition-colors 
+                border-1
+                border-[#2A2A304D]
+                font-normal
+                ${checked ? 'btn-neutral' : 'btn-ghost'}`}
+            onClick={() => onChange(!checked)}
+        >
+            {tld}
+        </button>
     )
 }
+
+

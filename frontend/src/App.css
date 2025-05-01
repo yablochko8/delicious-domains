@@ -29,6 +29,7 @@
 body {
   background-color: #000020;
   margin: 0;
+  overflow: hidden;
 }
 
 .blue-white-ellipse {

@@ -18,7 +18,7 @@ export const useDomainGeneration = () => {
     addFailure,
   } = useSearchStateStore();
 
-  const { purpose, vibe, preferredTlds } = useInputStateStore();
+  const { purpose, vibeArray, preferredTlds } = useInputStateStore();
   const { setIsRefining } = useDisplayStateStore();
 
   const generateDomains = async () => {
@@ -26,6 +26,7 @@ export const useDomainGeneration = () => {
     setIsRefining(false);
     closeModal("refine-modal");
     trackEventSafe("ClickGenerate");
+    const vibe = vibeArray.join(", ");
 
     try {
       const fetchedLonglist = await getDomainCandidates({
