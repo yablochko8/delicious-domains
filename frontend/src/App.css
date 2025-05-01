@@ -26,11 +26,25 @@
   text-align: left;
 }
 
+body {
+  background: radial-gradient(
+    ellipse 100% 40% at top center,
+    #000020 0%,
+    #000020 30%,
+    #000066 60%,
+    #202693 80%,
+    #ffffff 200%
+  );
+  height: 200 vh;
+  margin: 0;
+}
+
 /* Page Headers */
 h1 {
+  color: #ffffff;
   font-family: "Ubuntu", sans-serif;
-  font-size: 1.8rem;
-  font-weight: bold;
+  /* font-family: "Inter", sans-serif; <- this is Ranjit suggestion */
+  font-size: 4rem; /* 64px */
 }
 
 @media (max-width: 640px) {
@@ -47,14 +61,30 @@ h1 {
 
 /* Domain Names in Modal */
 h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
+  color: #ffffff;
+  font-size: 1.125rem; /* 18px */
 }
 
 /* Context for h2, e.g. overall score in modal */
 .text-subheader {
   font-size: 1rem;
   color: #888;
+}
+
+.subtle-topnav {
+  color: #ffffff;
+  opacity: 0.4;
+}
+
+.text-form-heading {
+  color: #ffffff;
+  font-size: 1rem; /* 16px */
+  font-weight: 700;
+}
+
+.text-form-subheading {
+  color: #ffffff;
+  font-size: 1rem; /* 16px */
 }
 
 /* Individual score names in modal */

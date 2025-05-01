@@ -19,12 +19,14 @@ function App() {
   return (
     <>
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto pt-20 pb-14 md:pb-0 max-h-[100dvh]">
+      <div className="flex flex-col w-full max-w-2xl mx-auto pt-20 pb-14 md:pb-0 max-h-[100dvh] min-h-[100dvh]">
         <div className="flex flex-col w-full space-y-4 px-4 overflow-y-auto">
 
           {/* INPUT FORM */}
           {(!hasResults) && (
             <div className="flex flex-col text-sm">
+              <h1>Generate memorable, available <strong>domains</strong></h1>
+              <h2>Automatically rank options based on six metrics, all domains under $100/year</h2>
               <InputForm />
             </div>
           )}

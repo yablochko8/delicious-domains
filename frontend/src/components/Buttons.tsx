@@ -45,7 +45,7 @@ export const ClearAllButton = () => {
     <>
       {/* Desktop version */}
       <button
-        className="btn btn-outline hidden md:block"
+        className="btn btn-info hidden md:block"
         onClick={handleClick}
         title={cta}>
         {cta}
@@ -53,7 +53,7 @@ export const ClearAllButton = () => {
 
       {/* Mobile version */}
       <button
-        className="btn btn-outline btn-square md:hidden text-2xl"
+        className="btn btn-neutral btn-square md:hidden text-2xl"
         onClick={handleClick}
         title={cta}>
         {ActionIcons.startAgain}
@@ -86,7 +86,7 @@ export const EditInputsButton = () => {
     <>
       {/* Desktop version */}
       <button
-        className="btn btn-outline hidden md:block"
+        className="btn btn-info hidden md:block"
         onClick={handleClickDesktop}
         title={cta}>
         {cta}
@@ -94,7 +94,7 @@ export const EditInputsButton = () => {
 
       {/* Mobile version */}
       <button
-        className="btn btn-outline btn-square md:hidden text-2xl"
+        className="btn btn-info btn-square md:hidden text-2xl"
         onClick={handleClickMobile}
         title={cta}>
         {ActionIcons.editInputs}
@@ -136,8 +136,8 @@ export const AboutButton = () => {
     openModal(`about-modal`);
   }
   return (
-    <button className="btn btn-shadow btn-circle text-xl" onClick={handleClick}>
-      {ActionIcons.about}
-    </button>
+    <div className="subtle-topnav cursor-pointer " onClick={handleClick}>
+      About
+    </div>
   );
 };

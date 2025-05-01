@@ -11,17 +11,17 @@ const EXAMPLE_PURPOSES = [
     "spotify for podcasts",
 ]
 
-const EXAMPLE_VIBES = [
-    "slick, sophisticated, fresh",
-    "funny, quirky, playful",
-    "professional, serious, trustworthy",
-    "casual, friendly, approachable",
-    "minimalist, clean, modern",
-    "bold, adventurous, innovative",
-    "sophisticated, elegant, luxurious",
-    "trendy, hip, cool",
-    "playful, youthful, energetic",
-]
+// const EXAMPLE_VIBES = [
+//     "slick, sophisticated, fresh",
+//     "funny, quirky, playful",
+//     "professional, serious, trustworthy",
+//     "casual, friendly, approachable",
+//     "minimalist, clean, modern",
+//     "bold, adventurous, innovative",
+//     "sophisticated, elegant, luxurious",
+//     "trendy, hip, cool",
+//     "playful, youthful, energetic",
+// ]
 
 const TLD_OPTIONS = [
     ".com",
@@ -76,20 +76,27 @@ const TLD_OPTIONS = [
 
 export const InputForm = () => {
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false)
-    const { purpose, vibe, preferredTlds, setPurpose, setVibe, togglePreferredTld } = useInputStateStore();
+    const {
+        purpose,
+        // vibe,
+        preferredTlds,
+        setPurpose,
+        // setVibe,
+        togglePreferredTld
+    } = useInputStateStore();
 
     // useMemo to avoid re-rendering with a new random purpose on every interaction
     const randomPurpose = useMemo(
         () => EXAMPLE_PURPOSES[Math.floor(Math.random() * EXAMPLE_PURPOSES.length)],
         []
     );
-    const randomVibe = useMemo(
-        () => EXAMPLE_VIBES[Math.floor(Math.random() * EXAMPLE_VIBES.length)],
-        []
-    );
+    // const randomVibe = useMemo(
+    //     () => EXAMPLE_VIBES[Math.floor(Math.random() * EXAMPLE_VIBES.length)],
+    //     []
+    // );
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4 py-4 pt-20">
 
             <ExpandyInput
                 question="what are you building?"
@@ -101,14 +108,14 @@ export const InputForm = () => {
                 placeholder={`e.g. "${randomPurpose}"`}
             />
 
-            <ExpandyInput
+            {/* <ExpandyInput
                 question="what's the vibe?"
                 value={vibe}
                 onChange={(e) => {
                     setVibe(e.target.value);
                 }}
                 placeholder={`e.g. "${randomVibe}"`}
-            />
+            /> */}
             {showAdvancedOptions && (
                 <>
                     <div>
