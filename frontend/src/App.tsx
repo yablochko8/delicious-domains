@@ -8,6 +8,7 @@ import { ActionButtons } from "./components/ActionButtons";
 import { RefineModal } from "./components/RefineModal";
 import { ProgressMessage } from "./components/ProgressMessage";
 import { AboutModal } from "./components/AboutModal";
+// import { HomepageInfoSection1, HomepageInfoSection2 } from "./components/HomepageInfoSection";
 
 
 function App() {
@@ -53,6 +54,8 @@ function App() {
               </div>
             </div>
           </div>
+          {/* <HomepageInfoSection1 />
+          <HomepageInfoSection2 /> */}
         </div >
 
         {/* MOBILE ACTION BUTTONS (desktop ones are in the top nav) */}
