@@ -28,9 +28,9 @@ const RejectButton = ({ domain, isRejected, showText = false }: { domain: string
   return (
     <button className={`btn ${shapeStyling} ${colorStyling}`} onClick={handleClick} title={hoverText}>
       {isRejected ? (
-        ActionIcons.thumbsDown
+        ActionIcons.unreject
       ) : (
-        ActionIcons.thumbsDown
+        ActionIcons.reject
       )}
       {showText && <div className="text-sm">{actionText}</div>}
     </button>
@@ -64,9 +64,9 @@ export const LikeButton = ({ domain, isLiked, showText = false }: { domain: stri
       title={hoverText}
     >
       {isLiked ?
-        ActionIcons.thumbsUp
+        ActionIcons.unlike
         :
-        ActionIcons.thumbsUp
+        ActionIcons.like
       }
       {showText && <div className="text-sm">{actionText}</div>}
     </button>
