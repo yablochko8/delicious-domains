@@ -221,33 +221,36 @@ export const DomainCard = (assessment: DomainAssessment) => {
   };
 
   return (
-    <div
-      className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 border-1 rounded-xl cursor-pointer  ${colorStyling}`}
-      onClick={(e) => {
-        handleCardClick(e);
-      }}
-    >
-      <TotalScoreTile
-        totalScore={getTotalScore(assessment, true)}
-        onClick={openScoreModal}
-      />
-      <div className="flex-grow text-left py-2 font-semibold text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
-        {domain}
+    <div className="flex flex-row w-full bg-base-100 border-1 rounded-xl cursor-pointer">
+
+      <div
+        className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 rounded-xl ${colorStyling}`}
+        onClick={(e) => {
+          handleCardClick(e);
+        }}
+      >
+        <TotalScoreTile
+          totalScore={getTotalScore(assessment, true)}
+          onClick={openScoreModal}
+        />
+        <div className="flex-grow text-left py-2 font-semibold text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
+          {domain}
+        </div>
+        <StatusMessage
+          isPossible={isPossible}
+          isAvailable={isAvailable}
+          isCheap={isCheap}
+          isRejected={isRejected}
+          isLiked={isLiked}
+        />
+        {isValid && (
+          <>
+            <RejectButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
+            <LikeButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
+          </>
+        )}
+        <DomainScoreModal assessment={assessment} />
       </div>
-      <StatusMessage
-        isPossible={isPossible}
-        isAvailable={isAvailable}
-        isCheap={isCheap}
-        isRejected={isRejected}
-        isLiked={isLiked}
-      />
-      {isValid && (
-        <>
-          <RejectButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
-          <LikeButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
-        </>
-      )}
-      <DomainScoreModal assessment={assessment} />
     </div>
   );
 };

@@ -4,6 +4,9 @@
 .env*
 !.env.example
 
+# Exported files
+server/exports/export-*.json
+
 # Node.js
 node_modules/
 npm-debug.log*

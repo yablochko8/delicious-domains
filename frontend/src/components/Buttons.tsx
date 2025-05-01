@@ -45,7 +45,7 @@ export const ClearAllButton = () => {
     <>
       {/* Desktop version */}
       <button
-        className="btn btn-outline hidden md:block"
+        className="btn btn-info hidden md:block"
         onClick={handleClick}
         title={cta}>
         {cta}
@@ -86,7 +86,7 @@ export const EditInputsButton = () => {
     <>
       {/* Desktop version */}
       <button
-        className="btn btn-outline hidden md:block"
+        className="btn btn-info hidden md:block"
         onClick={handleClickDesktop}
         title={cta}>
         {cta}
@@ -136,8 +136,8 @@ export const AboutButton = () => {
     openModal(`about-modal`);
   }
   return (
-    <button className="btn btn-shadow btn-circle text-xl" onClick={handleClick}>
-      {ActionIcons.about}
+    <button className="subtle-topnav cursor-pointer " onClick={handleClick}>
+      About
     </button>
   );
 };

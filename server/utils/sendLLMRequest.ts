@@ -4,7 +4,7 @@ import { openaiClient } from "./clientOpenai";
 const SUPPORTED_MODELS = [
   "gpt-4o-mini",
   "gpt-4.1-mini",
-  // "o1-mini",
+  // "o1-mini", <- this is deprecated as 2025-10-27
   "deepseek-chat",
   // "deepseek-reasoner",
 ];

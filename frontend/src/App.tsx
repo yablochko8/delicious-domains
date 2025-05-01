@@ -17,14 +17,16 @@ function App() {
   const hasResults = assessedDomains.completed.length > 0;
 
   return (
-    <>
+    <div className="blue-white-ellipse">
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto pt-20 pb-14 md:pb-0 max-h-[100dvh]">
+      <div className="flex flex-col w-full max-w-2xl mx-auto pt-24 md:pt-52 pb-14 md:pb-0 max-h-[100dvh] min-h-[100dvh]">
         <div className="flex flex-col w-full space-y-4 px-4 overflow-y-auto">
 
           {/* INPUT FORM */}
           {(!hasResults) && (
-            <div className="flex flex-col text-sm">
+            <div className="flex flex-col gap-5">
+              <h1 className="text-center md:text-left">Generate memorable, available <strong>domains</strong></h1>
+              <h2 className="text-center md:text-left">Automatically rank options based on six metrics, all domains under $100/year</h2>
               <InputForm />
             </div>
           )}
@@ -37,7 +39,7 @@ function App() {
           )}
           <div>
             <div className="flex flex-row w-full">
-              <div className="flex flex-col text-center justify-start items-center p-4 gap-4 w-full">
+              <div className="flex flex-col text-center justify-start items-center py-4 gap-4 w-full">
                 {/* RESULTS */}
                 {assessedDomains.completed.length > 0 && (
                   <DomainList domainOptions={assessedDomains.completed} />
@@ -62,7 +64,7 @@ function App() {
       {/* MODALS */}
       <RefineModal />
       <AboutModal />
-    </>
+    </div>
   );
 }
 

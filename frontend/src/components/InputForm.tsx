@@ -1,4 +1,4 @@
-import { ExpandyInput } from "./ExpandyInput";
+import { InputRefreshed } from "./ExpandyInput";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useMemo, useState } from "react";
 import { InputTldCheckbox } from "./InputTldCheckbox";
@@ -11,17 +11,17 @@ const EXAMPLE_PURPOSES = [
     "spotify for podcasts",
 ]
 
-const EXAMPLE_VIBES = [
-    "slick, sophisticated, fresh",
-    "funny, quirky, playful",
-    "professional, serious, trustworthy",
-    "casual, friendly, approachable",
-    "minimalist, clean, modern",
-    "bold, adventurous, innovative",
-    "sophisticated, elegant, luxurious",
-    "trendy, hip, cool",
-    "playful, youthful, energetic",
-]
+// const EXAMPLE_VIBES = [
+//     "slick, sophisticated, fresh",
+//     "funny, quirky, playful",
+//     "professional, serious, trustworthy",
+//     "casual, friendly, approachable",
+//     "minimalist, clean, modern",
+//     "bold, adventurous, innovative",
+//     "sophisticated, elegant, luxurious",
+//     "trendy, hip, cool",
+//     "playful, youthful, energetic",
+// ]
 
 const TLD_OPTIONS = [
     ".com",
@@ -76,39 +76,51 @@ const TLD_OPTIONS = [
 
 export const InputForm = () => {
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false)
-    const { purpose, vibe, preferredTlds, setPurpose, setVibe, togglePreferredTld } = useInputStateStore();
+    const {
+        purpose,
+        // vibe,
+        preferredTlds,
+        setPurpose,
+        // setVibe,
+        togglePreferredTld
+    } = useInputStateStore();
 
     // useMemo to avoid re-rendering with a new random purpose on every interaction
     const randomPurpose = useMemo(
         () => EXAMPLE_PURPOSES[Math.floor(Math.random() * EXAMPLE_PURPOSES.length)],
         []
     );
-    const randomVibe = useMemo(
-        () => EXAMPLE_VIBES[Math.floor(Math.random() * EXAMPLE_VIBES.length)],
-        []
-    );
+    // const randomVibe = useMemo(
+    //     () => EXAMPLE_VIBES[Math.floor(Math.random() * EXAMPLE_VIBES.length)],
+    //     []
+    // );
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4 py-4 pt-20">
 
-            <ExpandyInput
-                question="what are you building?"
-                subhead="for best results, paste in a full description here"
+            <InputRefreshed
+                question="What are you building?"
+                subhead="For best results, paste in a full description here"
                 value={purpose}
                 onChange={(e) => {
                     setPurpose(e.target.value);
                 }}
-                placeholder={`e.g. "${randomPurpose}"`}
+                placeholder={`E.g. "${randomPurpose}"`}
             />
 
-            <ExpandyInput
+            {/* <ExpandyInput
                 question="what's the vibe?"
                 value={vibe}
                 onChange={(e) => {
                     setVibe(e.target.value);
                 }}
                 placeholder={`e.g. "${randomVibe}"`}
-            />
+            /> */}
+            <div className="flex flex-row w-full justify-start items-center gap-2">
+                <button className="btn btn-sm" onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
+                    {showAdvancedOptions ? "hide advanced options" : "advanced options"}
+                </button>
+            </div>
             {showAdvancedOptions && (
                 <>
                     <div>
@@ -122,11 +134,6 @@ export const InputForm = () => {
                     </div>
                 </>
             )}
-            <div className="flex flex-row w-full justify-end items-center gap-2">
-                <button className="btn btn-sm" onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
-                    {showAdvancedOptions ? "hide advanced options" : "advanced options"}
-                </button>
-            </div>
         </div>
     )
 }
