@@ -134,7 +134,7 @@ export const InputForm = () => {
                             {VIBE_OPTIONS.map((vibe) => (
                                 <InputTldCheckbox key={vibe} tld={vibe} checked={vibeArray.includes(vibe)} onChange={() => toggleVibe(vibe)} />
                             ))}
-                            {vibeArray.length > 0 && <button className="btn btn-sm btn-ghost" onClick={clearVibes}>clear vibes</button>}
+                            {vibeArray.length > 0 && <button type="button" className="btn btn-sm btn-ghost" onClick={clearVibes}>Clear vibes</button>}
                         </div>
                     </div>
                     <div>
@@ -145,7 +145,7 @@ export const InputForm = () => {
                         {TLD_OPTIONS.map((tld) => (
                             <InputTldCheckbox key={tld} tld={tld} checked={preferredTlds.includes(tld)} onChange={() => togglePreferredTld(tld)} />
                         ))}
-                        {preferredTlds.length > 0 && <button className="btn btn-sm btn-ghost" onClick={clearPreferredTlds}>clear extensions</button>}
+                        {preferredTlds.length > 0 && <button type="button" className="btn btn-sm btn-ghost" onClick={clearPreferredTlds}>Clear extensions</button>}
                     </div>
                 </>
             )}

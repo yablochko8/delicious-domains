@@ -1,6 +1,6 @@
 export const InputTldCheckbox = ({ tld, checked, onChange }: { tld: string, checked: boolean, onChange: (checked: boolean) => void }) => {
     return (
-        <div
+        <button
             className={`
                 btn btn-sm
                 cursor-pointer 
@@ -17,7 +17,7 @@ export const InputTldCheckbox = ({ tld, checked, onChange }: { tld: string, chec
             onClick={() => onChange(!checked)}
         >
             {tld}
-        </div>
+        </button>
     )
 }
 
