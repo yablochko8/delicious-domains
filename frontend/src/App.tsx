@@ -18,14 +18,14 @@ function App() {
   const hasResults = assessedDomains.completed.length > 0;
 
   return (
-    <div className="blue-white-ellipse">
+    <div className="blue-white-ellipse w-full">
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto pt-24 md:pt-52 pb-14 md:pb-0 max-h-[100dvh] min-h-[100dvh]">
-        <div className="flex flex-col w-full space-y-4 px-4 overflow-y-auto">
+      <div className="flex flex-col w-full max-w-2xl mx-auto pb-14 pt-14  md:pb-0 max-h-[100dvh] min-h-[100dvh]">
+        <div className="flex flex-col w-full space-y-4 px-4">
 
-          {/* INPUT FORM */}
+          {/* LANDING PAGE INPUT */}
           {(!hasResults) && (
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col pt-10 md:pt-40 gap-5">
               <h1 className="text-center md:text-left">Generate memorable, available <strong>domains</strong></h1>
               <h2 className="text-center md:text-left">Automatically rank options based on six metrics, all domains under $100/year</h2>
               <InputForm />
@@ -38,22 +38,25 @@ function App() {
               <InputForm />
             </div>
           )}
-          <div>
-            <div className="flex flex-row w-full">
-              <div className="flex flex-col text-center justify-start items-center py-4 gap-4 w-full">
-                {/* RESULTS */}
-                {assessedDomains.completed.length > 0 && (
-                  <DomainList domainOptions={assessedDomains.completed} />
-                )}
 
-                {/* IN PROGRESS */}
-                {assessedDomains.inProgress.length > 0 && (
-                  <ProgressMessage domains={assessedDomains.inProgress} />
-                )}
+          {/* RESULTS */}
+          {hasResults && (
+            <div>
+              <div className="flex flex-row w-full">
+                <div className="flex flex-col text-center justify-start items-center py-4 gap-4 w-full">
+                  {/* RESULTS */}
+                  {assessedDomains.completed.length > 0 && (
+                    <DomainList domainOptions={assessedDomains.completed} />
+                  )}
 
+                  {/* IN PROGRESS */}
+                  {assessedDomains.inProgress.length > 0 && (
+                    <ProgressMessage domains={assessedDomains.inProgress} />
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
           {/* <HomepageInfoSection1 />
           <HomepageInfoSection2 /> */}
         </div >

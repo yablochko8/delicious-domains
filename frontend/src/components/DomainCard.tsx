@@ -2,9 +2,11 @@ import { getTotalScore } from "../utils/getTotalScore";
 import { ActionIcons } from "../assets/Icons";
 import { DomainAssessment } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStore";
-import { DomainScoreModal } from "./DomainScoreModal";
 import { NETIM_PARTNER_ID } from "../config";
 import { trackEventSafe } from "../utils/plausible";
+import { scoreExplanationDict, ScoreId, scoreIds } from "../assets/scoreExplanations";
+import { useState } from "react";
+
 
 
 const TotalScoreTile = ({
@@ -44,10 +46,10 @@ export const StatusMessage = ({
 }) => {
   const message = (() => {
     switch (true) {
-      case isRejected:
-        return "rejected";
-      case isLiked:
-        return "liked";
+      // case isRejected:
+      //   return "rejected";
+      // case isLiked:
+      //   return "liked";
       case !isPossible:
         return "impossible";
       case !isAvailable:
@@ -83,7 +85,7 @@ export const StatusMessage = ({
   );
 };
 
-export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: { domain: string, isLiked: boolean, isRejected: boolean, showText?: boolean }) => {
+export const RejectCircle = ({ domain, isRejected }: { domain: string, isRejected: boolean }) => {
   const { rejectDomain, unrejectDomain } = useSearchStateStore();
   const handleClick = () =>
     isRejected ? unrejectDomain(domain) : rejectDomain(domain);
@@ -91,79 +93,41 @@ export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: 
   const actionText = `${isRejected ? "Add back" : "Reject"}`;
   const hoverText = `${actionText} ${domain}`;
 
-  const colorStyling = (() => {
-    switch (true) {
-      case showText:
-        return "btn-soft btn-error border-error";
-      case isLiked:
-        return "btn-outline btn-success";
-      case isRejected:
-        return "btn-error";
-      default:
-        return "btn-soft btn-error border-error";
-    }
-  })();
-
-  const shapeStyling = showText ? "btn-lg" : "btn-square";
-
   return (
-    <button className={`btn ${shapeStyling} ${colorStyling}`} onClick={handleClick} title={hoverText}>
-      {isRejected ? (
-        ActionIcons.unreject
-      ) : (
-        ActionIcons.reject
-      )}
-      {showText && <div className="text-sm">{actionText}</div>}
+    <button className="circle-button reject-button" onClick={handleClick} title={hoverText}>
+      {
+        ActionIcons.thumbsDown
+      }
     </button>
   );
 };
 
-export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { domain: string, isLiked: boolean, isRejected: boolean, showText?: boolean }) => {
+export const LikeCircle = ({ domain, isLiked }: { domain: string, isLiked: boolean }) => {
   const { likeDomain, unlikeDomain } = useSearchStateStore();
   const handleClick = () =>
     isLiked ? unlikeDomain(domain) : likeDomain(domain);
 
   const actionText = `${isLiked ? "Unlike" : "Like"}`;
-
   const hoverText = `${actionText} ${domain}`;
-
-  const styling = (() => {
-    switch (true) {
-      case showText:
-        return "btn-soft btn-success border-success";
-      case isLiked:
-        return "btn-success";
-      case isRejected:
-        return "btn-outline btn-error";
-      default:
-        return "btn-soft btn-success border-success";
-    }
-  })();
-
-  const shapeStyling = showText ? "btn-lg" : "btn-square";
 
   return (
     <button
-      className={`btn ${shapeStyling} ${styling}`}
+      className="circle-button like-button"
       onClick={handleClick}
       title={hoverText}
     >
-      {isLiked ?
-        ActionIcons.unlike
-        :
-        ActionIcons.like
+      {
+        ActionIcons.thumbsUp
       }
-      {showText && <div className="text-sm">{actionText}</div>}
     </button>
   );
 };
 
-export const RegisterButton = ({ domain, showText = false }: { domain: string, showText?: boolean }) => {
+const RegisterButton = ({ domain }: { domain: string }) => {
 
   const handleClick = () => {
     trackEventSafe("ClickRegister");
   };
-  const shapeStyling = showText ? "btn-lg" : "btn-square";
   const hoverText = `Register ${domain}`
   const targetUrl = `https://www.netim.com/en/domain-name/search?partnerid=${NETIM_PARTNER_ID}&domain=${domain}`;
 
@@ -173,27 +137,93 @@ export const RegisterButton = ({ domain, showText = false }: { domain: string, s
       href={targetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`btn btn-primary ${shapeStyling}`}
+      className={`pill-button register-button`}
       onClick={handleClick}
       title={hoverText}
     >
       {ActionIcons.register}
-      {showText && <div className="text-sm">Register</div>}
+      <div className="text-sm pl-2">Register</div>
     </a>
   );
 };
 
+
+
+
+const SingleScoreDetail = ({
+  scoreId,
+  score,
+}: {
+  scoreId: ScoreId;
+  score: number;
+  domain: string;
+}) => {
+
+  const progressStyle = (() => {
+    switch (true) {
+      case score < 6:
+        return "progress-error";
+      case score < 8:
+        return "progress-warning";
+      default:
+        return "progress-success";
+    }
+  })();
+
+  return (
+    <div key={scoreId}>
+      <h4 className="flex flex-row items-center justify-between px-4">
+        <span>
+          {scoreExplanationDict[scoreId].name}
+        </span>
+        <span>
+          {score}/10
+        </span>
+      </h4>
+      <div className="flex flex-row py-1 px-4">
+        <progress className={`progress ${progressStyle} w-full`} value={score} max="10"></progress>
+      </div>
+      <div className="flex flex-row text-description px-4">
+        {scoreExplanationDict[scoreId].shortDescription}
+      </div>
+    </div>
+  );
+};
+
+const ScoreDetails = ({
+  assessment,
+}: {
+  assessment: DomainAssessment;
+}) => {
+  return (
+    <>
+      {assessment.scores &&
+        [...scoreIds]
+          .sort((a: ScoreId, b: ScoreId) => (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0))
+          .map((scoreId: ScoreId) => (
+            <SingleScoreDetail scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
+          ))
+      }
+      <div className="flex flex-row justify-end w-full p-4">
+        <RegisterButton domain={assessment.domain} />
+      </div>
+    </>
+  );
+};
+
+
 export const DomainCard = (assessment: DomainAssessment) => {
   const { domain, isPossible, isAvailable, isCheap } = assessment;
+  const [isExpanded, setIsExpanded] = useState(false);
   const { rejected, liked } = useSearchStateStore();
 
   const isRejected = rejected.includes(domain);
   const isLiked = liked.includes(domain);
   const isValid = isPossible && isAvailable && isCheap;
 
-  const validStyling = "bg-base-200/40 text-base-content/80 border-base-content hover:bg-base-200 hover:border-base-content/80";
-  const likedStyling = "bg-success/20 border-success/20 hover:bg-success/30 hover:border-success/30";
-  const rejectedStyling = "bg-error/20 border-error/20 hover:bg-error/30 hover:border-error/30";
+  const validStyling = "input-background text-base-content border-base-content hover:bg-base-200 hover:border-base-content/80";
+  const likedStyling = "liked-background text-base-content border-base-content hover:bg-base-200 hover:border-base-content/80";
+  const rejectedStyling = "rejected-background text-base-content border-base-content hover:bg-base-200 hover:border-base-content/80";
   const invalidStyling = "bg-base-200 border-base-300 text-base-content/40 hover:bg-base-200 hover:border-base-content/40";
 
   const colorStyling = (() => {
@@ -203,53 +233,57 @@ export const DomainCard = (assessment: DomainAssessment) => {
     return validStyling;
   })();
 
-  const openScoreModal = () => {
-    const scoreModal = document.getElementById(
-      `domain-score-modal-${domain}`
-    ) as HTMLDialogElement;
-    if (scoreModal) {
-      scoreModal.showModal();
-    }
+  const handleClick = () => {
+    setIsExpanded(!isExpanded);
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Check if the clicked element or its parents have the 'btn' class
-    const clickedButton = (e.target as HTMLElement).closest('.btn');
-    if (!clickedButton) {
-      openScoreModal();
+    // Check if the clicked element or its parents has a class that reveals it's an action button
+    // Only if it isn't should we treat this as a card click
+    const clickedCircle = (e.target as HTMLElement).closest('.circle-button');
+    const clickedRegister = (e.target as HTMLElement).closest('.register-button');
+    if (!clickedCircle && !clickedRegister) {
+      handleClick();
     }
   };
 
   return (
-    <div className="flex flex-row w-full bg-base-100 border-1 rounded-xl cursor-pointer">
+    <div className={`flex flex-row w-full rounded-3xl cursor-pointer drop-shadow-md ${colorStyling}`}
+      onClick={(e) => {
+        handleCardClick(e);
+      }}>
+      <div className="flex flex-col w-full gap-2">
+        <div
+          className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3 `}
 
-      <div
-        className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 rounded-xl ${colorStyling}`}
-        onClick={(e) => {
-          handleCardClick(e);
-        }}
-      >
-        <TotalScoreTile
-          totalScore={getTotalScore(assessment, true)}
-          onClick={openScoreModal}
-        />
-        <div className="flex-grow text-left py-2 font-semibold text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
-          {domain}
+        >
+          <TotalScoreTile
+            totalScore={getTotalScore(assessment, true)}
+            onClick={handleClick}
+          />
+          <div className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
+            {domain}
+          </div>
+          <StatusMessage
+            isPossible={isPossible}
+            isAvailable={isAvailable}
+            isCheap={isCheap}
+            isRejected={isRejected}
+            isLiked={isLiked}
+          />
+          {isValid && (
+            <>
+              <RejectCircle domain={domain} isRejected={isRejected} />
+              <LikeCircle domain={domain} isLiked={isLiked} />
+            </>
+          )}
         </div>
-        <StatusMessage
-          isPossible={isPossible}
-          isAvailable={isAvailable}
-          isCheap={isCheap}
-          isRejected={isRejected}
-          isLiked={isLiked}
-        />
-        {isValid && (
+        {isExpanded && (
           <>
-            <RejectButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
-            <LikeButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
+            <div className="flex flex-row" />
+            <ScoreDetails assessment={assessment} />
           </>
         )}
-        <DomainScoreModal assessment={assessment} />
       </div>
     </div>
   );

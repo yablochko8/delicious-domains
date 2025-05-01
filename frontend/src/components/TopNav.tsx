@@ -1,14 +1,25 @@
+import { useSearchStateStore } from "../stores/searchStateStore";
 import { WEBSITE_NAME } from "../config";
 import { ActionButtons } from "./ActionButtons";
 import { AboutButton } from "./Buttons";
+import { trackEventSafe } from "../utils/plausible";
 
 export const TopNav = () => {
+
+    const { clearAll } = useSearchStateStore();
+
+    const handleRestartClick = () => {
+        trackEventSafe("ClickRestart");
+        clearAll();
+        window.scrollTo(0, 0);
+    };
+
     return (
         <div className="navbar fixed top-0 left-0 z-50">
             <div className="navbar max-w-7xl mx-auto w-full px-4">
                 <div className="navbar-start justify-start w-full cursor-pointer gap-2">
                     {/* <img src="/logo-transparent.png" alt={WEBSITE_NAME} className="w-8 h-8" /> */}
-                    <div className="subtle-topnav">{WEBSITE_NAME}</div>
+                    <div className="subtle-topnav cursor-pointer" onClick={handleRestartClick}>{WEBSITE_NAME}</div>
                 </div>
                 <div className="navbar-end md:hidden">
                     <AboutButton />
