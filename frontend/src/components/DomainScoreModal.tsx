@@ -157,7 +157,7 @@ export const DomainScoreModal = ({
             Overall Score: {assessment.scores ? getTotalScore(assessment, true) : 0}%
           </p>
           <div className="max-h-[60vh] pb-16">
-            <div className="overflow-y-auto max-h-[60vh] gap-1">
+            <div className="max-h-[60vh] gap-1">
               {assessment.scores &&
                 [...scoreIds]
                   .sort((a: ScoreId, b: ScoreId) => (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0))
