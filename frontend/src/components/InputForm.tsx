@@ -110,17 +110,17 @@ export const InputForm = () => {
             />
 
             <div className="flex flex-row w-full justify-start items-center gap-2">
-                <button className={`btn btn-sm rounded-lg ${showAdvancedOptions ? "btn-neutral" : "btn-outline"}`} onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
+                <button className={`btn btn-sm font-normal rounded-lg ${showAdvancedOptions ? "btn-neutral" : "btn-ghost"}`} onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
                     {ActionIcons.generate}advanced options
                 </button>
             </div>
             {showAdvancedOptions && (
                 <>
                     <div>
-                        <h3>preferred top-level domains?</h3>
-                        <p className="text-sm text-base-content/60">tick nothing to stick to a longer list of ~350 options</p>
+                        <h3>Preferred top-level domains?</h3>
+                        <p className="text-sm text-base-content/60">Tick nothing to stick to a longer list of ~350 options</p>
                     </div>
-                    <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+                    <div className="flex flex-wrap gap-2">
                         {TLD_OPTIONS.map((tld) => (
                             <InputTldCheckbox key={tld} tld={tld} checked={preferredTlds.includes(tld)} onChange={() => togglePreferredTld(tld)} />
                         ))}
