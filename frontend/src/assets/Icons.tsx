@@ -62,7 +62,7 @@ export const ActionIcons = {
   unlike: <UnlikeIcon className="text-2xl" />,
   reject: <RejectIcon className="text-2xl" />,
   unreject: <UnrejectIcon className="text-2xl" />,
-  register: <RegisterIcon className="text-2xl" />,
+  register: <RegisterIcon className="text-sm" />,
   startAgain: <StartAgainIcon className="text-2xl" />,
   editInputs: <EditIcon className="text-2xl" />,
   export: <ExportIcon />,

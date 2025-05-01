@@ -2,9 +2,11 @@ import { getTotalScore } from "../utils/getTotalScore";
 import { ActionIcons } from "../assets/Icons";
 import { DomainAssessment } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStore";
-import { DomainScoreModal } from "./DomainScoreModal";
 import { NETIM_PARTNER_ID } from "../config";
 import { trackEventSafe } from "../utils/plausible";
+import { scoreExplanationDict, ScoreId, scoreIds } from "../assets/scoreExplanations";
+import { useState } from "react";
+
 
 
 const TotalScoreTile = ({
@@ -121,12 +123,11 @@ export const LikeCircle = ({ domain, isLiked }: { domain: string, isLiked: boole
   );
 };
 
-export const RegisterButton = ({ domain, showText = false }: { domain: string, showText?: boolean }) => {
+const RegisterButton = ({ domain }: { domain: string }) => {
 
   const handleClick = () => {
     trackEventSafe("ClickRegister");
   };
-  const shapeStyling = showText ? "btn-lg" : "btn-square";
   const hoverText = `Register ${domain}`
   const targetUrl = `https://www.netim.com/en/domain-name/search?partnerid=${NETIM_PARTNER_ID}&domain=${domain}`;
 
@@ -136,18 +137,84 @@ export const RegisterButton = ({ domain, showText = false }: { domain: string, s
       href={targetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`btn btn-primary ${shapeStyling}`}
+      className={`pill-button register-button`}
       onClick={handleClick}
       title={hoverText}
     >
       {ActionIcons.register}
-      {showText && <div className="text-sm">Register</div>}
+      <div className="text-sm pl-2">Register</div>
     </a>
   );
 };
 
+
+
+
+const SingleScoreDetail = ({
+  scoreId,
+  score,
+}: {
+  scoreId: ScoreId;
+  score: number;
+  domain: string;
+}) => {
+
+  const progressStyle = (() => {
+    switch (true) {
+      case score < 6:
+        return "progress-error";
+      case score < 8:
+        return "progress-warning";
+      default:
+        return "progress-success";
+    }
+  })();
+
+  return (
+    <div key={scoreId}>
+      <h4 className="flex flex-row items-center justify-between px-4">
+        <span>
+          {scoreExplanationDict[scoreId].name}
+        </span>
+        <span>
+          {score}/10
+        </span>
+      </h4>
+      <div className="flex flex-row py-1 px-4">
+        <progress className={`progress ${progressStyle} w-full`} value={score} max="10"></progress>
+      </div>
+      <div className="flex flex-row text-description px-4">
+        {scoreExplanationDict[scoreId].shortDescription}
+      </div>
+    </div>
+  );
+};
+
+const ScoreDetails = ({
+  assessment,
+}: {
+  assessment: DomainAssessment;
+}) => {
+  return (
+    <>
+      {assessment.scores &&
+        [...scoreIds]
+          .sort((a: ScoreId, b: ScoreId) => (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0))
+          .map((scoreId: ScoreId) => (
+            <SingleScoreDetail scoreId={scoreId} score={assessment.scores ? assessment.scores[scoreId] : 0} domain={assessment.domain} />
+          ))
+      }
+      <div className="flex flex-row justify-end w-full p-4">
+        <RegisterButton domain={assessment.domain} />
+      </div>
+    </>
+  );
+};
+
+
 export const DomainCard = (assessment: DomainAssessment) => {
   const { domain, isPossible, isAvailable, isCheap } = assessment;
+  const [isExpanded, setIsExpanded] = useState(false);
   const { rejected, liked } = useSearchStateStore();
 
   const isRejected = rejected.includes(domain);
@@ -166,53 +233,55 @@ export const DomainCard = (assessment: DomainAssessment) => {
     return validStyling;
   })();
 
-  const openScoreModal = () => {
-    const scoreModal = document.getElementById(
-      `domain-score-modal-${domain}`
-    ) as HTMLDialogElement;
-    if (scoreModal) {
-      scoreModal.showModal();
-    }
+  const handleClick = () => {
+    setIsExpanded(!isExpanded);
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
     // Check if the clicked element or its parents have the 'btn' class
     const clickedButton = (e.target as HTMLElement).closest('.btn');
     if (!clickedButton) {
-      openScoreModal();
+      handleClick();
     }
   };
 
   return (
-    <div className="flex flex-row w-full rounded-full cursor-pointer h-12 drop-shadow-md">
+    <div className={`flex flex-row w-full rounded-3xl cursor-pointer drop-shadow-md ${colorStyling}`}
+      onClick={(e) => {
+        handleCardClick(e);
+      }}>
+      <div className="flex flex-col w-full gap-2">
+        <div
+          className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3 `}
 
-      <div
-        className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3 rounded-full ${colorStyling}`}
-        onClick={(e) => {
-          handleCardClick(e);
-        }}
-      >
-        <TotalScoreTile
-          totalScore={getTotalScore(assessment, true)}
-          onClick={openScoreModal}
-        />
-        <div className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
-          {domain}
+        >
+          <TotalScoreTile
+            totalScore={getTotalScore(assessment, true)}
+            onClick={handleClick}
+          />
+          <div className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
+            {domain}
+          </div>
+          <StatusMessage
+            isPossible={isPossible}
+            isAvailable={isAvailable}
+            isCheap={isCheap}
+            isRejected={isRejected}
+            isLiked={isLiked}
+          />
+          {isValid && (
+            <>
+              <RejectCircle domain={domain} isRejected={isRejected} />
+              <LikeCircle domain={domain} isLiked={isLiked} />
+            </>
+          )}
         </div>
-        <StatusMessage
-          isPossible={isPossible}
-          isAvailable={isAvailable}
-          isCheap={isCheap}
-          isRejected={isRejected}
-          isLiked={isLiked}
-        />
-        {isValid && (
+        {isExpanded && (
           <>
-            <RejectCircle domain={domain} isRejected={isRejected} />
-            <LikeCircle domain={domain} isLiked={isLiked} />
+            <div className="flex flex-row" />
+            <ScoreDetails assessment={assessment} />
           </>
         )}
-        <DomainScoreModal assessment={assessment} />
       </div>
     </div>
   );
