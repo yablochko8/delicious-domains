@@ -49,6 +49,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
+  overflow-y: auto;
 }
 
 /* Page Headers */
@@ -136,4 +137,44 @@ h3 {
 .input-background {
   background: #eff6ff;
   opacity: 0.7;
+}
+
+.rejected-background {
+  background: #ff5d41;
+  opacity: 0.5;
+}
+
+.liked-background {
+  background: #04bd7c;
+  opacity: 0.8;
+}
+
+.circle-button {
+  width: 27px;
+  height: 27px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.like-button {
+  background: #05bd7c;
+  opacity: 1;
+  color: #ffffff;
+}
+
+.like-button:hover {
+  background: #025e3d;
+}
+
+.reject-button {
+  background: #ff5d41;
+  opacity: 1;
+  color: #ffffff;
+}
+
+.reject-button:hover {
+  background: #7c2d1f;
 }

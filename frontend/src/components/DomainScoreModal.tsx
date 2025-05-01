@@ -1,7 +1,78 @@
 import { DomainAssessment } from "shared/types";
 import { scoreExplanationDict, ScoreId, scoreIds } from "../assets/scoreExplanations";
-import { LikeButton, RegisterButton, RejectButton } from "./DomainCard";
 import { getTotalScore } from "../utils/getTotalScore";
+import { useSearchStateStore } from "../stores/searchStateStore";
+import { ActionIcons } from "../assets/Icons";
+import { trackEventSafe } from "../utils/plausible";
+import { NETIM_PARTNER_ID } from "../config";
+
+const RejectButton = ({ domain, isRejected, showText = false }: { domain: string, isRejected: boolean, showText?: boolean }) => {
+  const { rejectDomain, unrejectDomain } = useSearchStateStore();
+  const handleClick = () =>
+    isRejected ? unrejectDomain(domain) : rejectDomain(domain);
+
+  const actionText = `${isRejected ? "Add back" : "Reject"}`;
+  const hoverText = `${actionText} ${domain}`;
+
+  const colorStyling = (() => {
+    switch (true) {
+      case showText:
+        return "btn-soft btn-error border-error";
+      default:
+        return "reject-button border-none";
+    }
+  })();
+
+  const shapeStyling = showText ? "btn-lg" : "btn-xs btn-circle";
+
+  return (
+    <button className={`btn ${shapeStyling} ${colorStyling}`} onClick={handleClick} title={hoverText}>
+      {isRejected ? (
+        ActionIcons.thumbsDown
+      ) : (
+        ActionIcons.thumbsDown
+      )}
+      {showText && <div className="text-sm">{actionText}</div>}
+    </button>
+  );
+};
+
+export const LikeButton = ({ domain, isLiked, showText = false }: { domain: string, isLiked: boolean, showText?: boolean }) => {
+  const { likeDomain, unlikeDomain } = useSearchStateStore();
+  const handleClick = () =>
+    isLiked ? unlikeDomain(domain) : likeDomain(domain);
+
+  const actionText = `${isLiked ? "Unlike" : "Like"}`;
+
+  const hoverText = `${actionText} ${domain}`;
+
+  const styling = (() => {
+    switch (true) {
+      case showText:
+        return "btn-soft btn-success border-success";
+      default:
+        return "like-button border-none circle-button";
+    }
+  })();
+
+  const shapeStyling = showText ? "btn btn-lg" : "";
+
+  return (
+    <button
+      className={`${shapeStyling} ${styling}`}
+      onClick={handleClick}
+      title={hoverText}
+    >
+      {isLiked ?
+        ActionIcons.thumbsUp
+        :
+        ActionIcons.thumbsUp
+      }
+      {showText && <div className="text-sm">{actionText}</div>}
+    </button>
+  );
+};
+
 
 
 const DomainScoreModalEntry = ({
@@ -44,6 +115,31 @@ const DomainScoreModalEntry = ({
   );
 };
 
+const RegisterButton = ({ domain, showText = false }: { domain: string, showText?: boolean }) => {
+
+  const handleClick = () => {
+    trackEventSafe("ClickRegister");
+  };
+  const shapeStyling = showText ? "btn-lg" : "btn-square";
+  const hoverText = `Register ${domain}`
+  const targetUrl = `https://www.netim.com/en/domain-name/search?partnerid=${NETIM_PARTNER_ID}&domain=${domain}`;
+
+
+  return (
+    <a
+      href={targetUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`btn btn-primary ${shapeStyling}`}
+      onClick={handleClick}
+      title={hoverText}
+    >
+      {ActionIcons.register}
+      {showText && <div className="text-sm">Register</div>}
+    </a>
+  );
+};
+
 export const DomainScoreModal = ({
   assessment,
 }: {
@@ -75,8 +171,8 @@ export const DomainScoreModal = ({
         <div className="modal-action justify-center gap-2">
           <form method="dialog" className="fixed bottom-0 flex gap-4 bg-base-100 w-full justify-center p-4">
             {/* if there is a button in form, it will close the modal */}
-            <RejectButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
-            <LikeButton domain={assessment.domain} isLiked={false} isRejected={false} showText={true} />
+            <RejectButton domain={assessment.domain} isRejected={false} showText={true} />
+            <LikeButton domain={assessment.domain} isLiked={false} showText={true} />
             <RegisterButton domain={assessment.domain} showText={true} />
           </form>
         </div>

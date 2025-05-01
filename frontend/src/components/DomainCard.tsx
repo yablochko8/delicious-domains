@@ -44,10 +44,10 @@ export const StatusMessage = ({
 }) => {
   const message = (() => {
     switch (true) {
-      case isRejected:
-        return "rejected";
-      case isLiked:
-        return "liked";
+      // case isRejected:
+      //   return "rejected";
+      // case isLiked:
+      //   return "liked";
       case !isPossible:
         return "impossible";
       case !isAvailable:
@@ -83,7 +83,7 @@ export const StatusMessage = ({
   );
 };
 
-export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: { domain: string, isLiked: boolean, isRejected: boolean, showText?: boolean }) => {
+export const RejectCircle = ({ domain, isRejected }: { domain: string, isRejected: boolean }) => {
   const { rejectDomain, unrejectDomain } = useSearchStateStore();
   const handleClick = () =>
     isRejected ? unrejectDomain(domain) : rejectDomain(domain);
@@ -91,69 +91,32 @@ export const RejectButton = ({ domain, isLiked, isRejected, showText = false }: 
   const actionText = `${isRejected ? "Add back" : "Reject"}`;
   const hoverText = `${actionText} ${domain}`;
 
-  const colorStyling = (() => {
-    switch (true) {
-      case showText:
-        return "btn-soft btn-error border-error";
-      case isLiked:
-        return "btn-outline btn-success";
-      case isRejected:
-        return "btn-error";
-      default:
-        return "btn-soft btn-error border-error";
-    }
-  })();
-
-  const shapeStyling = showText ? "btn-lg" : "btn-square";
-
   return (
-    <button className={`btn ${shapeStyling} ${colorStyling}`} onClick={handleClick} title={hoverText}>
-      {isRejected ? (
-        ActionIcons.unreject
-      ) : (
-        ActionIcons.reject
-      )}
-      {showText && <div className="text-sm">{actionText}</div>}
+    <button className="circle-button reject-button" onClick={handleClick} title={hoverText}>
+      {
+        ActionIcons.thumbsDown
+      }
     </button>
   );
 };
 
-export const LikeButton = ({ domain, isLiked, isRejected, showText = false }: { domain: string, isLiked: boolean, isRejected: boolean, showText?: boolean }) => {
+export const LikeCircle = ({ domain, isLiked }: { domain: string, isLiked: boolean }) => {
   const { likeDomain, unlikeDomain } = useSearchStateStore();
   const handleClick = () =>
     isLiked ? unlikeDomain(domain) : likeDomain(domain);
 
   const actionText = `${isLiked ? "Unlike" : "Like"}`;
-
   const hoverText = `${actionText} ${domain}`;
-
-  const styling = (() => {
-    switch (true) {
-      case showText:
-        return "btn-soft btn-success border-success";
-      case isLiked:
-        return "btn-success";
-      case isRejected:
-        return "btn-outline btn-error";
-      default:
-        return "btn-soft btn-success border-success";
-    }
-  })();
-
-  const shapeStyling = showText ? "btn-lg" : "btn-square";
 
   return (
     <button
-      className={`btn ${shapeStyling} ${styling}`}
+      className="circle-button like-button"
       onClick={handleClick}
       title={hoverText}
     >
-      {isLiked ?
-        ActionIcons.unlike
-        :
-        ActionIcons.like
+      {
+        ActionIcons.thumbsUp
       }
-      {showText && <div className="text-sm">{actionText}</div>}
     </button>
   );
 };
@@ -191,9 +154,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const isLiked = liked.includes(domain);
   const isValid = isPossible && isAvailable && isCheap;
 
-  const validStyling = "bg-base-200/40 text-base-content/80 border-base-content hover:bg-base-200 hover:border-base-content/80";
-  const likedStyling = "bg-success/20 border-success/20 hover:bg-success/30 hover:border-success/30";
-  const rejectedStyling = "bg-error/20 border-error/20 hover:bg-error/30 hover:border-error/30";
+  const validStyling = "input-background text-base-content border-base-content hover:bg-base-200 hover:border-base-content/80";
+  const likedStyling = "liked-background text-base-content border-base-content hover:bg-base-200 hover:border-base-content/80";
+  const rejectedStyling = "rejected-background text-base-content border-base-content hover:bg-base-200 hover:border-base-content/80";
   const invalidStyling = "bg-base-200 border-base-300 text-base-content/40 hover:bg-base-200 hover:border-base-content/40";
 
   const colorStyling = (() => {
@@ -221,10 +184,10 @@ export const DomainCard = (assessment: DomainAssessment) => {
   };
 
   return (
-    <div className="flex flex-row w-full bg-base-100 border-1 rounded-xl cursor-pointer">
+    <div className="flex flex-row w-full rounded-full cursor-pointer h-12 drop-shadow-md">
 
       <div
-        className={`flex flex-row w-full max-w-2xl items-center gap-3 p-3 rounded-xl ${colorStyling}`}
+        className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3 rounded-full ${colorStyling}`}
         onClick={(e) => {
           handleCardClick(e);
         }}
@@ -233,7 +196,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
           totalScore={getTotalScore(assessment, true)}
           onClick={openScoreModal}
         />
-        <div className="flex-grow text-left py-2 font-semibold text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
+        <div className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
           {domain}
         </div>
         <StatusMessage
@@ -245,8 +208,8 @@ export const DomainCard = (assessment: DomainAssessment) => {
         />
         {isValid && (
           <>
-            <RejectButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
-            <LikeButton domain={domain} isLiked={isLiked} isRejected={isRejected} />
+            <RejectCircle domain={domain} isRejected={isRejected} />
+            <LikeCircle domain={domain} isLiked={isLiked} />
           </>
         )}
         <DomainScoreModal assessment={assessment} />

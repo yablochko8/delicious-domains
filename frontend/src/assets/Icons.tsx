@@ -35,6 +35,10 @@ import {
 import { AiOutlineExport as ExportIcon } from "react-icons/ai";
 import { MdQuestionMark as AboutIcon } from "react-icons/md";
 
+import {
+  LuThumbsUp as ThumbsUpIcon,
+  LuThumbsDown as ThumbsDownIcon,
+} from "react-icons/lu";
 
 export const ScoreIcons: Record<ScoreId, JSX.Element> = {
   evoc: <EvocIcon />,
@@ -66,4 +70,6 @@ export const ActionIcons = {
   generate: <GenerateIcon />,
   about: <AboutIcon />,
   enter: <EnterIcon />,
+  thumbsUp: <ThumbsUpIcon className="text-sm" />,
+  thumbsDown: <ThumbsDownIcon className="text-sm" />,
 };
