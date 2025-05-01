@@ -13,7 +13,7 @@ export const InputTldCheckbox = ({ tld, checked, onChange }: { tld: string, chec
                 border-1
                 border-[#2A2A304D]
                 font-normal
-                ${checked ? 'bg-neutral text-white' : 'bg-transparent hover:bg-gray-100'}`}
+                ${checked ? 'btn-neutral' : 'btn-ghost'}`}
             onClick={() => onChange(!checked)}
         >
             {tld}

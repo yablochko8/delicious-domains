@@ -110,14 +110,14 @@ export const InputForm = () => {
             />
 
             <div className="flex flex-row w-full justify-start items-center gap-2">
-                <button className={`btn btn-sm font-normal rounded-lg ${showAdvancedOptions ? "btn-neutral" : "btn-ghost"}`} onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
-                    {ActionIcons.generate}advanced options
+                <button className={`btn btn-sm font-normal rounded-lg text-sm ${showAdvancedOptions ? "btn-neutral" : "btn-ghost"}`} onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
+                    {ActionIcons.generate}Domain Extensions
                 </button>
             </div>
             {showAdvancedOptions && (
                 <>
                     <div>
-                        <h3>Preferred top-level domains?</h3>
+                        <h3>Preferred domain extensions?</h3>
                         <p className="text-sm text-base-content/60">Tick nothing to stick to a longer list of ~350 options</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
