@@ -148,7 +148,7 @@ export const EnterButton = () => {
 
   return (
     <button
-      className="btn btn-outline btn-circle h-7 w-7 text-sm"
+      className="btn btn-circle h-7 w-7 text-sm bg-[#B5C7FE] text-white border shadow-none border-none"
       onClick={generateDomains}
       disabled={isLoading || isDisabled}
     >

@@ -2,6 +2,7 @@ import { InputRefreshed } from "./ExpandyInput";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useMemo, useState } from "react";
 import { InputTldCheckbox } from "./InputTldCheckbox";
+import { ActionIcons } from "../assets/Icons";
 
 const EXAMPLE_PURPOSES = [
     "linkedin for cats",
@@ -108,17 +109,9 @@ export const InputForm = () => {
                 placeholder={`E.g. "${randomPurpose}"`}
             />
 
-            {/* <ExpandyInput
-                question="what's the vibe?"
-                value={vibe}
-                onChange={(e) => {
-                    setVibe(e.target.value);
-                }}
-                placeholder={`e.g. "${randomVibe}"`}
-            /> */}
             <div className="flex flex-row w-full justify-start items-center gap-2">
-                <button className="btn btn-sm" onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
-                    {showAdvancedOptions ? "hide advanced options" : "advanced options"}
+                <button className={`btn btn-sm rounded-lg ${showAdvancedOptions ? "btn-neutral" : "btn-outline"}`} onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
+                    {ActionIcons.generate}advanced options
                 </button>
             </div>
             {showAdvancedOptions && (
