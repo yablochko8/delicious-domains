@@ -1,4 +1,5 @@
 import { useDomainGeneration } from "../hooks/useDomainGeneration";
+import { EnterButton } from "./Buttons";
 
 type ExpandyInputProps = {
     question: string;
@@ -33,6 +34,7 @@ export const InputRefreshed = ({ question, subhead, value, onChange, placeholder
                     onChange={onChange}
                     onKeyDown={handleKeyDown}
                 />
+                <EnterButton />
             </div>
         </div>
     );

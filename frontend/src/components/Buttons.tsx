@@ -141,3 +141,22 @@ export const AboutButton = () => {
     </button>
   );
 };
+
+
+export const EnterButton = () => {
+  const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
+
+  return (
+    <button
+      className="btn btn-outline btn-circle h-7 w-7 text-sm"
+      onClick={generateDomains}
+      disabled={isLoading || isDisabled}
+    >
+      {isLoading ? <span className="loading loading-spinner"></span> :
+        <>
+          {ActionIcons.enter}
+        </>
+      }
+    </button>
+  );
+};
