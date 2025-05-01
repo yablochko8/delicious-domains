@@ -116,6 +116,11 @@ export const InputForm = () => {
                 }}
                 placeholder={`e.g. "${randomVibe}"`}
             /> */}
+            <div className="flex flex-row w-full justify-start items-center gap-2">
+                <button className="btn btn-sm" onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
+                    {showAdvancedOptions ? "hide advanced options" : "advanced options"}
+                </button>
+            </div>
             {showAdvancedOptions && (
                 <>
                     <div>
@@ -129,11 +134,6 @@ export const InputForm = () => {
                     </div>
                 </>
             )}
-            <div className="flex flex-row w-full justify-end items-center gap-2">
-                <button className="btn btn-sm" onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
-                    {showAdvancedOptions ? "hide advanced options" : "advanced options"}
-                </button>
-            </div>
         </div>
     )
 }

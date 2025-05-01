@@ -17,7 +17,7 @@ function App() {
   const hasResults = assessedDomains.completed.length > 0;
 
   return (
-    <>
+    <div className="blue-white-ellipse">
       <TopNav />
       <div className="flex flex-col w-full max-w-2xl mx-auto pt-24 md:pt-52 pb-14 md:pb-0 max-h-[100dvh] min-h-[100dvh]">
         <div className="flex flex-col w-full space-y-4 px-4 overflow-y-auto">
@@ -64,7 +64,7 @@ function App() {
       {/* MODALS */}
       <RefineModal />
       <AboutModal />
-    </>
+    </div>
   );
 }
 

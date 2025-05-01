@@ -27,6 +27,11 @@
 }
 
 body {
+  background-color: #000020;
+  margin: 0;
+}
+
+.blue-white-ellipse {
   background: radial-gradient(
     ellipse 100% 40% at top center,
     #000020 0%,
@@ -35,8 +40,14 @@ body {
     #202693 80%,
     #ffffff 200%
   );
-  height: 200 vh;
-  margin: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /* Page Headers */
