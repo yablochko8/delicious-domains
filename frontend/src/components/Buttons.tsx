@@ -144,18 +144,6 @@ export const ExportSavedButton = () => {
   );
 };
 
-export const AboutButton = () => {
-  const handleClick = () => {
-    trackEventSafe("ClickAbout");
-    openModal(`about-modal`);
-  };
-  return (
-    <button className="subtle-topnav cursor-pointer " onClick={handleClick}>
-      About
-    </button>
-  );
-};
-
 export const EnterButton = () => {
   const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
 
