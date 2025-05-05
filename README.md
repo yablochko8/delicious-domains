@@ -30,7 +30,6 @@ BACKLOG:
 - fetch TLD shortlist first, not in main call
 - don't fetch scores for invalid domains
 - turn export into a "seek feedback" button
-- show/hide impossible domains
 - fix flash during modal load
 - add validation check for deal breakers (copycat, annoying, esoteric)
 - make scoring categories adjustable by end user
@@ -69,3 +68,4 @@ DONE:
 - make prompting better
 - move to a higher quality AI model
 - log queries
+- show/hide impossible domains

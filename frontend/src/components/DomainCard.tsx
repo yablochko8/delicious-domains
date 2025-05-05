@@ -192,7 +192,7 @@ const SingleScoreDetail = ({
           max="10"
         ></progress>
       </div>
-      <div className="flex flex-row text-description px-4">
+      <div className="flex flex-row text-description px-4 text-left">
         {scoreExplanationDict[scoreId].shortDescription}
       </div>
     </div>
