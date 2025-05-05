@@ -33,6 +33,7 @@ function App() {
                 available for registration, all at standard pricing.
               </h2>
               <InputForm />
+              <HomepageInfo />
             </div>
           )}
 
@@ -62,11 +63,8 @@ function App() {
               <FloatingActionBar />
             </div>
           )}
-          {!hasResults && <HomepageInfo />}
           <Footer />
         </div>
-
-        {/* {hasResults && <FloatingActionBar />} */}
       </div>
 
       {/* MODALS */}
