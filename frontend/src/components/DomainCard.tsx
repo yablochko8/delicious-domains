@@ -278,9 +278,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
         handleCardClick(e);
       }}
     >
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full">
         <div
-          className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3 `}
+          className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3`}
         >
           <TotalScoreTile
             totalScore={getTotalScore(assessment, true)}
@@ -303,12 +303,14 @@ export const DomainCard = (assessment: DomainAssessment) => {
             </>
           )}
         </div>
-        {isExpanded && (
-          <>
-            <div className="flex flex-row" />
-            <ScoreDetails assessment={assessment} />
-          </>
-        )}
+        <div
+          className={`overflow-hidden transition-all duration-200 ease-in-out ${
+            isExpanded ? "max-h-[500px] opacity-100 pt-2" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="flex flex-row" />
+          <ScoreDetails assessment={assessment} />
+        </div>
       </div>
     </div>
   );
