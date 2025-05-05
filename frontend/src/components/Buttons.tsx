@@ -9,11 +9,11 @@ import { trackEventSafe } from "../utils/plausible";
 export const AddDomainsButton = () => {
   const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
   const { longlist } = useSearchStateStore();
-  const cta = longlist.length > 0 ? "dream some more" : "dream up some domains";
+  const cta = longlist.length > 0 ? "Generate More" : "Generate";
 
   return (
     <button
-      className="btn btn-primary"
+      className="pill-button primary-action-button"
       onClick={generateDomains}
       disabled={isLoading || isDisabled}
     >
@@ -44,7 +44,7 @@ export const ClearAllButtonRevised = () => {
 
   return (
     <button
-      className="btn btn-outline btn-sm text-neutral-content rounded-xl hover:bg-info"
+      className="pill-button secondary-action-button"
       onClick={handleClick}
       title={cta}
     >
@@ -75,29 +75,32 @@ export const EditInputsButtonRevised = () => {
 
   const cta = "Edit Inputs";
 
-  const sharedStyles =
-    "btn btn-outline btn-sm text-neutral-content rounded-xl hover:bg-info";
+  const sharedStyles = "pill-button secondary-action-button";
   return (
     <>
       {/* Desktop version */}
-      <button
-        className={`${sharedStyles} hidden md:flex`}
-        onClick={handleClickDesktop}
-        title={cta}
-      >
-        {ActionIcons.editInputs}
-        {cta}
-      </button>
+      <div className="hidden md:flex">
+        <button
+          className={`${sharedStyles}`}
+          onClick={handleClickDesktop}
+          title={cta}
+        >
+          {ActionIcons.editInputs}
+          {cta}
+        </button>
+      </div>
 
       {/* Mobile version */}
-      <button
-        className={`${sharedStyles} md:hidden`}
-        onClick={handleClickMobile}
-        title={cta}
-      >
-        {ActionIcons.editInputs}
-        {cta}
-      </button>
+      <div className="md:hidden">
+        <button
+          className={`${sharedStyles}`}
+          onClick={handleClickMobile}
+          title={cta}
+        >
+          {ActionIcons.editInputs}
+          {cta}
+        </button>
+      </div>
     </>
   );
 };
@@ -105,8 +108,6 @@ export const EditInputsButtonRevised = () => {
 export const ExportSavedButton = () => {
   const { handleDesktopExport, handleMobileExport } = useExport();
 
-  // const sharedStyles =
-  // "btn btn-outline btn-sm text-neutral-content rounded-xl hover:bg-info";
   const sharedStyles = "btn btn-secondary btn-sm rounded-xl";
 
   return (

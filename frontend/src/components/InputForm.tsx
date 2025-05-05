@@ -171,7 +171,7 @@ export const InputForm = () => {
       <div className="flex flex-row w-full justify-start items-center gap-2">
         <button
           className={`btn btn-sm font-normal rounded-lg text-sm ${
-            showAdvancedOptions ? "btn-neutral" : "btn-ghost"
+            showAdvancedOptions ? "btn-neutral" : "btn-outline"
           }`}
           onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
         >

@@ -21,8 +21,6 @@ Terminal 2:
 TO DO:
 
 - fix dark mode
-- close expanded domain card upon like
-- activate input on first load
 - fix background gradient to scroll
 - sometimes the scroll goes to the wrong place
 - ⁠The low opacity on the results card could be fixed by instead using a block colour, but personally, I think the low opacity looks okay to me
@@ -47,3 +45,6 @@ BACKLOG:
 - use whois call to remove calls to domainr for domains that are definitely taken
 
 DONE:
+
+- close expanded domain card upon like
+- activate input on first load

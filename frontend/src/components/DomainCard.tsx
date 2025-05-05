@@ -28,8 +28,8 @@ const TotalScoreTile = ({
     >
       {positiveScore > 0 ? (
         <>
-          <div className="text-base-content/80">{positiveScore}</div>
-          <div className="text-xs text-base-content/40">%</div>
+          <div className="text-neutral/60">{positiveScore}</div>
+          <div className="text-xs text-neutral/40">%</div>
         </>
       ) : (
         ""
@@ -42,21 +42,13 @@ export const StatusMessage = ({
   isPossible,
   isAvailable,
   isCheap,
-  isRejected,
-  isLiked,
 }: {
   isPossible: boolean;
   isAvailable: boolean;
   isCheap: boolean;
-  isRejected: boolean;
-  isLiked: boolean;
 }) => {
   const message = (() => {
     switch (true) {
-      // case isRejected:
-      //   return "rejected";
-      // case isLiked:
-      //   return "liked";
       case !isPossible:
         return "impossible";
       case !isAvailable:
@@ -68,24 +60,7 @@ export const StatusMessage = ({
     }
   })();
 
-  const styling = (() => {
-    switch (true) {
-      case isRejected:
-        return "text-error";
-      case isLiked:
-        return "text-success";
-      case !isPossible:
-        return "text-base-content/40";
-      case !isAvailable:
-        return "text-base-content/40";
-      case !isCheap:
-        return "text-base-content/40";
-      default:
-        return " ";
-    }
-  })();
-
-  return <div className={styling}>{message}</div>;
+  return <div className="text-neutral/20">{message}</div>;
 };
 
 export const RejectCircle = ({
@@ -156,7 +131,7 @@ const RegisterButton = ({ domain }: { domain: string }) => {
       href={targetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`pill-button register-button`}
+      className={`pill-button primary-action-button`}
       onClick={handleClick}
       title={hoverText}
     >
@@ -245,7 +220,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const rejectedStyling =
     "rejected-background text-base-content border-base-content hover:bg-base-200 hover:border-base-content/80";
   const invalidStyling =
-    "bg-base-200 border-base-300 text-base-content/40 hover:bg-base-200 hover:border-base-content/40";
+    "bg-neutral-content/40 border-base-300 text-base-content/40 hover:bg-base-200 hover:border-base-content/40";
 
   const colorStyling = (() => {
     if (!isValid) return invalidStyling;
@@ -270,7 +245,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
     // Only if it isn't should we treat this as a card click
     const clickedCircle = (e.target as HTMLElement).closest(".circle-button");
     const clickedRegister = (e.target as HTMLElement).closest(
-      ".register-button"
+      ".primary-action-button"
     );
     if (!clickedCircle && !clickedRegister) {
       handleClick();
@@ -294,15 +269,13 @@ export const DomainCard = (assessment: DomainAssessment) => {
             totalScore={getTotalScore(assessment, true)}
             onClick={handleClick}
           />
-          <div className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
+          <h2 className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
             {domain}
-          </div>
+          </h2>
           <StatusMessage
             isPossible={isPossible}
             isAvailable={isAvailable}
             isCheap={isCheap}
-            isRejected={isRejected}
-            isLiked={isLiked}
           />
           {isValid && (
             <>

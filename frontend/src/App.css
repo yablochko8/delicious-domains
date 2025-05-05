@@ -62,22 +62,10 @@ h1 {
   font-size: 4rem; /* 64px */
   line-height: 100%;
 }
-/* 
-@media (max-width: 640px) {
-  h1 {
-    font-size: 1.4rem;
-  }
-}
-
-@media (max-width: 400px) {
-  h1 {
-    font-size: 1.2rem;
-  }
-} */
 
 /* Domain Names in Modal */
 h2 {
-  color: #ffffff;
+  color: #2A2A30;
   font-size: 1.125rem; /* 18px */
 }
 
@@ -104,12 +92,14 @@ h2 {
 }
 
 h3 {
+  color: #2A2A30;
   font-size: 1rem;
   font-weight: 700;
 }
 
 /* Individual score names in modal */
 h4 {
+  color: #2A2A30;
   font-size: 0.875rem; /* 14px */
   font-weight: 700;
 }
@@ -193,15 +183,47 @@ h4 {
   align-items: center;
   cursor: pointer;
   border-radius: 16px;
+  gap: 5px;
 }
 
-.register-button {
+.primary-action-button {
   background: #bd05b4;
   opacity: 1;
   color: #ffffff;
   padding: 0 10px;
 }
 
-.register-button:hover {
+.primary-action-button:hover {
   background: #8b0488;
+}
+
+
+.secondary-action-button {
+  background: transparent;
+  border: 1px solid #a6adba;
+  color: #fff;
+  padding: 10px;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+}
+
+.secondary-action-button:hover {
+  background: #3abff8;
+  border-color: #663af8;
+  color: #ffffff;
+}
+
+.tertiary-action-button {
+  background: transparent;
+  border: 1px solid #6b7280;
+  color: #9ca3af;
+  padding: 10px;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+}
+
+.tertiary-action-button:hover {
+  background: #4b5563;
+  border-color: #374151;
+  color: #d1d5db;
 }

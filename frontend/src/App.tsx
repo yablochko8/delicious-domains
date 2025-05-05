@@ -19,7 +19,7 @@ function App() {
   return (
     <div className="blue-white-ellipse w-full">
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto pb-14 pt-14  md:pb-0 max-h-[100dvh] min-h-[100dvh]">
+      <div className="flex flex-col w-full max-w-2xl mx-auto pb-14  md:pb-0 max-h-[100dvh] min-h-[100dvh]">
         <div className="flex flex-col w-full space-y-4 px-4">
           {/* LANDING PAGE INPUT */}
           {!hasResults && (

@@ -16,17 +16,17 @@ const ShowUnavailableDomainsButton = ({
 }) => {
   if (howMany === 0) return null;
 
-  const buttonStyle = "btn btn-default btn-sm";
+  const buttonStyle = "pill-button tertiary-action-button";
   if (isShowing)
     return (
       <button className={buttonStyle} onClick={onClick}>
-        hide unavailable / premium
+        Hide Unavailable / Premium
       </button>
     );
 
   return (
     <button className={buttonStyle} onClick={onClick}>
-      show {howMany} unavailable / premium
+      Show {howMany} Unavailable / Premium
     </button>
   );
 };
