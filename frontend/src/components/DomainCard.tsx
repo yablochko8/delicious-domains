@@ -251,7 +251,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const handleClick = () => {
     if (!isExpanded) {
       // Scroll so that the DomainCard that is expanded is flush with the top of the viewport
-      const card = document.querySelector(".domain-card");
+      const card = document.querySelector(".expanded-domain-card");
       if (card) {
         card.scrollIntoView({ behavior: "smooth" });
       }
@@ -273,7 +273,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   return (
     <div
-      className={`domain-card flex flex-row w-full rounded-3xl cursor-pointer drop-shadow-md ${colorStyling}`}
+      className={`flex flex-row w-full rounded-3xl cursor-pointer drop-shadow-md ${colorStyling} ${
+        isExpanded ? "expanded-domain-card" : ""
+      }`}
       onClick={(e) => {
         handleCardClick(e);
       }}
