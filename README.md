@@ -21,7 +21,6 @@ Terminal 2:
 TO DO:
 
 - Flex footer to bottom
-- Better favicon
 
 FE BACKLOG:
 
@@ -40,3 +39,5 @@ BE BACKLOG:
 - log specific likes & rejections
 
 DONE:
+
+- Better favicon
