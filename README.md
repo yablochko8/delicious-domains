@@ -21,6 +21,7 @@ Terminal 2:
 TO DO:
 
 - Flex footer to bottom
+- Better favicon
 
 FE BACKLOG:
 
