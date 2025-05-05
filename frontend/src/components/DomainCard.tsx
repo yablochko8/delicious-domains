@@ -208,6 +208,14 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const { expandedDomain, setExpandedDomain } = useDisplayStateStore();
   const { rejected, liked } = useSearchStateStore();
 
+  const getDomainCardTag = (domain: string) => {
+    // split the domain by the dot
+    const parts = domain.split(".");
+    // return the parts joined by a dash
+    const domainTag = parts.join("-");
+    return `domain-card-${domainTag}`;
+  };
+
   const isRejected = rejected.includes(domain);
   const isLiked = liked.includes(domain);
   const isValid = isPossible && isAvailable && isCheap;
@@ -232,10 +240,11 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const handleClick = () => {
     if (!isExpanded) {
       // Scroll so that the DomainCard that is expanded is flush with the top of the viewport
-      const card = document.querySelector(".expanded-domain-card");
-      if (card) {
-        card.scrollIntoView({ behavior: "smooth" });
-      }
+      // DELETED BECAUSE THE SHRINKING DOMAIN CARD CONFUSES THE SCROLLINTOVIEW CALCULATION
+      // const card = document.querySelector(`.${getDomainCardTag(domain)}`);
+      // if (card) {
+      //   card.scrollIntoView({ behavior: "smooth" });
+      // }
     }
     setExpandedDomain(isExpanded ? null : domain);
   };
@@ -254,9 +263,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   return (
     <div
-      className={`flex flex-row w-full rounded-3xl cursor-pointer drop-shadow-md ${colorStyling} ${
-        isExpanded ? "expanded-domain-card" : ""
-      }`}
+      className={`flex flex-row w-full rounded-3xl cursor-pointer drop-shadow-md ${colorStyling} ${getDomainCardTag(
+        domain
+      )}`}
       onClick={(e) => {
         handleCardClick(e);
       }}
