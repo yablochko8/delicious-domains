@@ -28,8 +28,8 @@ const TotalScoreTile = ({
     >
       {positiveScore > 0 ? (
         <>
-          <div className="text-base-content/80">{positiveScore}</div>
-          <div className="text-xs text-base-content/40">%</div>
+          <div className="text-neutral/60">{positiveScore}</div>
+          <div className="text-xs text-neutral/40">%</div>
         </>
       ) : (
         ""
@@ -42,21 +42,13 @@ export const StatusMessage = ({
   isPossible,
   isAvailable,
   isCheap,
-  isRejected,
-  isLiked,
 }: {
   isPossible: boolean;
   isAvailable: boolean;
   isCheap: boolean;
-  isRejected: boolean;
-  isLiked: boolean;
 }) => {
   const message = (() => {
     switch (true) {
-      // case isRejected:
-      //   return "rejected";
-      // case isLiked:
-      //   return "liked";
       case !isPossible:
         return "impossible";
       case !isAvailable:
@@ -68,24 +60,7 @@ export const StatusMessage = ({
     }
   })();
 
-  const styling = (() => {
-    switch (true) {
-      case isRejected:
-        return "text-error";
-      case isLiked:
-        return "text-success";
-      case !isPossible:
-        return "text-base-content/40";
-      case !isAvailable:
-        return "text-base-content/40";
-      case !isCheap:
-        return "text-base-content/40";
-      default:
-        return " ";
-    }
-  })();
-
-  return <div className={styling}>{message}</div>;
+  return <div className="text-neutral/20">{message}</div>;
 };
 
 export const RejectCircle = ({
@@ -96,8 +71,11 @@ export const RejectCircle = ({
   isRejected: boolean;
 }) => {
   const { rejectDomain, unrejectDomain } = useSearchStateStore();
-  const handleClick = () =>
+  const { setExpandedDomain } = useDisplayStateStore();
+  const handleClick = () => {
+    setExpandedDomain(null);
     isRejected ? unrejectDomain(domain) : rejectDomain(domain);
+  };
 
   const actionText = `${isRejected ? "Add back" : "Reject"}`;
   const hoverText = `${actionText} ${domain}`;
@@ -121,8 +99,11 @@ export const LikeCircle = ({
   isLiked: boolean;
 }) => {
   const { likeDomain, unlikeDomain } = useSearchStateStore();
-  const handleClick = () =>
+  const { setExpandedDomain } = useDisplayStateStore();
+  const handleClick = () => {
+    setExpandedDomain(null);
     isLiked ? unlikeDomain(domain) : likeDomain(domain);
+  };
 
   const actionText = `${isLiked ? "Unlike" : "Like"}`;
   const hoverText = `${actionText} ${domain}`;
@@ -150,12 +131,12 @@ const RegisterButton = ({ domain }: { domain: string }) => {
       href={targetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`pill-button register-button`}
+      className={`pill-button primary-action-button`}
       onClick={handleClick}
       title={hoverText}
     >
       {ActionIcons.register}
-      <div className="text-sm pl-2">Register</div>
+      Register
     </a>
   );
 };
@@ -227,6 +208,14 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const { expandedDomain, setExpandedDomain } = useDisplayStateStore();
   const { rejected, liked } = useSearchStateStore();
 
+  const getDomainCardTag = (domain: string) => {
+    // split the domain by the dot
+    const parts = domain.split(".");
+    // return the parts joined by a dash
+    const domainTag = parts.join("-");
+    return `domain-card-${domainTag}`;
+  };
+
   const isRejected = rejected.includes(domain);
   const isLiked = liked.includes(domain);
   const isValid = isPossible && isAvailable && isCheap;
@@ -239,7 +228,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const rejectedStyling =
     "rejected-background text-base-content border-base-content hover:bg-base-200 hover:border-base-content/80";
   const invalidStyling =
-    "bg-base-200 border-base-300 text-base-content/40 hover:bg-base-200 hover:border-base-content/40";
+    "bg-neutral-content/40 border-base-300 text-base-content/40 hover:bg-base-200 hover:border-base-content/40";
 
   const colorStyling = (() => {
     if (!isValid) return invalidStyling;
@@ -251,10 +240,11 @@ export const DomainCard = (assessment: DomainAssessment) => {
   const handleClick = () => {
     if (!isExpanded) {
       // Scroll so that the DomainCard that is expanded is flush with the top of the viewport
-      const card = document.querySelector(".expanded-domain-card");
-      if (card) {
-        card.scrollIntoView({ behavior: "smooth" });
-      }
+      // DELETED BECAUSE THE SHRINKING DOMAIN CARD CONFUSES THE SCROLLINTOVIEW CALCULATION
+      // const card = document.querySelector(`.${getDomainCardTag(domain)}`);
+      // if (card) {
+      //   card.scrollIntoView({ behavior: "smooth" });
+      // }
     }
     setExpandedDomain(isExpanded ? null : domain);
   };
@@ -264,7 +254,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
     // Only if it isn't should we treat this as a card click
     const clickedCircle = (e.target as HTMLElement).closest(".circle-button");
     const clickedRegister = (e.target as HTMLElement).closest(
-      ".register-button"
+      ".primary-action-button"
     );
     if (!clickedCircle && !clickedRegister) {
       handleClick();
@@ -273,9 +263,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
 
   return (
     <div
-      className={`flex flex-row w-full rounded-3xl cursor-pointer drop-shadow-md ${colorStyling} ${
-        isExpanded ? "expanded-domain-card" : ""
-      }`}
+      className={`flex flex-row w-full rounded-3xl cursor-pointer drop-shadow-md ${colorStyling} ${getDomainCardTag(
+        domain
+      )}`}
       onClick={(e) => {
         handleCardClick(e);
       }}
@@ -288,15 +278,13 @@ export const DomainCard = (assessment: DomainAssessment) => {
             totalScore={getTotalScore(assessment, true)}
             onClick={handleClick}
           />
-          <div className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
+          <h3 className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
             {domain}
-          </div>
+          </h3>
           <StatusMessage
             isPossible={isPossible}
             isAvailable={isAvailable}
             isCheap={isCheap}
-            isRejected={isRejected}
-            isLiked={isLiked}
           />
           {isValid && (
             <>

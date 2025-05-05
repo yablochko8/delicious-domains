@@ -1,5 +1,6 @@
 import { useSearchStateStore } from "../stores/searchStateStore";
 import {
+  AddDomainsButton,
   ClearAllButtonRevised,
   EditInputsButtonRevised,
   ExportSavedButton,
@@ -17,7 +18,11 @@ export const FloatingActionBar = () => {
         <div className="flex justify-center items-center bg-neutral p-3 gap-3 rounded-2xl">
           <ClearAllButtonRevised />
           <EditInputsButtonRevised />
-          {liked.length > 4 && <ExportSavedButton />}
+          {liked.length > 4 ? (
+            <ExportSavedButton />
+          ) : (
+            <AddDomainsButton isPrimary={false} />
+          )}
         </div>
       </div>
     </div>

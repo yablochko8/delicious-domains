@@ -16,17 +16,17 @@ const ShowUnavailableDomainsButton = ({
 }) => {
   if (howMany === 0) return null;
 
-  const buttonStyle = "btn btn-default btn-sm";
+  const buttonStyle = "pill-button tertiary-action-button";
   if (isShowing)
     return (
       <button className={buttonStyle} onClick={onClick}>
-        hide unavailable / premium
+        Hide Unavailable / Premium
       </button>
     );
 
   return (
     <button className={buttonStyle} onClick={onClick}>
-      show {howMany} unavailable / premium
+      Show {howMany} Unavailable / Premium
     </button>
   );
 };
@@ -98,8 +98,7 @@ export const DomainList = ({
   return (
     <div className="flex flex-col gap-3 w-full pb-20">
       <div className="text-form-subheading">
-        Tap the domain to see how it scored. Like and reject domains to get
-        better results.
+        Like and reject domains to see better results.
       </div>
       <AnimatePresence>
         {displayDomainOptions.map((domainAssessment) => (

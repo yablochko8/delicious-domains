@@ -8,7 +8,8 @@ import { RefineModal } from "./components/RefineModal";
 import { ProgressMessage } from "./components/ProgressMessage";
 import { AboutModal } from "./components/AboutModal";
 import { FloatingActionBar } from "./components/FloatingActionBar";
-// import { HomepageInfoSection1, HomepageInfoSection2 } from "./components/HomepageInfoSection";
+import { HomepageInfoSectionsAll } from "./components/HomepageInfoSection";
+import { Footer } from "./components/Footer";
 
 function App() {
   const { assessments: assessedDomains } = useSearchStateStore();
@@ -19,7 +20,7 @@ function App() {
   return (
     <div className="blue-white-ellipse w-full">
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto pb-14 pt-14  md:pb-0 max-h-[100dvh] min-h-[100dvh]">
+      <div className="flex flex-col w-full max-w-2xl mx-auto pb-60  md:pb-0 max-h-[100dvh] min-h-[100dvh]">
         <div className="flex flex-col w-full space-y-4 px-4">
           {/* LANDING PAGE INPUT */}
           {!hasResults && (
@@ -58,13 +59,14 @@ function App() {
                   )}
                 </div>
               </div>
+              <FloatingActionBar />
             </div>
           )}
-          {/* <HomepageInfoSection1 />
-          <HomepageInfoSection2 /> */}
+          {!hasResults && <HomepageInfoSectionsAll />}
+          <Footer />
         </div>
 
-        {hasResults && <FloatingActionBar />}
+        {/* {hasResults && <FloatingActionBar />} */}
       </div>
 
       {/* MODALS */}

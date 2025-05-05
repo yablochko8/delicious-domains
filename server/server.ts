@@ -8,7 +8,7 @@ import { createCandidatesRequest } from "dbCreators/createCandidatesRequest";
 
 export const PORT = 4101;
 
-const MAX_DOMAINS = 25;
+const MAX_DOMAINS = 15;
 
 const app = express();
 
