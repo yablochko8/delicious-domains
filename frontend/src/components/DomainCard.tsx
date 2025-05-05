@@ -269,9 +269,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
             totalScore={getTotalScore(assessment, true)}
             onClick={handleClick}
           />
-          <h2 className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
+          <h3 className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
             {domain}
-          </h2>
+          </h3>
           <StatusMessage
             isPossible={isPossible}
             isAvailable={isAvailable}

@@ -170,9 +170,12 @@ export const InputForm = () => {
 
       <div className="flex flex-row w-full justify-start items-center gap-2">
         <button
-          className={`btn btn-sm font-normal rounded-lg text-sm ${
-            showAdvancedOptions ? "btn-neutral" : "btn-outline"
-          }`}
+          className={`pill-button 
+            ${
+              showAdvancedOptions
+                ? "selector-button-selected"
+                : "selector-button"
+            }`}
           onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
         >
           {ActionIcons.generate}Advanced Options
@@ -196,7 +199,7 @@ export const InputForm = () => {
               {vibeArray.length > 0 && (
                 <button
                   type="button"
-                  className="btn btn-sm btn-ghost"
+                  className="pill-button tertiary-action-button"
                   onClick={clearVibes}
                 >
                   Clear vibes
@@ -222,7 +225,7 @@ export const InputForm = () => {
             {preferredTlds.length > 0 && (
               <button
                 type="button"
-                className="btn btn-sm btn-ghost"
+                className="pill-button tertiary-action-button"
                 onClick={clearPreferredTlds}
               >
                 Clear extensions

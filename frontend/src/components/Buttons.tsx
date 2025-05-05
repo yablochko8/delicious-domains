@@ -108,30 +108,32 @@ export const EditInputsButtonRevised = () => {
 export const ExportSavedButton = () => {
   const { handleDesktopExport, handleMobileExport } = useExport();
 
-  const sharedStyles = "btn btn-secondary btn-sm rounded-xl";
+  const sharedStyles = "pill-button secondary-action-button";
 
   return (
     <>
       {/* Desktop version */}
-      <button
-        className={`${sharedStyles} hidden md:flex`}
-        onClick={handleDesktopExport}
-        title="Copy to clipboard"
-      >
-        <div className="flex flex-row w-full justify-between gap-2 items-center">
-          <div className="text-xl">{ActionIcons.export}</div>
+      <div className="hidden md:flex">
+        <button
+          className={`${sharedStyles}`}
+          onClick={handleDesktopExport}
+          title="Copy to clipboard"
+        >
+          {ActionIcons.export}
           Export
-        </div>
-      </button>
+        </button>
+      </div>
 
       {/* Mobile version */}
-      <button
-        className={`${sharedStyles} md:hidden`}
-        onClick={handleMobileExport}
-        title="Share"
-      >
-        {ActionIcons.share} Export
-      </button>
+      <div className="md:hidden">
+        <button
+          className={`${sharedStyles} md:hidden`}
+          onClick={handleMobileExport}
+          title="Share"
+        >
+          {ActionIcons.share} Export
+        </button>
+      </div>
     </>
   );
 };

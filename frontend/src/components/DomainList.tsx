@@ -98,8 +98,7 @@ export const DomainList = ({
   return (
     <div className="flex flex-col gap-3 w-full pb-20">
       <div className="text-form-subheading">
-        Tap the domain to see how it scored. Like and reject domains to get
-        better results.
+        Like and reject domains to see better results.
       </div>
       <AnimatePresence>
         {displayDomainOptions.map((domainAssessment) => (

@@ -65,7 +65,7 @@ h1 {
 
 /* Domain Names in Modal */
 h2 {
-  color: #2A2A30;
+  color: #ffffff;
   font-size: 1.125rem; /* 18px */
 }
 
@@ -184,13 +184,13 @@ h4 {
   cursor: pointer;
   border-radius: 16px;
   gap: 5px;
+  padding: 0 10px;
 }
 
 .primary-action-button {
   background: #bd05b4;
   opacity: 1;
   color: #ffffff;
-  padding: 0 10px;
 }
 
 .primary-action-button:hover {
@@ -202,7 +202,6 @@ h4 {
   background: transparent;
   border: 1px solid #a6adba;
   color: #fff;
-  padding: 10px;
   font-size: 0.875rem;
   border-radius: 0.75rem;
 }
@@ -215,14 +214,37 @@ h4 {
 
 .tertiary-action-button {
   background: transparent;
-  border: 1px solid #6b7280;
+  border: 1px solid #8592ad;
   color: #9ca3af;
-  padding: 10px;
   font-size: 0.875rem;
   border-radius: 0.75rem;
 }
 
 .tertiary-action-button:hover {
+  background: #4b5563;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+.selector-button {
+  background: transparent;
+  border: 1px solid #202226;
+  color: #111213;
+}
+
+.selector-button:hover {
+  background: #4b5563;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+.selector-button-selected {
+  background: #050607;
+  border: 1px solid #1a1f27;
+  color: #d1d5db;
+}
+
+.selector-button-selected:hover {
   background: #4b5563;
   border-color: #374151;
   color: #d1d5db;
