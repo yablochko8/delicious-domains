@@ -157,10 +157,10 @@ export const InputForm = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4 py-4">
+    <div className="flex flex-col gap-4 py-4 pb-20">
       <PurposeInput
-        question="What are you building?"
-        subhead="The more detail the better! "
+        question="Describe your company or project here:"
+        subhead="Use your own words. The more detail the better. This will be passed to the AI to generate name ideas."
         value={purpose}
         onChange={(e) => {
           setPurpose(e.target.value);

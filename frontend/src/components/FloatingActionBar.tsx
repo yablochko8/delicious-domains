@@ -13,9 +13,9 @@ export const FloatingActionBar = () => {
   const { liked } = useSearchStateStore();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 py-6">
-      <div className="flex flex-row justify-center items-center">
-        <div className="flex justify-center items-center bg-neutral p-3 gap-3 rounded-2xl">
+    <div className="fixed bottom-0 left-0 right-0 py-6 pointer-events-none">
+      <div className="flex flex-row justify-center items-center pointer-events-none">
+        <div className="flex justify-center items-center bg-neutral p-3 gap-3 rounded-2xl pointer-events-auto">
           <ClearAllButtonRevised />
           <EditInputsButtonRevised />
           {liked.length > 4 ? (
