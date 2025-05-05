@@ -42,6 +42,7 @@ import {
 
 import { LuRotateCcw as StartAgainIconRevised } from "react-icons/lu";
 import { LuWrench as EditInputsIconRevised } from "react-icons/lu";
+import { LuClipboardPen as FeedbackIcon } from "react-icons/lu";
 
 export const ScoreIcons: Record<ScoreId, JSX.Element> = {
   evoc: <EvocIcon />,
@@ -75,4 +76,5 @@ export const ActionIcons = {
   enter: <EnterIcon />,
   thumbsUp: <ThumbsUpIcon className="text-sm" />,
   thumbsDown: <ThumbsDownIcon className="text-sm" />,
+  feedback: <FeedbackIcon />,
 };

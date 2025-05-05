@@ -8,6 +8,10 @@ import { RefineModal } from "./components/RefineModal";
 import { ProgressMessage } from "./components/ProgressMessage";
 import { AboutModal } from "./components/AboutModal";
 import { FloatingActionBar } from "./components/FloatingActionBar";
+import {
+  HomepageInfoSection1,
+  HomepageInfoSection2,
+} from "./components/HomepageInfoSection";
 // import { HomepageInfoSection1, HomepageInfoSection2 } from "./components/HomepageInfoSection";
 
 function App() {
@@ -58,13 +62,18 @@ function App() {
                   )}
                 </div>
               </div>
+              <FloatingActionBar />
             </div>
           )}
-          {/* <HomepageInfoSection1 />
-          <HomepageInfoSection2 /> */}
+          {!hasResults && (
+            <>
+              <HomepageInfoSection1 />
+              <HomepageInfoSection2 />
+            </>
+          )}
         </div>
 
-        {hasResults && <FloatingActionBar />}
+        {/* {hasResults && <FloatingActionBar />} */}
       </div>
 
       {/* MODALS */}
