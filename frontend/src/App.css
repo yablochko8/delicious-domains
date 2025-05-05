@@ -30,6 +30,7 @@ body {
   background-color: #000020;
   margin: 0;
   overflow: hidden;
+  font-family: "Inter", sans-serif;
 }
 
 .blue-white-ellipse {
@@ -55,8 +56,8 @@ body {
 /* Page Headers */
 h1 {
   color: #ffffff;
-  font-family: "Ubuntu", sans-serif;
-  /* font-family: "Inter", sans-serif; <- this is Ranjit suggestion */
+  /* font-family: "Ubuntu", sans-serif; */
+  font-family: "Inter", sans-serif;
   font-size: 4rem; /* 64px */
   line-height: 100%;
 }

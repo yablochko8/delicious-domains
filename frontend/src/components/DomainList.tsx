@@ -5,26 +5,39 @@ import { getTotalScore } from "../utils/getTotalScore";
 import { useSearchStateStore } from "../stores/searchStateStore";
 import { useState } from "react";
 
+const ShowUnavailableDomainsButton = ({
+  isShowing,
+  howMany,
+  onClick,
+}: {
+  isShowing: boolean;
+  howMany: number;
+  onClick: () => void;
+}) => {
+  if (howMany === 0) return null;
 
-const ShowUnavailableDomainsButton = ({ isShowing, howMany, onClick }: { isShowing: boolean, howMany: number, onClick: () => void }) => {
-  if (howMany === 0) return null
+  const buttonStyle = "btn btn-default btn-sm";
+  if (isShowing)
+    return (
+      <button className={buttonStyle} onClick={onClick}>
+        hide unavailable / premium
+      </button>
+    );
 
-  const buttonStyle = "btn btn-default btn-sm"
-  if (isShowing) return <button className={buttonStyle} onClick={onClick}>
-    hide unavailable / premium
-  </button>
-
-  return <button className={buttonStyle} onClick={onClick}>
-    show {howMany} unavailable / premium
-  </button>
-}
+  return (
+    <button className={buttonStyle} onClick={onClick}>
+      show {howMany} unavailable / premium
+    </button>
+  );
+};
 
 export const DomainList = ({
   domainOptions,
 }: {
   domainOptions: DomainAssessment[];
 }) => {
-  const [isShowingUnavailableDomains, setIsShowingUnavailableDomains] = useState(false)
+  const [isShowingUnavailableDomains, setIsShowingUnavailableDomains] =
+    useState(false);
   // Filter out impossible domains (mainly hallucinated TLDs)
   const filteredDomainOptions = domainOptions.filter(
     (domain) => domain.isPossible
@@ -78,15 +91,15 @@ export const DomainList = ({
   ).length;
   // console.log({ sortedDomainOptions });
 
-  const displayDomainOptions = isShowingUnavailableDomains ? sortedDomainOptions : sortedDomainOptions.filter(
-    (domain) => domain.isValid
-  );
+  const displayDomainOptions = isShowingUnavailableDomains
+    ? sortedDomainOptions
+    : sortedDomainOptions.filter((domain) => domain.isValid);
 
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-3 w-full pb-20">
       <div className="text-form-subheading">
-        Tap the domain to see how it scored.
-        Like and reject domains to get better results.
+        Tap the domain to see how it scored. Like and reject domains to get
+        better results.
       </div>
       <AnimatePresence>
         {displayDomainOptions.map((domainAssessment) => (
@@ -112,7 +125,9 @@ export const DomainList = ({
           <ShowUnavailableDomainsButton
             isShowing={isShowingUnavailableDomains}
             howMany={howManyUnavailableDomains}
-            onClick={() => setIsShowingUnavailableDomains(!isShowingUnavailableDomains)}
+            onClick={() =>
+              setIsShowingUnavailableDomains(!isShowingUnavailableDomains)
+            }
           />
         </div>
       </AnimatePresence>

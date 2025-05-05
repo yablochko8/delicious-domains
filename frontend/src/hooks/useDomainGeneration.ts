@@ -5,6 +5,7 @@ import { getDomainAssessment, getDomainCandidates } from "../serverCalls";
 import { closeModal } from "../utils/openModal";
 import { trackEventSafe } from "../utils/plausible";
 import { SELECTED_MODEL } from "../config";
+import { getTopDomain } from "../utils/getTopDomain";
 
 export const useDomainGeneration = () => {
   const { isLoading, setIsLoading } = useDisplayStateStore();
@@ -22,10 +23,17 @@ export const useDomainGeneration = () => {
   const { setIsRefining } = useDisplayStateStore();
 
   const generateDomains = async () => {
+    // Close things that might be open
     setIsLoading(true);
     setIsRefining(false);
     closeModal("refine-modal");
+    const setExpandedDomain = useDisplayStateStore.getState().setExpandedDomain;
+    setExpandedDomain(null);
+
+    // Track the event
     trackEventSafe("ClickGenerate");
+
+    // Generate the domains
     const vibe = vibeArray.join(", ");
 
     try {
@@ -58,6 +66,16 @@ export const useDomainGeneration = () => {
           }
         })
       );
+      // Open the top performing domain
+      const { assessments } = useSearchStateStore.getState();
+      const topValidDomain = getTopDomain(assessments.completed);
+
+      if (topValidDomain) {
+        console.log("Opening top domain", topValidDomain);
+        setExpandedDomain(topValidDomain);
+      }
+      // Scroll to the top of the page
+      window.scrollTo(0, 0);
     } finally {
       setIsLoading(false);
     }
