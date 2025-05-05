@@ -8,12 +8,8 @@ import { RefineModal } from "./components/RefineModal";
 import { ProgressMessage } from "./components/ProgressMessage";
 import { AboutModal } from "./components/AboutModal";
 import { FloatingActionBar } from "./components/FloatingActionBar";
-import {
-  HomepageInfoSection1,
-  HomepageInfoSection2,
-} from "./components/HomepageInfoSection";
+import { HomepageInfoSectionsAll } from "./components/HomepageInfoSection";
 import { Footer } from "./components/Footer";
-// import { HomepageInfoSection1, HomepageInfoSection2 } from "./components/HomepageInfoSection";
 
 function App() {
   const { assessments: assessedDomains } = useSearchStateStore();
@@ -66,12 +62,7 @@ function App() {
               <FloatingActionBar />
             </div>
           )}
-          {!hasResults && (
-            <>
-              <HomepageInfoSection1 />
-              <HomepageInfoSection2 />
-            </>
-          )}
+          {!hasResults && <HomepageInfoSectionsAll />}
           <Footer />
         </div>
 

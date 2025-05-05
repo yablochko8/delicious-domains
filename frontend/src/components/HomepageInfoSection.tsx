@@ -1,6 +1,6 @@
 import { ActionIcons } from "../assets/Icons";
 
-const HomePageInfoSection = ({
+const HomePageInfoSectionTemplate = ({
   heading,
   children,
 }: {
@@ -13,17 +13,37 @@ const HomePageInfoSection = ({
         <div className="md:w-1/2 space-y-4">
           <h3 className="font-semibold text-base text-black">{heading}</h3>
         </div>
-        <div className="md:w-1/2 text-justify">{children}</div>
+        <div className="md:w-1/2 text-justify space-y-4">{children}</div>
       </div>
     </div>
   );
 };
 
-export const HomepageInfoSection1 = () => {
+const HomepageInfoSection0 = () => {
   return (
-    <HomePageInfoSection heading="What's included?">
+    <HomePageInfoSectionTemplate heading="What is this?">
       <p>
-        It includes lots of the "dot-something" domains (e.g. .art, .book,
+        This tool gives you website name ideas, but only shows available
+        domains. It generates a list of possible names, checks which ones are
+        available, and then scores each domain on six different fronts. The
+        results you see are ranked by these scores, so hopefully the best
+        options are near the top.
+      </p>
+      <p>
+        To get even better results: click Like on a few options that are closest
+        to the vibe you're going for, and reject ones which are way off, then
+        click "Generate More". The AI will take into account your feedback and
+        try to find options that better suit your taste.
+      </p>
+    </HomePageInfoSectionTemplate>
+  );
+};
+
+const HomepageInfoSection1 = () => {
+  return (
+    <HomePageInfoSectionTemplate heading="Why not just stick to a long dotcom?">
+      <p>
+        This tool shows lots of the "dot-something" domains (e.g. .art, .book,
         .cat). Conventional wisdom says these are a terrible idea.{" "}
         <a
           href="https://paulgraham.com/name.html"
@@ -39,24 +59,36 @@ export const HomepageInfoSection1 = () => {
         descriptive domain they open up a ton of options.
       </p>
       <p>
-        Every domain shown should come in under $100, with the exception of .ai
+        Every domain shown should come in under $100. The exception is .ai
         domains which have a sneaky two-year minimum. Dreamy Domains excludes
-        all premium / resale / auction domains from results.
+        all premium, resale, and auction domains from results.
       </p>
-    </HomePageInfoSection>
+    </HomePageInfoSectionTemplate>
   );
 };
 
-export const HomepageInfoSection2 = () => {
+const HomepageInfoSection2 = () => {
   return (
-    <HomePageInfoSection heading="Got some feedback? We’d love to hear from you!">
+    <HomePageInfoSectionTemplate heading="Got some feedback? We’d love to hear from you!">
       <p>
         If you have some ideas for how we can make this tool better, please let
         us know using our anonymous feedback form below:
       </p>
-      <button className="pill-button tertiary-action-button">
-        <span>{ActionIcons.feedback}</span> Submit Feedback
-      </button>
-    </HomePageInfoSection>
+      <div className="flex flex-row justify-center p-6">
+        <button className="pill-button tertiary-action-button">
+          <span>{ActionIcons.feedback}</span> Submit Feedback
+        </button>
+      </div>
+    </HomePageInfoSectionTemplate>
+  );
+};
+
+export const HomepageInfoSectionsAll = () => {
+  return (
+    <>
+      <HomepageInfoSection0 />
+      <HomepageInfoSection1 />
+      <HomepageInfoSection2 />
+    </>
   );
 };
