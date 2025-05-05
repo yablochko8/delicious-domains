@@ -136,7 +136,7 @@ const RegisterButton = ({ domain }: { domain: string }) => {
       title={hoverText}
     >
       {ActionIcons.register}
-      <div className="text-sm pl-2">Register</div>
+      Register
     </a>
   );
 };

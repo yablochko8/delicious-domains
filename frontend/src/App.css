@@ -20,7 +20,7 @@
 /* This is just the Light colour scheme with a different --color-primary */
 
 #root {
-  max-width: 800px;
+  /* max-width: 800px; */
   margin: 0 auto;
   padding: 0rem;
   text-align: left;
@@ -43,15 +43,17 @@ body {
     #202693 80vw,
     #ffffff 200vw
   );
+  background-attachment: local;
   width: 100%;
   height: 100vh;
   min-height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  /* right: 0;
+  bottom: 0; */
   overflow-y: auto;
+  background-repeat: no-repeat;
 }
 
 /* Page Headers */
@@ -192,6 +194,8 @@ h4 {
   background: #bd05b4;
   opacity: 1;
   color: #ffffff;
+  font-size: 1.25 rem;
+  border-radius: 0.75rem;
 }
 
 .primary-action-button:hover {

@@ -21,8 +21,8 @@ export const AddDomainsButton = () => {
         <span className="loading loading-spinner"></span>
       ) : (
         <>
-          <div className="flex flex-row w-full justify-between gap-2 items-center">
-            <div className="text-xl">{ActionIcons.generate}</div>
+          <div className="flex flex-row gap-2 items-center">
+            {ActionIcons.generate}
             {cta}
           </div>
         </>
