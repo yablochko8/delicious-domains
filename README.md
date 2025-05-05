@@ -27,6 +27,7 @@ TO DO:
 - ⁠I think you should try it with the background non-sticky/fixed. So when you scroll down, it just scrolls into a white background ensuring the blue gradient part is always at the top of the page. This should help with the low opacity results feel, and the overlapping of the results above the nav bar too.
 - ⁠You may be working on this next, but just thought I'd mention the main user input I think just needs completing with the buttons etc.
 - ⁠On my mobile, I can't scroll down on the main page either, so the actual user input box is hidden. - just a not on this is that the user input box and the hero text, and perhaps a peek of the about section underneath should be within the 100VH.
+- Give the Advanced Options a light background
 
 BACKLOG:
 

@@ -157,7 +157,7 @@ export const InputForm = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4 py-4 pt-20">
+    <div className="flex flex-col gap-4 py-4">
       <PurposeInput
         question="What are you building?"
         subhead="The more detail the better! "
@@ -183,9 +183,7 @@ export const InputForm = () => {
       </div>
       {showAdvancedOptions && (
         <>
-          <div>
-            <h3>What's your vibe?</h3>
-          </div>
+          <div className="text-form-heading">What's your vibe?</div>
           <div>
             <div className="flex flex-wrap gap-2">
               {VIBE_OPTIONS.map((vibe) => (
@@ -208,10 +206,12 @@ export const InputForm = () => {
             </div>
           </div>
           <div>
-            <h3>Preferred domain extensions?</h3>
-            <p className="text-sm text-base-content/60">
+            <div className="text-form-heading">
+              Preferred domain extensions?
+            </div>
+            <div className="text-form-subheading">
               Tick nothing to stick to a longer list of ~350 options
-            </p>
+            </div>
           </div>
           <div className="flex flex-wrap gap-2">
             {TLD_OPTIONS.map((tld) => (
