@@ -18,6 +18,11 @@ Terminal 2:
 
 ---
 
+TO DO:
+
+- Reduce frontpage text, maybe the subdescriptor of User your own words?
+- color of TLD subhead invisible
+
 FE BACKLOG:
 
 - Put Advanced Options into m⁠ain user input
