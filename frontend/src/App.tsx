@@ -12,6 +12,7 @@ import {
   HomepageInfoSection1,
   HomepageInfoSection2,
 } from "./components/HomepageInfoSection";
+import { Footer } from "./components/Footer";
 // import { HomepageInfoSection1, HomepageInfoSection2 } from "./components/HomepageInfoSection";
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
               <HomepageInfoSection2 />
             </>
           )}
+          <Footer />
         </div>
 
         {/* {hasResults && <FloatingActionBar />} */}
