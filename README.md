@@ -18,10 +18,6 @@ Terminal 2:
 
 ---
 
-TO DO:
-
-- Flex footer to bottom
-
 FE BACKLOG:
 
 - Put Advanced Options into m⁠ain user input
@@ -41,3 +37,4 @@ BE BACKLOG:
 DONE:
 
 - Better favicon
+- Flex footer to bottom

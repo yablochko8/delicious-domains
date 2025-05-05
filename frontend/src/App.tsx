@@ -20,51 +20,49 @@ function App() {
   return (
     <div className="blue-white-ellipse w-full">
       <TopNav />
-      <div className="flex flex-col w-full max-w-2xl mx-auto pb-60  md:pb-0 max-h-[100dvh] min-h-[100dvh]">
-        <div className="flex flex-col w-full space-y-4 px-4">
-          {/* LANDING PAGE INPUT */}
-          {!hasResults && (
-            <div className="flex flex-col pt-10 md:pt-40 gap-5">
-              <h1 className="text-center md:text-left">
-                Dream up the perfect <strong>website name</strong>
-              </h1>
-              <h2 className="text-center md:text-left">
-                Use our AI to generate and stack-rank great domain names: all
-                available for registration, all at standard pricing.
-              </h2>
-              <InputForm />
-              <HomepageInfo />
-            </div>
-          )}
+      <div className="flex flex-col w-full max-w-2xl mx-auto min-h-[100dvh] space-y-4 px-4">
+        {/* LANDING PAGE INPUT */}
+        {!hasResults && (
+          <div className="flex flex-col pt-10 md:pt-40 gap-5">
+            <h1 className="text-center md:text-left">
+              Dream up the perfect <strong>website name</strong>
+            </h1>
+            <h2 className="text-center md:text-left">
+              Use our AI to generate and stack-rank great domain names: all
+              available for registration, all at standard pricing.
+            </h2>
+            <InputForm />
+            <HomepageInfo />
+          </div>
+        )}
 
-          {/* DESKTOP REFINE FORM (mobile is in RefineModal) */}
-          {hasResults && isRefining && (
-            <div className="flex flex-col text-sm hidden md:block">
-              <InputForm />
-            </div>
-          )}
+        {/* DESKTOP REFINE FORM (mobile is in RefineModal) */}
+        {hasResults && isRefining && (
+          <div className="flex flex-col text-sm hidden md:block">
+            <InputForm />
+          </div>
+        )}
 
-          {/* RESULTS */}
-          {hasResults && (
-            <div>
-              <div className="flex flex-row w-full">
-                <div className="flex flex-col text-center justify-start items-center py-4 gap-4 w-full">
-                  {/* RESULTS */}
-                  {assessedDomains.completed.length > 0 && (
-                    <DomainList domainOptions={assessedDomains.completed} />
-                  )}
+        {/* RESULTS */}
+        {hasResults && (
+          <div>
+            <div className="flex flex-row w-full">
+              <div className="flex flex-col text-center justify-start items-center py-4 gap-4 w-full">
+                {/* RESULTS */}
+                {assessedDomains.completed.length > 0 && (
+                  <DomainList domainOptions={assessedDomains.completed} />
+                )}
 
-                  {/* IN PROGRESS */}
-                  {assessedDomains.inProgress.length > 0 && (
-                    <ProgressMessage domains={assessedDomains.inProgress} />
-                  )}
-                </div>
+                {/* IN PROGRESS */}
+                {assessedDomains.inProgress.length > 0 && (
+                  <ProgressMessage domains={assessedDomains.inProgress} />
+                )}
               </div>
-              <FloatingActionBar />
             </div>
-          )}
-          <Footer />
-        </div>
+            <FloatingActionBar />
+          </div>
+        )}
+        <Footer />
       </div>
 
       {/* MODALS */}
