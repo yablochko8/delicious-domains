@@ -8,7 +8,7 @@ import { RefineModal } from "./components/RefineModal";
 import { ProgressMessage } from "./components/ProgressMessage";
 import { AboutModal } from "./components/AboutModal";
 import { FloatingActionBar } from "./components/FloatingActionBar";
-import { HomepageInfoSectionsAll } from "./components/HomepageInfoSection";
+import { HomepageInfo } from "./components/HomepageInfo";
 import { Footer } from "./components/Footer";
 
 function App() {
@@ -26,11 +26,11 @@ function App() {
           {!hasResults && (
             <div className="flex flex-col pt-10 md:pt-40 gap-5">
               <h1 className="text-center md:text-left">
-                Generate memorable, available <strong>domains</strong>
+                Dream up the perfect <strong>website name</strong>
               </h1>
               <h2 className="text-center md:text-left">
-                Automatically rank options based on six metrics, all domains
-                under $100/year
+                Use our AI to generate and stack-rank great domain names: all
+                available for registration, all at standard pricing.
               </h2>
               <InputForm />
             </div>
@@ -62,7 +62,7 @@ function App() {
               <FloatingActionBar />
             </div>
           )}
-          {!hasResults && <HomepageInfoSectionsAll />}
+          {!hasResults && <HomepageInfo />}
           <Footer />
         </div>
 

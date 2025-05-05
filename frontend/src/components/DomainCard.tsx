@@ -136,7 +136,7 @@ const RegisterButton = ({ domain }: { domain: string }) => {
       title={hoverText}
     >
       {ActionIcons.register}
-      Register
+      Register {domain}
     </a>
   );
 };

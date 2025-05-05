@@ -56,7 +56,7 @@ export const scoreExplanations: ScoreCategory[] = [
   },
   {
     id: "legs",
-    name: "Legs",
+    name: "Extendable",
     description:
       "Enables a wider branding or story scheme, has some obvious imagery",
     shortDescription:
