@@ -22,6 +22,7 @@ TO DO:
 
 - Reduce frontpage text, maybe the subdescriptor of User your own words?
 - color of TLD subhead invisible
+- try more subtle primary CTA color
 
 FE BACKLOG:
 
