@@ -96,8 +96,11 @@ export const RejectCircle = ({
   isRejected: boolean;
 }) => {
   const { rejectDomain, unrejectDomain } = useSearchStateStore();
-  const handleClick = () =>
+  const { setExpandedDomain } = useDisplayStateStore();
+  const handleClick = () => {
+    setExpandedDomain(null);
     isRejected ? unrejectDomain(domain) : rejectDomain(domain);
+  };
 
   const actionText = `${isRejected ? "Add back" : "Reject"}`;
   const hoverText = `${actionText} ${domain}`;
@@ -121,8 +124,11 @@ export const LikeCircle = ({
   isLiked: boolean;
 }) => {
   const { likeDomain, unlikeDomain } = useSearchStateStore();
-  const handleClick = () =>
+  const { setExpandedDomain } = useDisplayStateStore();
+  const handleClick = () => {
+    setExpandedDomain(null);
     isLiked ? unlikeDomain(domain) : likeDomain(domain);
+  };
 
   const actionText = `${isLiked ? "Unlike" : "Like"}`;
   const hoverText = `${actionText} ${domain}`;
