@@ -1,0 +1,30 @@
+export const InputMultiCheckbox = ({
+  tld,
+  checked,
+  onChange,
+}: {
+  tld: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) => {
+  return (
+    <button
+      className={`
+                btn btn-sm
+                cursor-pointer 
+                rounded-lg 
+                px-3 
+                h-7 
+                text-sm 
+                flex items-center
+                transition-colors 
+                border-1
+                border-[#2A2A304D]
+                font-normal
+                ${checked ? "btn-neutral" : "btn-ghost"}`}
+      onClick={() => onChange(!checked)}
+    >
+      {tld}
+    </button>
+  );
+};

@@ -65,7 +65,7 @@ export const EditInputsButtonRevised = () => {
     handleClickShared();
     // Scroll the main content area to the top
     // TODO: Make this more robust and not dependent on a tailwind class
-    document.querySelector(".overflow-y-auto")?.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   };
 
   const handleClickMobile = () => {
