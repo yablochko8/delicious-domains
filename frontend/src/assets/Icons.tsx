@@ -27,8 +27,6 @@ import {
   MdShoppingCartCheckout as RegisterIcon,
 } from "react-icons/md";
 import {
-  HiOutlineDocument as StartAgainIcon,
-  HiOutlinePencil as EditIcon,
   HiOutlineShare as ShareIcon,
   HiOutlineSparkles as GenerateIcon,
 } from "react-icons/hi2";
@@ -39,6 +37,11 @@ import {
   LuThumbsUp as ThumbsUpIcon,
   LuThumbsDown as ThumbsDownIcon,
 } from "react-icons/lu";
+
+// Revised Icons
+
+import { LuRotateCcw as StartAgainIconRevised } from "react-icons/lu";
+import { LuWrench as EditInputsIconRevised } from "react-icons/lu";
 
 export const ScoreIcons: Record<ScoreId, JSX.Element> = {
   evoc: <EvocIcon />,
@@ -63,9 +66,9 @@ export const ActionIcons = {
   reject: <RejectIcon className="text-2xl" />,
   unreject: <UnrejectIcon className="text-2xl" />,
   register: <RegisterIcon className="text-sm" />,
-  startAgain: <StartAgainIcon className="text-2xl" />,
-  editInputs: <EditIcon className="text-2xl" />,
-  export: <ExportIcon />,
+  startAgain: <StartAgainIconRevised className="text-lg" />,
+  editInputs: <EditInputsIconRevised className="text-lg" />,
+  export: <ExportIcon className="text-lg" />,
   share: <ShareIcon />,
   generate: <GenerateIcon />,
   about: <AboutIcon />,

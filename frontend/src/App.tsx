@@ -4,12 +4,11 @@ import { useSearchStateStore } from "./stores/searchStateStore";
 import { TopNav } from "./components/TopNav";
 import { InputForm } from "./components/InputForm";
 import { useDisplayStateStore } from "./stores/displayStateStore";
-import { ActionButtons } from "./components/ActionButtons";
 import { RefineModal } from "./components/RefineModal";
 import { ProgressMessage } from "./components/ProgressMessage";
 import { AboutModal } from "./components/AboutModal";
+import { FloatingActionBar } from "./components/FloatingActionBar";
 // import { HomepageInfoSection1, HomepageInfoSection2 } from "./components/HomepageInfoSection";
-
 
 function App() {
   const { assessments: assessedDomains } = useSearchStateStore();
@@ -22,18 +21,22 @@ function App() {
       <TopNav />
       <div className="flex flex-col w-full max-w-2xl mx-auto pb-14 pt-14  md:pb-0 max-h-[100dvh] min-h-[100dvh]">
         <div className="flex flex-col w-full space-y-4 px-4">
-
           {/* LANDING PAGE INPUT */}
-          {(!hasResults) && (
+          {!hasResults && (
             <div className="flex flex-col pt-10 md:pt-40 gap-5">
-              <h1 className="text-center md:text-left">Generate memorable, available <strong>domains</strong></h1>
-              <h2 className="text-center md:text-left">Automatically rank options based on six metrics, all domains under $100/year</h2>
+              <h1 className="text-center md:text-left">
+                Generate memorable, available <strong>domains</strong>
+              </h1>
+              <h2 className="text-center md:text-left">
+                Automatically rank options based on six metrics, all domains
+                under $100/year
+              </h2>
               <InputForm />
             </div>
           )}
 
           {/* DESKTOP REFINE FORM (mobile is in RefineModal) */}
-          {(hasResults && isRefining) && (
+          {hasResults && isRefining && (
             <div className="flex flex-col text-sm hidden md:block">
               <InputForm />
             </div>
@@ -59,12 +62,9 @@ function App() {
           )}
           {/* <HomepageInfoSection1 />
           <HomepageInfoSection2 /> */}
-        </div >
-
-        {/* MOBILE ACTION BUTTONS (desktop ones are in the top nav) */}
-        <div className="flex fixed bottom-0 w-full gap-2 border-t bg-base-100 border-base-content/20 p-2 justify-center md:justify-end md:hidden">
-          <ActionButtons />
         </div>
+
+        {hasResults && <FloatingActionBar />}
       </div>
 
       {/* MODALS */}

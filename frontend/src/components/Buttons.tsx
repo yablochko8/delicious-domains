@@ -17,20 +17,21 @@ export const AddDomainsButton = () => {
       onClick={generateDomains}
       disabled={isLoading || isDisabled}
     >
-      {isLoading ? <span className="loading loading-spinner"></span> :
+      {isLoading ? (
+        <span className="loading loading-spinner"></span>
+      ) : (
         <>
           <div className="flex flex-row w-full justify-between gap-2 items-center">
             <div className="text-xl">{ActionIcons.generate}</div>
             {cta}
           </div>
         </>
-      }
+      )}
     </button>
   );
 };
 
-
-export const ClearAllButton = () => {
+export const ClearAllButtonRevised = () => {
   const { clearAll } = useSearchStateStore();
 
   const handleClick = () => {
@@ -39,41 +40,32 @@ export const ClearAllButton = () => {
     window.scrollTo(0, 0);
   };
 
-  const cta = "start again";
+  const cta = "Start Again";
 
   return (
-    <>
-      {/* Desktop version */}
-      <button
-        className="btn btn-info hidden md:block"
-        onClick={handleClick}
-        title={cta}>
-        {cta}
-      </button>
-
-      {/* Mobile version */}
-      <button
-        className="btn btn-outline btn-square md:hidden text-2xl"
-        onClick={handleClick}
-        title={cta}>
-        {ActionIcons.startAgain}
-      </button>
-    </>
+    <button
+      className="btn btn-outline btn-sm text-neutral-content rounded-xl hover:bg-info"
+      onClick={handleClick}
+      title={cta}
+    >
+      {ActionIcons.startAgain}
+      {cta}
+    </button>
   );
 };
 
-export const EditInputsButton = () => {
+export const EditInputsButtonRevised = () => {
   const { isRefining, setIsRefining } = useDisplayStateStore();
 
   const handleClickShared = () => {
     trackEventSafe("ClickEdit");
     setIsRefining(!isRefining);
-  }
+  };
   const handleClickDesktop = () => {
     handleClickShared();
     // Scroll the main content area to the top
     // TODO: Make this more robust and not dependent on a tailwind class
-    document.querySelector('.overflow-y-auto')?.scrollTo(0, 0);
+    document.querySelector(".overflow-y-auto")?.scrollTo(0, 0);
   };
 
   const handleClickMobile = () => {
@@ -81,23 +73,30 @@ export const EditInputsButton = () => {
     openModal(`refine-modal`);
   };
 
-  const cta = "edit inputs";
+  const cta = "Edit Inputs";
+
+  const sharedStyles =
+    "btn btn-outline btn-sm text-neutral-content rounded-xl hover:bg-info";
   return (
     <>
       {/* Desktop version */}
       <button
-        className="btn btn-info hidden md:block"
+        className={`${sharedStyles} hidden md:flex`}
         onClick={handleClickDesktop}
-        title={cta}>
+        title={cta}
+      >
+        {ActionIcons.editInputs}
         {cta}
       </button>
 
       {/* Mobile version */}
       <button
-        className="btn btn-outline btn-square md:hidden text-2xl"
+        className={`${sharedStyles} md:hidden`}
         onClick={handleClickMobile}
-        title={cta}>
+        title={cta}
+      >
         {ActionIcons.editInputs}
+        {cta}
       </button>
     </>
   );
@@ -105,43 +104,48 @@ export const EditInputsButton = () => {
 
 export const ExportSavedButton = () => {
   const { handleDesktopExport, handleMobileExport } = useExport();
+
+  // const sharedStyles =
+  // "btn btn-outline btn-sm text-neutral-content rounded-xl hover:bg-info";
+  const sharedStyles = "btn btn-secondary btn-sm rounded-xl";
+
   return (
     <>
       {/* Desktop version */}
       <button
-        className="btn btn-secondary hidden md:block"
+        className={`${sharedStyles} hidden md:flex`}
         onClick={handleDesktopExport}
-        title="Copy to clipboard">
+        title="Copy to clipboard"
+      >
         <div className="flex flex-row w-full justify-between gap-2 items-center">
           <div className="text-xl">{ActionIcons.export}</div>
-          export
+          Export
         </div>
       </button>
 
       {/* Mobile version */}
       <button
-        className="btn btn-outline btn-square md:hidden text-2xl"
+        className={`${sharedStyles} md:hidden`}
         onClick={handleMobileExport}
-        title="Share">
-        {ActionIcons.share}
+        title="Share"
+      >
+        {ActionIcons.share} Export
       </button>
     </>
   );
 };
 
-
 export const AboutButton = () => {
   const handleClick = () => {
     trackEventSafe("ClickAbout");
     openModal(`about-modal`);
-  }
+  };
   return (
     <button className="subtle-topnav cursor-pointer " onClick={handleClick}>
       About
     </button>
   );
 };
-
 
 export const EnterButton = () => {
   const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
@@ -153,11 +157,11 @@ export const EnterButton = () => {
       onClick={generateDomains}
       disabled={isLoading || isDisabled}
     >
-      {isLoading ? <span className="loading loading-spinner"></span> :
-        <>
-          {ActionIcons.enter}
-        </>
-      }
+      {isLoading ? (
+        <span className="loading loading-spinner"></span>
+      ) : (
+        <>{ActionIcons.enter}</>
+      )}
     </button>
   );
 };
