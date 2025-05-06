@@ -27,10 +27,11 @@ function App() {
             <h1 className="text-center md:text-left">
               Dream up the perfect <strong>website name</strong>
             </h1>
-            <h2 className="text-center md:text-left">
-              Use our AI to generate and stack-rank great domain names: all
-              available for registration, all at standard pricing.
-            </h2>
+            <div className="text-subtitle text-center md:text-left">
+              Generate and stack-rank great domain names! Our AI will come up
+              with names inspired by your description, and show you the best options
+              that are not taken, and have standard pricing.
+            </div>
             <InputForm />
             <HomepageInfo />
           </div>

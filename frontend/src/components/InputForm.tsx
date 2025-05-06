@@ -14,44 +14,44 @@ const EXAMPLE_PURPOSES = [
 ];
 
 const VIBE_OPTIONS: string[] = [
+  // "serious",
+  // "trustworthy",
+  "professional",
+  "modern",
+  "elegant",
+  "simple",
   "bold",
   "casual",
-  "clean",
-  "cool",
-  "elegant",
-  "energetic",
-  "friendly",
-  "funny",
-  "hip",
-  "luxurious",
-  "minimalist",
-  "modern",
-  "playful",
-  "professional",
-  "quirky",
-  "serious",
-  "simple",
-  "slick",
   "trendy",
-  "trustworthy",
-  "youthful",
+  "playful",
+  "energetic",
+  "quirky",
+  // "clean",
+  // "cool",
+  // "friendly",
+  // "funny",
+  // "hip",
+  // "luxurious",
+  // "minimalist",
+  // "slick",
+  // "youthful",
 ];
 
 const TLD_OPTIONS = [
   ".com",
   ".ai",
-  ".io",
   ".app",
   ".dev",
-  ".xyz",
+  ".io",
   ".net",
   ".org",
+  ".xyz",
   ".agency",
   ".art",
   ".biz",
   ".blog",
   ".center",
-  ".click",
+  // ".click",
   ".cloud",
   ".club",
   ".co",
@@ -68,7 +68,7 @@ const TLD_OPTIONS = [
   ".info",
   ".ink",
   ".life",
-  ".live",
+  // ".live",
   ".me",
   ".media",
   ".network",
@@ -76,7 +76,7 @@ const TLD_OPTIONS = [
   ".online",
   ".pro",
   ".shop",
-  ".site",
+  // ".site",
   ".solutions",
   ".space",
   ".store",
@@ -84,7 +84,7 @@ const TLD_OPTIONS = [
   ".tech",
   ".team",
   ".today",
-  ".works",
+  // ".works",
   ".world",
 ];
 
@@ -159,8 +159,8 @@ export const InputForm = () => {
   return (
     <div className="flex flex-col gap-4 py-4 pb-20">
       <PurposeInput
-        question="Describe your company or project here:"
-        subhead="Use your own words. The more detail the better. This will be passed to the AI to generate name ideas."
+        question="Describe your company or project:"
+        // subhead="Use your own words. The more detail the better. This will be passed to the AI to generate name ideas."
         value={purpose}
         onChange={(e) => {
           setPurpose(e.target.value);
@@ -171,10 +171,9 @@ export const InputForm = () => {
       <div className="flex flex-row w-full justify-start items-center gap-2">
         <button
           className={`pill-button 
-            ${
-              showAdvancedOptions
-                ? "selector-button-selected"
-                : "selector-button"
+            ${showAdvancedOptions
+              ? "selector-button-selected"
+              : "selector-button"
             }`}
           onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
         >

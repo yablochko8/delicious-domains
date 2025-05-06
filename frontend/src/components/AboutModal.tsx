@@ -23,7 +23,7 @@ export const AboutModal = () => {
 const AboutContents = () => {
   return (
     <div className="flex flex-col gap-4 text-sm text-justify text-about">
-      <p className="text-lg font-bold">{ABOUT_TEXT_A}</p>
+      <p className="text-lg font-bold text-left">{ABOUT_TEXT_A}</p>
       <p>{ABOUT_TEXT_B}</p>
       <p>{ABOUT_TEXT_C}</p>
 
