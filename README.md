@@ -18,9 +18,11 @@ Terminal 2:
 
 ---
 
+TO DO:
+
 FE BACKLOG:
 
-- Put Advanced Options into m⁠ain user input
+- Put Advanced Options into main user input
 - different detail modal for invalid domains
 - newest results should be coloured differently
 - turn export into a "seek feedback" button
@@ -38,3 +40,6 @@ DONE:
 
 - Better favicon
 - Flex footer to bottom
+- Reduce frontpage text, maybe the subdescriptor of User your own words?
+- color of TLD subhead invisible
+- try more subtle primary CTA color
