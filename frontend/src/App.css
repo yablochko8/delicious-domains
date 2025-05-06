@@ -211,7 +211,7 @@ h4 {
 }
 
 .primary-action-button {
-  background: #bd05b4;
+  background: #B5C7FE;
   opacity: 1;
   color: #ffffff;
   /* font-size: 1rem; */
@@ -220,7 +220,7 @@ h4 {
 }
 
 .primary-action-button:hover {
-  background: #8b0488;
+  background: #6675a3;
 }
 
 .secondary-action-button {

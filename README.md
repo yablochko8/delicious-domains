@@ -20,8 +20,6 @@ Terminal 2:
 
 TO DO:
 
-- try the existing primary color for primary cta
-
 FE BACKLOG:
 
 - Put Advanced Options into main user input
@@ -44,3 +42,4 @@ DONE:
 - right align button at bottom of page
 - only two action buttons on mobile in floating menu
 - text-box to heading ratio of 40:60
+- try the existing primary color for primary cta
