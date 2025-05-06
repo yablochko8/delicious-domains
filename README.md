@@ -38,8 +38,8 @@ BE BACKLOG:
 
 DONE:
 
-- Better favicon
-- Flex footer to bottom
-- Reduce frontpage text, maybe the subdescriptor of User your own words?
-- color of TLD subhead invisible
-- try more subtle primary CTA color
+- grey button border for selectors
+- right align button at bottom of page
+- only two action buttons on mobile in floating menu
+- text-box to heading ratio of 40:60
+- try the existing primary color for primary cta

@@ -116,7 +116,7 @@ const PurposeInput = ({
   return (
     <div className="space-y-2">
       <div>
-        <p className="text-form-heading">{question}</p>
+        <p className="text-form-heading-white">{question}</p>
         {subhead && <p className="text-form-subheading">{subhead}</p>}
       </div>
       <div className="relative">
@@ -171,9 +171,10 @@ export const InputForm = () => {
       <div className="flex flex-row w-full justify-start items-center gap-2">
         <button
           className={`pill-button 
-            ${showAdvancedOptions
-              ? "selector-button-selected"
-              : "selector-button"
+            ${
+              showAdvancedOptions
+                ? "selector-button-selected"
+                : "selector-button"
             }`}
           onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
         >
@@ -182,7 +183,7 @@ export const InputForm = () => {
       </div>
       {showAdvancedOptions && (
         <>
-          <div className="text-form-heading">What's your vibe?</div>
+          <div className="text-form-heading-black">What's your vibe?</div>
           <div>
             <div className="flex flex-wrap gap-2">
               {VIBE_OPTIONS.map((vibe) => (
@@ -205,10 +206,10 @@ export const InputForm = () => {
             </div>
           </div>
           <div>
-            <div className="text-form-heading">
+            <div className="text-form-heading-black">
               Preferred domain extensions?
             </div>
-            <div className="text-form-subheading">
+            <div className="text-form-subheading-black">
               Tick nothing to stick to a longer list of ~350 options
             </div>
           </div>
