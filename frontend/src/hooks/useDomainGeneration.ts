@@ -71,7 +71,6 @@ export const useDomainGeneration = () => {
       const topValidDomain = getTopDomain(assessments.completed);
 
       if (topValidDomain) {
-        console.log("Opening top domain", topValidDomain);
         setExpandedDomain(topValidDomain);
       }
       // Scroll to the top of the page
