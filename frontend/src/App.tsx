@@ -12,10 +12,10 @@ import { HomepageInfo } from "./components/HomepageInfo";
 import { Footer } from "./components/Footer";
 
 function App() {
-  const { assessments: assessedDomains } = useSearchStateStore();
+  const { assessments } = useSearchStateStore();
   const { isRefining } = useDisplayStateStore();
 
-  const hasResults = assessedDomains.completed.length > 0;
+  const hasResults = assessments.completed.length > 0;
 
   return (
     <div className="blue-white-ellipse w-full">
@@ -29,8 +29,8 @@ function App() {
             </h1>
             <div className="text-subtitle text-center md:text-left">
               Generate and stack-rank great domain names! Our AI will come up
-              with names inspired by your description, and show you the best options
-              that are not taken, and have standard pricing.
+              with names inspired by your description, and show you the best
+              options that are not taken, and have standard pricing.
             </div>
             <InputForm />
             <HomepageInfo />
@@ -50,13 +50,13 @@ function App() {
             <div className="flex flex-row w-full">
               <div className="flex flex-col text-center justify-start items-center py-4 gap-4 w-full">
                 {/* RESULTS */}
-                {assessedDomains.completed.length > 0 && (
-                  <DomainList domainOptions={assessedDomains.completed} />
+                {assessments.completed.length > 0 && (
+                  <DomainList domainOptions={assessments.completed} />
                 )}
 
                 {/* IN PROGRESS */}
-                {assessedDomains.inProgress.length > 0 && (
-                  <ProgressMessage domains={assessedDomains.inProgress} />
+                {assessments.inProgress.length > 0 && (
+                  <ProgressMessage domains={assessments.inProgress} />
                 )}
               </div>
             </div>

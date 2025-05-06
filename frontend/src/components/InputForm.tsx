@@ -4,6 +4,7 @@ import { InputMultiCheckbox } from "./InputMultiCheckbox";
 import { ActionIcons } from "../assets/Icons";
 import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { EnterButton } from "./Buttons";
+import { useSearchStateStore } from "../stores/searchStateStore";
 
 const EXAMPLE_PURPOSES = [
   "linkedin for cats",
@@ -117,7 +118,7 @@ const PurposeInput = ({
     <div className="space-y-2">
       <div>
         <p className="text-form-heading-white">{question}</p>
-        {subhead && <p className="text-form-subheading">{subhead}</p>}
+        {subhead && <p className="text-form-subheading-white">{subhead}</p>}
       </div>
       <div className="relative">
         <input
@@ -137,7 +138,11 @@ const PurposeInput = ({
   );
 };
 
-export const InputForm = () => {
+export const InputForm = ({
+  whiteBackground = false,
+}: {
+  whiteBackground?: boolean;
+}) => {
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const {
     purpose,
@@ -149,6 +154,11 @@ export const InputForm = () => {
     clearVibes,
     clearPreferredTlds,
   } = useInputStateStore();
+
+  const { longlist } = useSearchStateStore();
+
+  // If any results have already been generated, this will display over the top (dark) end of the gradient
+  const hasDarkBackground = longlist.length > 0 && !whiteBackground;
 
   // useMemo to avoid re-rendering with a new random purpose on every interaction
   const randomPurpose = useMemo(
@@ -183,7 +193,15 @@ export const InputForm = () => {
       </div>
       {showAdvancedOptions && (
         <>
-          <div className="text-form-heading-black">What's your vibe?</div>
+          <div
+            className={`${
+              hasDarkBackground
+                ? "text-form-heading-white"
+                : "text-form-heading-black"
+            }`}
+          >
+            What's your vibe?
+          </div>
           <div>
             <div className="flex flex-wrap gap-2">
               {VIBE_OPTIONS.map((vibe) => (
@@ -206,10 +224,22 @@ export const InputForm = () => {
             </div>
           </div>
           <div>
-            <div className="text-form-heading-black">
+            <div
+              className={`${
+                hasDarkBackground
+                  ? "text-form-heading-white"
+                  : "text-form-heading-black"
+              }`}
+            >
               Preferred domain extensions?
             </div>
-            <div className="text-form-subheading-black">
+            <div
+              className={`${
+                hasDarkBackground
+                  ? "text-form-subheading-white"
+                  : "text-form-subheading-black"
+              }`}
+            >
               Tick nothing to stick to a longer list of ~350 options
             </div>
           </div>

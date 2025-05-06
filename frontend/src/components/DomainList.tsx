@@ -97,7 +97,7 @@ export const DomainList = ({
 
   return (
     <div className="flex flex-col gap-3 w-full pb-20">
-      <div className="text-form-subheading">
+      <div className="text-form-subheading-white">
         Like and reject domains to see better results.
       </div>
       <AnimatePresence>
