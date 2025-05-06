@@ -90,14 +90,26 @@ h2 {
   opacity: 0.4;
 }
 
-.text-form-heading {
+.text-form-heading-white {
   color: #ffffff;
+  font-size: 1.125rem; /* 16px */
+  font-weight: 500;
+}
+
+.text-form-heading-black {
+  color: #000000;
   font-size: 1.125rem; /* 16px */
   font-weight: 500;
 }
 
 .text-form-subheading {
   color: #ffffff;
+  font-size: 0.875rem; /* 16px */
+  font-weight: 350;
+}
+
+.text-form-subheading-black {
+  color: #000000;
   font-size: 0.875rem; /* 16px */
   font-weight: 350;
 }
@@ -241,7 +253,7 @@ h4 {
 
 .selector-button {
   background: rgba(255, 255, 255, 0.2);
-  border: 1px solid #202226;
+  border: 1px solid #e5e7eb;
   color: #111213;
 }
 

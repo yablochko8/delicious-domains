@@ -20,6 +20,11 @@ Terminal 2:
 
 TO DO:
 
+- only two action buttons on mobile in floating menu
+- try the existing primary color for primary cta
+- right align button at bottom of page
+- text-box to heading ratio of 40:60
+
 FE BACKLOG:
 
 - Put Advanced Options into main user input
@@ -38,8 +43,4 @@ BE BACKLOG:
 
 DONE:
 
-- Better favicon
-- Flex footer to bottom
-- Reduce frontpage text, maybe the subdescriptor of User your own words?
-- color of TLD subhead invisible
-- try more subtle primary CTA color
+- grey button border for selectors
