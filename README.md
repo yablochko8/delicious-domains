@@ -20,9 +20,7 @@ Terminal 2:
 
 TO DO:
 
-- only two action buttons on mobile in floating menu
 - try the existing primary color for primary cta
-- text-box to heading ratio of 40:60
 
 FE BACKLOG:
 
@@ -44,3 +42,5 @@ DONE:
 
 - grey button border for selectors
 - right align button at bottom of page
+- only two action buttons on mobile in floating menu
+- text-box to heading ratio of 40:60

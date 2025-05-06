@@ -10,10 +10,10 @@ const HomePageInfoSectionTemplate = ({
   return (
     <div className="flex flex-row w-full border-t border-gray-300 text-zinc-800 py-4">
       <div className="flex flex-col md:flex-row w-full items-start gap-4 text-sm">
-        <div className="md:w-1/2 space-y-4">
+        <div className="md:w-2/5 space-y-4">
           <h3 className="font-semibold text-base text-black">{heading}</h3>
         </div>
-        <div className="md:w-1/2 text-justify space-y-4 text-about">
+        <div className="md:w-3/5 text-justify space-y-4 text-about">
           {children}
         </div>
       </div>
