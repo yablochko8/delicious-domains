@@ -111,7 +111,7 @@ const HomepageInfoSection3 = () => {
         If you have some ideas for how we can make this tool better, please let
         us know using our anonymous feedback form below:
       </p>
-      <div className="flex flex-row justify-center p-6">
+      <div className="flex flex-row justify-end p-6">
         <button className="pill-button tertiary-action-button">
           <span>{ActionIcons.feedback}</span> Submit Feedback
         </button>
