@@ -1,6 +1,6 @@
 import "./App.css";
 import { DomainList } from "./components/DomainList";
-import { useSearchStateStore } from "./stores/searchStateStore";
+import { useSearchStateStore } from "./stores/searchStateStoreV2";
 import { TopNav } from "./components/TopNav";
 import { InputForm } from "./components/InputForm";
 import { useDisplayStateStore } from "./stores/displayStateStore";
@@ -12,10 +12,10 @@ import { HomepageInfo } from "./components/HomepageInfo";
 import { Footer } from "./components/Footer";
 
 function App() {
-  const { assessments } = useSearchStateStore();
+  const { domains } = useSearchStateStore();
   const { isRefining } = useDisplayStateStore();
 
-  const hasResults = assessments.completed.length > 0;
+  const hasResults = domains.length > 0;
 
   return (
     <div className="blue-white-ellipse w-full">
@@ -50,13 +50,13 @@ function App() {
             <div className="flex flex-row w-full">
               <div className="flex flex-col text-center justify-start items-center py-4 gap-4 w-full">
                 {/* RESULTS */}
-                {assessments.completed.length > 0 && (
-                  <DomainList domainOptions={assessments.completed} />
+                {domains.length > 0 && (
+                  <DomainList domainOptions={domains} />
                 )}
 
                 {/* IN PROGRESS */}
-                {assessments.inProgress.length > 0 && (
-                  <ProgressMessage domains={assessments.inProgress} />
+                {domains.filter((domain) => domain.status === "fetching").length > 0 && (
+                  <ProgressMessage domains={domains.filter((domain) => domain.status === "fetching").map((domain) => domain.domain)} />
                 )}
               </div>
             </div>

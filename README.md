@@ -20,6 +20,10 @@ Terminal 2:
 
 TO DO:
 
+- Only show Liked & New Domains
+- Build Feedback Survey Integration for Domain Suggestions
+- Generate Now button should not shrink when generating
+
 FE BACKLOG:
 
 - Put Advanced Options into main user input
@@ -36,10 +40,14 @@ BE BACKLOG:
 - add validation check for deal breakers (copycat, annoying, esoteric)
 - log specific likes & rejections
 
+IDEA LONGLIST:
+
+- User need: check for Trademark risk of similar names (Paddy at Baseline)
+- Create Domain Comparison View with Detailed Criteria Breakdown
+
 DONE:
 
-- grey button border for selectors
-- right align button at bottom of page
-- only two action buttons on mobile in floating menu
-- text-box to heading ratio of 40:60
-- try the existing primary color for primary cta
+- Show filters by default
+- Make "Under $100" more clear
+- One-click: more like this
+- Clear all inputs when clicking on Home Logo

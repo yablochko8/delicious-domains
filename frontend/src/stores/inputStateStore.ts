@@ -13,6 +13,7 @@ type InputStateStore = InputState & {
   togglePreferredTld: (tld: string) => void;
   clearVibes: () => void;
   clearPreferredTlds: () => void;
+  clearAllInputs: () => void;
 };
 
 export const useInputStateStore = create<InputStateStore>()(
@@ -36,7 +37,9 @@ export const useInputStateStore = create<InputStateStore>()(
         })),
       clearVibes: () => set({ vibeArray: [] }),
       clearPreferredTlds: () => set({ preferredTlds: [] }),
+      clearAllInputs: () =>
+        set({ purpose: "", vibeArray: [], preferredTlds: [] }),
     }),
-    { name: "input-state-25-04-24" }
+    { name: "input-state-25-05-13" }
   )
 );

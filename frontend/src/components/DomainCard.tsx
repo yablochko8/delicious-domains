@@ -1,7 +1,7 @@
 import { getTotalScore } from "../utils/getTotalScore";
 import { ActionIcons } from "../assets/Icons";
-import { DomainAssessment } from "shared/types";
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { DomainWithStatus } from "shared/types";
+import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import { NETIM_PARTNER_ID } from "../config";
 import { trackEventSafe } from "../utils/plausible";
 import {
@@ -10,6 +10,8 @@ import {
   scoreIds,
 } from "../assets/scoreExplanations";
 import { useDisplayStateStore } from "../stores/displayStateStore";
+import { useMoreLikeThis } from "../hooks/useDomainGeneration";
+import { checkCanRegister, checkIsPossible } from "../utils/statusParsers";
 
 const TotalScoreTile = ({
   totalScore,
@@ -70,11 +72,11 @@ export const RejectCircle = ({
   domain: string;
   isRejected: boolean;
 }) => {
-  const { rejectDomain, unrejectDomain } = useSearchStateStore();
+  const { rejectDomain, unrateDomain } = useSearchStateStore();
   const { setExpandedDomain } = useDisplayStateStore();
   const handleClick = () => {
     setExpandedDomain(null);
-    isRejected ? unrejectDomain(domain) : rejectDomain(domain);
+    isRejected ? unrateDomain(domain) : rejectDomain(domain);
   };
 
   const actionText = `${isRejected ? "Add back" : "Reject"}`;
@@ -98,11 +100,11 @@ export const LikeCircle = ({
   domain: string;
   isLiked: boolean;
 }) => {
-  const { likeDomain, unlikeDomain } = useSearchStateStore();
+  const { likeDomain, unrateDomain } = useSearchStateStore();
   const { setExpandedDomain } = useDisplayStateStore();
   const handleClick = () => {
     setExpandedDomain(null);
-    isLiked ? unlikeDomain(domain) : likeDomain(domain);
+    isLiked ? unrateDomain(domain) : likeDomain(domain);
   };
 
   const actionText = `${isLiked ? "Unlike" : "Like"}`;
@@ -119,6 +121,21 @@ export const LikeCircle = ({
   );
 };
 
+
+const MoreLikeThisButton = ({ domain }: { domain: string }) => {
+  const { likeAndGenerate } = useMoreLikeThis();
+  const handleClick = () => {
+    likeAndGenerate(domain);
+  };
+
+  return (
+    <button className="pill-button accent-action-button bg-neutral bg-opacity-100" onClick={handleClick}>
+      {ActionIcons.generate}
+      More like this
+    </button>
+  );
+};
+
 const RegisterButton = ({ domain }: { domain: string }) => {
   const handleClick = () => {
     trackEventSafe("ClickRegister");
@@ -131,7 +148,7 @@ const RegisterButton = ({ domain }: { domain: string }) => {
       href={targetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`pill-button primary-action-button`}
+      className="pill-button primary-action-button"
       onClick={handleClick}
       title={hoverText}
     >
@@ -180,33 +197,33 @@ const SingleScoreDetail = ({
   );
 };
 
-const ScoreDetails = ({ assessment }: { assessment: DomainAssessment }) => {
+const ScoreDetails = ({ domainWithStatus }: { domainWithStatus: DomainWithStatus }) => {
   return (
     <>
-      {assessment.scores &&
+      {domainWithStatus.scores &&
         [...scoreIds]
           .sort(
             (a: ScoreId, b: ScoreId) =>
-              (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0)
+              (domainWithStatus.scores?.[b] ?? 0) - (domainWithStatus.scores?.[a] ?? 0)
           )
           .map((scoreId: ScoreId) => (
             <SingleScoreDetail
               scoreId={scoreId}
-              score={assessment.scores ? assessment.scores[scoreId] : 0}
-              domain={assessment.domain}
+              score={domainWithStatus.scores ? domainWithStatus.scores[scoreId] : 0}
+              domain={domainWithStatus.domain}
             />
           ))}
-      <div className="flex flex-row justify-end w-full p-4">
-        <RegisterButton domain={assessment.domain} />
+      <div className="flex flex-row justify-end w-full p-4 gap-2">
+        <MoreLikeThisButton domain={domainWithStatus.domain} />
+        {checkCanRegister(domainWithStatus) && <RegisterButton domain={domainWithStatus.domain} />}
       </div>
     </>
   );
 };
 
-export const DomainCard = (assessment: DomainAssessment) => {
-  const { domain, isPossible, isAvailable, isCheap } = assessment;
+export const DomainCard = (domainWithStatus: DomainWithStatus) => {
+  const { domain, status } = domainWithStatus;
   const { expandedDomain, setExpandedDomain } = useDisplayStateStore();
-  const { rejected, liked } = useSearchStateStore();
 
   const getDomainCardTag = (domain: string) => {
     // split the domain by the dot
@@ -216,9 +233,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
     return `domain-card-${domainTag}`;
   };
 
-  const isRejected = rejected.includes(domain);
-  const isLiked = liked.includes(domain);
-  const isValid = isPossible && isAvailable && isCheap;
+  const isRejected = status === "rejected";
+  const isLiked = status === "liked";
+  const isValid = checkCanRegister(domainWithStatus);
   const isExpanded = expandedDomain === domain;
 
   const validStyling =
@@ -275,16 +292,16 @@ export const DomainCard = (assessment: DomainAssessment) => {
           className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3`}
         >
           <TotalScoreTile
-            totalScore={getTotalScore(assessment, true)}
+            totalScore={getTotalScore(domainWithStatus, true)}
             onClick={handleClick}
           />
           <h3 className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
             {domain}
           </h3>
           <StatusMessage
-            isPossible={isPossible}
-            isAvailable={isAvailable}
-            isCheap={isCheap}
+            isPossible={checkIsPossible(domainWithStatus)}
+            isAvailable={status !== "unavailable"}
+            isCheap={status !== "premium"}
           />
           {isValid && (
             <>
@@ -294,12 +311,11 @@ export const DomainCard = (assessment: DomainAssessment) => {
           )}
         </div>
         <div
-          className={`overflow-hidden transition-all duration-200 ease-in-out ${
-            isExpanded ? "max-h-[500px] opacity-100 pt-2" : "max-h-0 opacity-0"
-          }`}
+          className={`overflow-hidden transition-all duration-200 ease-in-out ${isExpanded ? "max-h-[500px] opacity-100 pt-2" : "max-h-0 opacity-0"
+            }`}
         >
           <div className="flex flex-row" />
-          <ScoreDetails assessment={assessment} />
+          <ScoreDetails domainWithStatus={domainWithStatus} />
         </div>
       </div>
     </div>

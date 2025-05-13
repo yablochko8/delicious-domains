@@ -1,7 +1,7 @@
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
-import { getDomainAssessment, getDomainCandidates } from "../serverCalls";
+import { getDomainCandidates, getDomainWithStatus } from "../serverCalls";
 import { closeModal } from "../utils/openModal";
 import { trackEventSafe } from "../utils/plausible";
 import { SELECTED_MODEL } from "../config";
@@ -11,12 +11,13 @@ export const useDomainGeneration = () => {
   const { isLoading, setIsLoading } = useDisplayStateStore();
 
   const {
-    longlist,
-    liked,
-    rejected,
-    addToLonglist,
-    addAssessment,
-    addFailure,
+    getLiked,
+    getRejected,
+    getAllUnrated,
+    addDomainsFetching,
+    updateStatus,
+    addError,
+    archiveUnrated,
   } = useSearchStateStore();
 
   const { purpose, vibeArray, preferredTlds } = useInputStateStore();
@@ -33,33 +34,36 @@ export const useDomainGeneration = () => {
     // Track the event
     trackEventSafe("ClickGenerate");
 
+    // Archive all unrated domains
+    archiveUnrated();
+
     // Generate the domains
     const vibe = vibeArray.join(", ");
 
     try {
-      const fetchedLonglist = await getDomainCandidates({
+      const domainCandidates = await getDomainCandidates({
         purpose,
         vibe,
         model: SELECTED_MODEL,
         targetQuantity: 10,
         preferredTlds: preferredTlds,
-        likedDomains: liked,
-        rejectedDomains: rejected,
-        unratedDomains: longlist,
+        likedDomains: getLiked(),
+        rejectedDomains: getRejected(),
+        unratedDomains: getAllUnrated(),
       });
 
-      addToLonglist(fetchedLonglist);
+      addDomainsFetching(domainCandidates);
 
       // Process assessments sequentially with delay
       await Promise.all(
-        fetchedLonglist.map(async (domain, index) => {
+        domainCandidates.map(async (domain, index) => {
           try {
             await new Promise((resolve) => setTimeout(resolve, index * 200));
-            const assessment = await getDomainAssessment(domain);
-            addAssessment(assessment);
+            const domainWithStatus = await getDomainWithStatus(domain);
+            updateStatus(domainWithStatus);
           } catch (error) {
             console.error(`Failed to assess domain ${domain}:`, error);
-            addFailure(
+            addError(
               domain,
               error instanceof Error ? error.message : String(error)
             );
@@ -67,8 +71,9 @@ export const useDomainGeneration = () => {
         })
       );
       // Open the top performing domain
-      const { assessments } = useSearchStateStore.getState();
-      const topValidDomain = getTopDomain(assessments.completed);
+      const topValidDomain = getTopDomain(
+        useSearchStateStore.getState().domains
+      );
 
       if (topValidDomain) {
         setExpandedDomain(topValidDomain);
@@ -85,4 +90,17 @@ export const useDomainGeneration = () => {
     generateDomains,
     isDisabled: !purpose,
   };
+};
+
+/** Adds a domain to liked, and then generates a new list of domains */
+export const useMoreLikeThis = () => {
+  const { likeDomain } = useSearchStateStore();
+  const { generateDomains } = useDomainGeneration();
+
+  const likeAndGenerate = (domain: string) => {
+    likeDomain(domain);
+    generateDomains();
+  };
+
+  return { likeAndGenerate };
 };

@@ -1,4 +1,4 @@
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import {
   AddDomainsButton,
   ClearAllButtonRevised,
@@ -10,12 +10,12 @@ import {
  * Floating Action Bar is sticky and about 40-60px above the bottom of the view port.
  */
 export const FloatingActionBar = () => {
-  const { liked } = useSearchStateStore();
+  const { domains } = useSearchStateStore();
 
   // On mobile we only have space for 2 action buttons, so we have these rules
-  const showStartAgain = liked.length === 0;
-  const showGenerate = liked.length > 0 && liked.length <= 4;
-  const showExport = liked.length > 4;
+  const showStartAgain = domains.length === 0;
+  const showGenerate = domains.length > 0 && domains.length <= 4;
+  const showExport = domains.length > 4;
   // Always show the EditInputs button!
 
   return (
