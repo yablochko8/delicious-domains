@@ -222,7 +222,6 @@ const ScoreDetails = ({ domainWithStatus }: { domainWithStatus: DomainWithStatus
 };
 
 export const DomainCard = (domainWithStatus: DomainWithStatus) => {
-  console.log({ domainWithStatus });
   const { domain, status } = domainWithStatus;
   const { expandedDomain, setExpandedDomain } = useDisplayStateStore();
 
