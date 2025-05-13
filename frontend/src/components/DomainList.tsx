@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { DomainStatus, DomainWithStatus } from "shared/types";
 import { DomainCard } from "./DomainCard";
-import { getTotalScoreV2 } from "../utils/getTotalScore";
+import { getTotalScore } from "../utils/getTotalScore";
 import { useState } from "react";
 import { checkIsHidden, checkIsPossible, checkCanRegister, checkIsPrevious } from "../utils/statusParsers";
 
@@ -112,11 +112,11 @@ export const DomainList = ({
       // SORT WITHIN EACH GROUP BY SCORE
       // 6 - BY SCORE
       // Then sort by total score
-      return getTotalScoreV2({
+      return getTotalScore({
         domain: b.domain,
         status: b.status as DomainStatus,
         scores: b.scores
-      }) - getTotalScoreV2({
+      }) - getTotalScore({
         domain: a.domain,
         status: a.status as DomainStatus,
         scores: a.scores

@@ -5,7 +5,7 @@ import { getDomainCandidates, getDomainWithStatus } from "../serverCalls";
 import { closeModal } from "../utils/openModal";
 import { trackEventSafe } from "../utils/plausible";
 import { SELECTED_MODEL } from "../config";
-import { getTopDomainV2 } from "../utils/getTopDomain";
+import { getTopDomain } from "../utils/getTopDomain";
 
 export const useDomainGeneration = () => {
   const { isLoading, setIsLoading } = useDisplayStateStore();
@@ -73,7 +73,7 @@ export const useDomainGeneration = () => {
         })
       );
       // Open the top performing domain
-      const topValidDomain = getTopDomainV2(domains);
+      const topValidDomain = getTopDomain(domains);
 
       if (topValidDomain) {
         setExpandedDomain(topValidDomain);

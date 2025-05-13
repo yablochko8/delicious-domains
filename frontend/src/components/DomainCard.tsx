@@ -1,4 +1,4 @@
-import { getTotalScoreV2 } from "../utils/getTotalScore";
+import { getTotalScore } from "../utils/getTotalScore";
 import { ActionIcons } from "../assets/Icons";
 import { DomainWithStatus } from "shared/types";
 import { useSearchStateStore } from "../stores/searchStateStoreV2";
@@ -293,7 +293,7 @@ export const DomainCard = (domainWithStatus: DomainWithStatus) => {
           className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3`}
         >
           <TotalScoreTile
-            totalScore={getTotalScoreV2(domainWithStatus, true)}
+            totalScore={getTotalScore(domainWithStatus, true)}
             onClick={handleClick}
           />
           <h3 className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
