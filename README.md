@@ -20,15 +20,11 @@ Terminal 2:
 
 TO DO:
 
-- Implement Domain Price Filter (Under $100)
-- Create Advanced Domain Generation Algorithm
-- Add Trademark Warning Functionality
-- Develop One-Click Domain Sharing Feature
+- Show filters by default
+- Only show Liked & New Domains
+- Make "Under $100" more clear
+- One-click: more like this
 - Build Feedback Survey Integration for Domain Suggestions
-- Implement Domain Pronounceability Scoring Mechanism
-- Design Iterative Domain Selection UI with Clear Filtering Options
-- Add Persistent Exclusion of Previously Shown Domains
-- Create Domain Comparison View with Detailed Criteria Breakdown
 
 FE BACKLOG:
 
@@ -45,5 +41,10 @@ BE BACKLOG:
 - use whois call to remove calls to domainr for domains that are definitely taken
 - add validation check for deal breakers (copycat, annoying, esoteric)
 - log specific likes & rejections
+
+IDEA LONGLIST:
+
+- User need: check for Trademark risk of similar names (Paddy at Baseline)
+- Create Domain Comparison View with Detailed Criteria Breakdown
 
 DONE:
