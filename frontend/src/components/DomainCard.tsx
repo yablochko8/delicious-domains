@@ -10,6 +10,7 @@ import {
   scoreIds,
 } from "../assets/scoreExplanations";
 import { useDisplayStateStore } from "../stores/displayStateStore";
+import { useMoreLikeThis } from "../hooks/useDomainGeneration";
 
 const TotalScoreTile = ({
   totalScore,
@@ -119,6 +120,21 @@ export const LikeCircle = ({
   );
 };
 
+
+const MoreLikeThisButton = ({ domain }: { domain: string }) => {
+  const { likeAndGenerate } = useMoreLikeThis();
+  const handleClick = () => {
+    likeAndGenerate(domain);
+  };
+
+  return (
+    <button className="pill-button accent-action-button" onClick={handleClick}>
+      {ActionIcons.generate}
+      More like this
+    </button>
+  );
+};
+
 const RegisterButton = ({ domain }: { domain: string }) => {
   const handleClick = () => {
     trackEventSafe("ClickRegister");
@@ -131,7 +147,7 @@ const RegisterButton = ({ domain }: { domain: string }) => {
       href={targetUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`pill-button primary-action-button`}
+      className="pill-button primary-action-button"
       onClick={handleClick}
       title={hoverText}
     >
@@ -196,7 +212,8 @@ const ScoreDetails = ({ assessment }: { assessment: DomainAssessment }) => {
               domain={assessment.domain}
             />
           ))}
-      <div className="flex flex-row justify-end w-full p-4">
+      <div className="flex flex-row justify-end w-full p-4 gap-2">
+        <MoreLikeThisButton domain={assessment.domain} />
         <RegisterButton domain={assessment.domain} />
       </div>
     </>
@@ -294,9 +311,8 @@ export const DomainCard = (assessment: DomainAssessment) => {
           )}
         </div>
         <div
-          className={`overflow-hidden transition-all duration-200 ease-in-out ${
-            isExpanded ? "max-h-[500px] opacity-100 pt-2" : "max-h-0 opacity-0"
-          }`}
+          className={`overflow-hidden transition-all duration-200 ease-in-out ${isExpanded ? "max-h-[500px] opacity-100 pt-2" : "max-h-0 opacity-0"
+            }`}
         >
           <div className="flex flex-row" />
           <ScoreDetails assessment={assessment} />

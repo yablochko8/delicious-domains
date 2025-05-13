@@ -211,10 +211,9 @@ h4 {
 }
 
 .primary-action-button {
-  background: #A100FF;
+  background: #a100ff;
   opacity: 1;
   color: #ffffff;
-  /* font-size: 1rem; */
   font-size: 0.875rem;
   border-radius: 0.75rem;
 }
@@ -233,6 +232,20 @@ h4 {
   background: #a7a7a7;
 }
 
+.accent-action-button {
+  background: #09090b;
+  border-color: #345;
+  color: #fff;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid #a6adba;
+}
+
+.accent-action-button:hover {
+  background: #3abff8;
+  border-color: #663af8;
+}
+
 .secondary-action-button {
   background: transparent;
   border: 1px solid #a6adba;
@@ -244,7 +257,6 @@ h4 {
 .secondary-action-button:hover {
   background: #3abff8;
   border-color: #663af8;
-  color: #ffffff;
 }
 
 .tertiary-action-button {

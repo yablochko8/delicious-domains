@@ -86,3 +86,24 @@ export const useDomainGeneration = () => {
     isDisabled: !purpose,
   };
 };
+
+/** Adds a domain to liked, and then generates a new list of domains */
+export const useMoreLikeThis = () => {
+  const { likeDomain } = useSearchStateStore();
+  const { generateDomains } = useDomainGeneration();
+
+  const likeAndGenerate = (domain: string) => {
+    // Subscribe to the store to wait for the update
+    const unsubscribe = useSearchStateStore.subscribe((state) => {
+      if (state.liked.includes(domain)) {
+        unsubscribe();
+        generateDomains();
+      }
+    });
+
+    // Trigger the state update
+    likeDomain(domain);
+  };
+
+  return { likeAndGenerate };
+};
