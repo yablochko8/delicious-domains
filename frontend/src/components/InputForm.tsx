@@ -1,7 +1,7 @@
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useMemo, useState } from "react";
 import { InputMultiCheckbox } from "./InputMultiCheckbox";
-import { ActionIcons } from "../assets/Icons";
+// import { ActionIcons } from "../assets/Icons";
 import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { EnterButton } from "./Buttons";
 import { useSearchStateStore } from "../stores/searchStateStore";
@@ -143,7 +143,7 @@ export const InputForm = ({
 }: {
   whiteBackground?: boolean;
 }) => {
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(true);
+  const [showAdvancedOptions, _setShowAdvancedOptions] = useState(true);
   const {
     purpose,
     vibeArray,
@@ -178,7 +178,7 @@ export const InputForm = ({
         placeholder={`E.g. "${randomPurpose}"`}
       />
 
-      <div className="flex flex-row w-full justify-start items-center gap-2">
+      {/* <div className="flex flex-row w-full justify-start items-center gap-2">
         <button
           className={`pill-button 
             ${showAdvancedOptions
@@ -189,13 +189,13 @@ export const InputForm = ({
         >
           {ActionIcons.generate}Advanced Options
         </button>
-      </div>
+      </div> */}
       {showAdvancedOptions && (
         <>
           <div
             className={`${hasDarkBackground
-                ? "text-form-heading-white"
-                : "text-form-heading-black"
+              ? "text-form-heading-white"
+              : "text-form-heading-black"
               }`}
           >
             What's your vibe?
@@ -224,16 +224,16 @@ export const InputForm = ({
           <div>
             <div
               className={`${hasDarkBackground
-                  ? "text-form-heading-white"
-                  : "text-form-heading-black"
+                ? "text-form-heading-white"
+                : "text-form-heading-black"
                 }`}
             >
               Preferred domain extensions?
             </div>
             <div
               className={`${hasDarkBackground
-                  ? "text-form-subheading-white"
-                  : "text-form-subheading-black"
+                ? "text-form-subheading-white"
+                : "text-form-subheading-black"
                 }`}
             >
               Tick nothing to stick to a longer list of ~350 options
