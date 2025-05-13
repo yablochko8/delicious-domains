@@ -11,7 +11,6 @@ export const useDomainGeneration = () => {
   const { isLoading, setIsLoading } = useDisplayStateStore();
 
   const {
-    domains,
     getLiked,
     getRejected,
     getAllUnrated,
@@ -73,7 +72,9 @@ export const useDomainGeneration = () => {
         })
       );
       // Open the top performing domain
-      const topValidDomain = getTopDomain(domains);
+      const topValidDomain = getTopDomain(
+        useSearchStateStore.getState().domains
+      );
 
       if (topValidDomain) {
         setExpandedDomain(topValidDomain);

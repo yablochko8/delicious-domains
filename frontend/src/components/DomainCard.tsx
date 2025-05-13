@@ -10,7 +10,7 @@ import {
   scoreIds,
 } from "../assets/scoreExplanations";
 import { useDisplayStateStore } from "../stores/displayStateStore";
-import { useMoreLikeThis } from "../hooks/useDomainGenerationV2";
+import { useMoreLikeThis } from "../hooks/useDomainGeneration";
 import { checkCanRegister } from "../utils/statusParsers";
 
 const TotalScoreTile = ({

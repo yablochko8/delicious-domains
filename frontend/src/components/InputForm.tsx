@@ -2,7 +2,7 @@ import { useInputStateStore } from "../stores/inputStateStore";
 import { useMemo, useState } from "react";
 import { InputMultiCheckbox } from "./InputMultiCheckbox";
 // import { ActionIcons } from "../assets/Icons";
-import { useDomainGeneration } from "../hooks/useDomainGenerationV2";
+import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { EnterButton } from "./Buttons";
 import { useSearchStateStore } from "../stores/searchStateStoreV2";
 

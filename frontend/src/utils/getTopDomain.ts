@@ -17,20 +17,27 @@ import { getTotalScore } from "./getTotalScore";
 // };
 
 /** Pass this an array of assessments, and it will return the top domain. */
-export const getTopDomain = (assessments: DomainWithStatus[]): string => {
-  if (assessments.length === 0) {
+export const getTopDomain = (domainsWithStatus: DomainWithStatus[]): string => {
+  if (domainsWithStatus.length === 0) {
     console.error("Empty array passed to getTopDomain");
     return "error-empty-array-getTopDomain";
   }
-  const domainsWithStatusUnratedNew = assessments.filter(
+  const domainsWithStatusUnratedNew = domainsWithStatus.filter(
     (domain) => domain.status === "unratedNew"
   );
+
+  if (domainsWithStatusUnratedNew.length === 0) {
+    console.error("No unrated new domains passed to getTopDomain");
+    return "error-no-unrated-new-domains-getTopDomain";
+  }
 
   const topDomain = domainsWithStatusUnratedNew.reduce((highest, current) => {
     const highestScore = getTotalScore(highest);
     const currentScore = getTotalScore(current);
     return currentScore > highestScore ? current : highest;
   }, domainsWithStatusUnratedNew[0]);
+
+  console.log({ topDomain });
 
   return topDomain.domain;
 };

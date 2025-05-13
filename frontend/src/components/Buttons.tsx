@@ -2,7 +2,7 @@ import { ActionIcons } from "../assets/Icons";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import { openModal } from "../utils/openModal";
-import { useDomainGeneration } from "../hooks/useDomainGenerationV2";
+import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { useExport } from "../hooks/useExport";
 import { trackEventSafe } from "../utils/plausible";
 
