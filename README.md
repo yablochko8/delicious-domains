@@ -20,6 +20,16 @@ Terminal 2:
 
 TO DO:
 
+- Implement Domain Price Filter (Under $100)
+- Create Advanced Domain Generation Algorithm
+- Add Trademark Warning Functionality
+- Develop One-Click Domain Sharing Feature
+- Build Feedback Survey Integration for Domain Suggestions
+- Implement Domain Pronounceability Scoring Mechanism
+- Design Iterative Domain Selection UI with Clear Filtering Options
+- Add Persistent Exclusion of Previously Shown Domains
+- Create Domain Comparison View with Detailed Criteria Breakdown
+
 FE BACKLOG:
 
 - Put Advanced Options into main user input
@@ -37,9 +47,3 @@ BE BACKLOG:
 - log specific likes & rejections
 
 DONE:
-
-- grey button border for selectors
-- right align button at bottom of page
-- only two action buttons on mobile in floating menu
-- text-box to heading ratio of 40:60
-- try the existing primary color for primary cta
