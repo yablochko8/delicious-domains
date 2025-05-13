@@ -18,6 +18,7 @@ export const useDomainGeneration = () => {
     addDomainsFetching,
     updateStatus,
     addError,
+    archiveUnrated,
   } = useSearchStateStore();
 
   const { purpose, vibeArray, preferredTlds } = useInputStateStore();
@@ -33,6 +34,9 @@ export const useDomainGeneration = () => {
 
     // Track the event
     trackEventSafe("ClickGenerate");
+
+    // Archive all unrated domains
+    archiveUnrated();
 
     // Generate the domains
     const vibe = vibeArray.join(", ");

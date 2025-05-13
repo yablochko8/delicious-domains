@@ -80,42 +80,36 @@ export const DomainList = ({
     .sort((a, b) => {
       // SORT LOGIC - Categories from the bottom up
       // 
-      // 0 - STILL FETCHING
-      if (a.status === "fetching" && b.status !== "fetching") return -1;
-      if (a.status !== "fetching" && b.status === "fetching") return 1;
 
-      // 1 - INVALID
+      // 1 - UNRATED NEW
+      if (a.status === "unratedNew" && b.status !== "unratedNew") return -1;
+      if (a.status !== "unratedNew" && b.status === "unratedNew") return 1;
+
+      // 2 - LIKED
+      // Liked above not liked
+      if ((a.status === "liked") && (b.status !== "liked")) return -1;
+      if ((a.status !== "liked") && (b.status === "liked")) return 1;
+
+      // HIDDEN BY DEFAULT ("Previous / Rejected"):
+      // 3 - UNRATED OLD
+      if (a.status === "unratedOld" && b.status !== "unratedOld") return -1;
+      if (a.status !== "unratedOld" && b.status === "unratedOld") return 1;
+
+      // 4 - REJECTED
+      // Then sort by liked/rejected status
+      // Not rejected above rejected
+      if ((a.status === "rejected") && (b.status !== "rejected")) return -1;
+      if ((a.status !== "rejected") && (b.status === "rejected")) return 1;
+
+      // HIDDEN BY DEFAULT ("Unavailable / Premium"):
+      // 5 - ANYTHING THAT CAN'T BE REGISTERED
       // First sort by valid/invalid
       // Valid above invalid
       // Valid will be hidden behind a button
       if (a.canRegister && !b.canRegister) return -1;
       if (!a.canRegister && b.canRegister) return 1;
 
-      // 5 - UNRATED NEW
-      if (a.status === "unratedNew" && b.status !== "unratedNew") return -1;
-      if (a.status !== "unratedNew" && b.status === "unratedNew") return 1;
-
-      // 4 - LIKED
-      // Liked above not liked
-      if ((a.status === "liked") && (b.status !== "liked")) return -1;
-      if ((a.status !== "liked") && (b.status === "liked")) return 1;
-
-
-
-      // 2 - REJECTED
-      // Then sort by liked/rejected status
-      // Not rejected above rejected
-      if ((a.status === "rejected") && (b.status !== "rejected")) return -1;
-      if ((a.status !== "rejected") && (b.status === "rejected")) return 1;
-
-
-      // 3 - UNRATED OLD
-      if (a.status === "unratedOld" && b.status !== "unratedOld") return -1;
-      if (a.status !== "unratedOld" && b.status === "unratedOld") return 1;
-
-
-
-
+      // SORT WITHIN EACH GROUP BY SCORE
       // 6 - BY SCORE
       // Then sort by total score
       return getTotalScoreV2({
@@ -171,27 +165,27 @@ export const DomainList = ({
             <DomainCard {...domainAssessment} />
           </motion.div>
         ))}
-        <div className="flex w-full justify-center">
-          <ShowHiddenDomainsButton
-            isShowing={isShowingPrevious}
-            howMany={howManyPreviousDomains}
-            onClick={() =>
-              setIsShowingPrevious(!isShowingPrevious)
-            }
-            description={"Previous / Rejected"}
-          />
-        </div>
-        <div className="flex w-full justify-center">
-          <ShowHiddenDomainsButton
-            isShowing={isShowingUnavailable}
-            howMany={howManyHiddenDomains}
-            onClick={() =>
-              setIsShowingUnavailable(!isShowingUnavailable)
-            }
-            description={"Unavailable / Premium"}
-          />
-        </div>
       </AnimatePresence>
+      <div className="flex w-full justify-center">
+        <ShowHiddenDomainsButton
+          isShowing={isShowingPrevious}
+          howMany={howManyPreviousDomains}
+          onClick={() =>
+            setIsShowingPrevious(!isShowingPrevious)
+          }
+          description={"Previous / Rejected"}
+        />
+      </div>
+      <div className="flex w-full justify-center">
+        <ShowHiddenDomainsButton
+          isShowing={isShowingUnavailable}
+          howMany={howManyHiddenDomains}
+          onClick={() =>
+            setIsShowingUnavailable(!isShowingUnavailable)
+          }
+          description={"Unavailable / Premium"}
+        />
+      </div>
     </div>
   );
 };

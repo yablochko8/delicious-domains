@@ -6,6 +6,7 @@ export const checkCanRegister = (domainWithStatus: DomainWithStatus) => {
   if (domainWithStatus.status === "unavailable") return false;
   if (domainWithStatus.status === "premium") return false;
   if (domainWithStatus.status === "error") return false;
+  if (domainWithStatus.status === "fetching") return false;
   return true;
 };
 
