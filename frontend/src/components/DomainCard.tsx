@@ -1,7 +1,7 @@
-import { getTotalScore } from "../utils/getTotalScore";
+import { getTotalScoreV2 } from "../utils/getTotalScore";
 import { ActionIcons } from "../assets/Icons";
-import { DomainAssessment } from "shared/types";
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { DomainWithStatus } from "shared/types";
+import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import { NETIM_PARTNER_ID } from "../config";
 import { trackEventSafe } from "../utils/plausible";
 import {
@@ -10,7 +10,8 @@ import {
   scoreIds,
 } from "../assets/scoreExplanations";
 import { useDisplayStateStore } from "../stores/displayStateStore";
-import { useMoreLikeThis } from "../hooks/useDomainGeneration";
+import { useMoreLikeThis } from "../hooks/useDomainGenerationV2";
+import { checkIsPossible } from "../utils/checkIsPossible";
 
 const TotalScoreTile = ({
   totalScore,
@@ -71,11 +72,11 @@ export const RejectCircle = ({
   domain: string;
   isRejected: boolean;
 }) => {
-  const { rejectDomain, unrejectDomain } = useSearchStateStore();
+  const { rejectDomain, unrateDomain } = useSearchStateStore();
   const { setExpandedDomain } = useDisplayStateStore();
   const handleClick = () => {
     setExpandedDomain(null);
-    isRejected ? unrejectDomain(domain) : rejectDomain(domain);
+    isRejected ? unrateDomain(domain) : rejectDomain(domain);
   };
 
   const actionText = `${isRejected ? "Add back" : "Reject"}`;
@@ -99,11 +100,11 @@ export const LikeCircle = ({
   domain: string;
   isLiked: boolean;
 }) => {
-  const { likeDomain, unlikeDomain } = useSearchStateStore();
+  const { likeDomain, unrateDomain } = useSearchStateStore();
   const { setExpandedDomain } = useDisplayStateStore();
   const handleClick = () => {
     setExpandedDomain(null);
-    isLiked ? unlikeDomain(domain) : likeDomain(domain);
+    isLiked ? unrateDomain(domain) : likeDomain(domain);
   };
 
   const actionText = `${isLiked ? "Unlike" : "Like"}`;
@@ -196,34 +197,33 @@ const SingleScoreDetail = ({
   );
 };
 
-const ScoreDetails = ({ assessment }: { assessment: DomainAssessment }) => {
+const ScoreDetails = ({ domainWithStatus }: { domainWithStatus: DomainWithStatus }) => {
   return (
     <>
-      {assessment.scores &&
+      {domainWithStatus.scores &&
         [...scoreIds]
           .sort(
             (a: ScoreId, b: ScoreId) =>
-              (assessment.scores?.[b] ?? 0) - (assessment.scores?.[a] ?? 0)
+              (domainWithStatus.scores?.[b] ?? 0) - (domainWithStatus.scores?.[a] ?? 0)
           )
           .map((scoreId: ScoreId) => (
             <SingleScoreDetail
               scoreId={scoreId}
-              score={assessment.scores ? assessment.scores[scoreId] : 0}
-              domain={assessment.domain}
+              score={domainWithStatus.scores ? domainWithStatus.scores[scoreId] : 0}
+              domain={domainWithStatus.domain}
             />
           ))}
       <div className="flex flex-row justify-end w-full p-4 gap-2">
-        <MoreLikeThisButton domain={assessment.domain} />
-        <RegisterButton domain={assessment.domain} />
+        <MoreLikeThisButton domain={domainWithStatus.domain} />
+        <RegisterButton domain={domainWithStatus.domain} />
       </div>
     </>
   );
 };
 
-export const DomainCard = (assessment: DomainAssessment) => {
-  const { domain, isPossible, isAvailable, isCheap } = assessment;
+export const DomainCard = (domainWithStatus: DomainWithStatus) => {
+  const { domain, status } = domainWithStatus;
   const { expandedDomain, setExpandedDomain } = useDisplayStateStore();
-  const { rejected, liked } = useSearchStateStore();
 
   const getDomainCardTag = (domain: string) => {
     // split the domain by the dot
@@ -233,9 +233,9 @@ export const DomainCard = (assessment: DomainAssessment) => {
     return `domain-card-${domainTag}`;
   };
 
-  const isRejected = rejected.includes(domain);
-  const isLiked = liked.includes(domain);
-  const isValid = isPossible && isAvailable && isCheap;
+  const isRejected = status === "rejected";
+  const isLiked = status === "liked";
+  const isValid = checkIsPossible(domainWithStatus);
   const isExpanded = expandedDomain === domain;
 
   const validStyling =
@@ -292,16 +292,16 @@ export const DomainCard = (assessment: DomainAssessment) => {
           className={`flex flex-row w-full max-w-2xl items-center gap-3 px-3`}
         >
           <TotalScoreTile
-            totalScore={getTotalScore(assessment, true)}
+            totalScore={getTotalScoreV2(domainWithStatus, true)}
             onClick={handleClick}
           />
           <h3 className="flex-grow text-left py-2 font-normal text-lg tracking-tight hover:text-primary-focus transition-colors truncate">
             {domain}
           </h3>
           <StatusMessage
-            isPossible={isPossible}
-            isAvailable={isAvailable}
-            isCheap={isCheap}
+            isPossible={checkIsPossible(domainWithStatus)}
+            isAvailable={status !== "unavailable"}
+            isCheap={status !== "premium"}
           />
           {isValid && (
             <>
@@ -315,7 +315,7 @@ export const DomainCard = (assessment: DomainAssessment) => {
             }`}
         >
           <div className="flex flex-row" />
-          <ScoreDetails assessment={assessment} />
+          <ScoreDetails domainWithStatus={domainWithStatus} />
         </div>
       </div>
     </div>

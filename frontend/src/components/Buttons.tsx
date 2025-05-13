@@ -1,8 +1,8 @@
 import { ActionIcons } from "../assets/Icons";
 import { useDisplayStateStore } from "../stores/displayStateStore";
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import { openModal } from "../utils/openModal";
-import { useDomainGeneration } from "../hooks/useDomainGeneration";
+import { useDomainGeneration } from "../hooks/useDomainGenerationV2";
 import { useExport } from "../hooks/useExport";
 import { trackEventSafe } from "../utils/plausible";
 
@@ -12,14 +12,13 @@ export const AddDomainsButton = ({
   isPrimary?: boolean;
 }) => {
   const { isLoading, generateDomains, isDisabled } = useDomainGeneration();
-  const { longlist } = useSearchStateStore();
-  const cta = longlist.length > 0 ? "Generate More" : "Generate";
+  const { domains } = useSearchStateStore();
+  const cta = domains.length > 0 ? "Generate More" : "Generate";
 
   return (
     <button
-      className={`pill-button ${
-        isPrimary ? "primary-action-button" : "secondary-action-button"
-      }`}
+      className={`pill-button ${isPrimary ? "primary-action-button" : "secondary-action-button"
+        }`}
       onClick={generateDomains}
       disabled={isLoading || isDisabled}
     >

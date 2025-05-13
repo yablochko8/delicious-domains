@@ -2,9 +2,9 @@ import { useInputStateStore } from "../stores/inputStateStore";
 import { useMemo, useState } from "react";
 import { InputMultiCheckbox } from "./InputMultiCheckbox";
 // import { ActionIcons } from "../assets/Icons";
-import { useDomainGeneration } from "../hooks/useDomainGeneration";
+import { useDomainGeneration } from "../hooks/useDomainGenerationV2";
 import { EnterButton } from "./Buttons";
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { useSearchStateStore } from "../stores/searchStateStoreV2";
 
 const EXAMPLE_PURPOSES = [
   "linkedin for cats",
@@ -155,10 +155,10 @@ export const InputForm = ({
     clearPreferredTlds,
   } = useInputStateStore();
 
-  const { longlist } = useSearchStateStore();
+  const { domains } = useSearchStateStore();
 
   // If any results have already been generated, this will display over the top (dark) end of the gradient
-  const hasDarkBackground = longlist.length > 0 && !whiteBackground;
+  const hasDarkBackground = domains.length > 0 && !whiteBackground;
 
   // useMemo to avoid re-rendering with a new random purpose on every interaction
   const randomPurpose = useMemo(

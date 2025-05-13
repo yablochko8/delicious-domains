@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { DomainAssessment } from "shared/types";
+import { DomainStatus, DomainWithStatus } from "shared/types";
 import { DomainCard } from "./DomainCard";
-import { getTotalScore } from "../utils/getTotalScore";
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { getTotalScoreV2 } from "../utils/getTotalScore";
 import { useState } from "react";
+import { checkIsPossible } from "../utils/checkIsPossible";
 
 const ShowUnavailableDomainsButton = ({
   isShowing,
@@ -34,16 +34,14 @@ const ShowUnavailableDomainsButton = ({
 export const DomainList = ({
   domainOptions,
 }: {
-  domainOptions: DomainAssessment[];
+  domainOptions: DomainWithStatus[];
 }) => {
   const [isShowingUnavailableDomains, setIsShowingUnavailableDomains] =
     useState(false);
   // Filter out impossible domains (mainly hallucinated TLDs)
   const filteredDomainOptions = domainOptions.filter(
-    (domain) => domain.isPossible
+    (domain) => checkIsPossible(domain)
   );
-
-  const { liked, rejected } = useSearchStateStore();
 
   /**
    * WHY DO WE NEED STABLE ID HERE?
@@ -63,12 +61,20 @@ export const DomainList = ({
    * in the list. This helps Framer Motion create more predictable and smoother
    * animations when the list is reordered.
    */
+
   const sortedDomainOptions = filteredDomainOptions
-    .map((domain, index) => ({
-      ...domain,
-      stableId: `${domain.domain}-${index}`, // Add stable ID
-      isValid: domain.isPossible && domain.isAvailable && domain.isCheap,
-    }))
+    .map((domain, index) => {
+      const domainWithStatus: DomainWithStatus = {
+        domain: domain.domain,
+        status: domain.status as DomainStatus,
+        scores: domain.scores
+      };
+      return {
+        ...domain,
+        stableId: `${domain.domain}-${index}`, // Add stable ID
+        isValid: checkIsPossible(domainWithStatus),
+      };
+    })
     .sort((a, b) => {
       // First sort by valid/invalid
       // Valid above invalid
@@ -76,14 +82,21 @@ export const DomainList = ({
       if (!a.isValid && b.isValid) return 1;
       // Then sort by liked/rejected status
       // Not rejected above rejected
-      if (!rejected.includes(a.domain) && rejected.includes(b.domain))
-        return -1;
-      if (rejected.includes(a.domain) && !rejected.includes(b.domain)) return 1;
+      if ((a.status === "rejected") && (b.status !== "rejected")) return -1;
+      if ((a.status !== "rejected") && (b.status === "rejected")) return 1;
       // Liked above not liked
-      if (liked.includes(a.domain) && !liked.includes(b.domain)) return -1;
-      if (!liked.includes(a.domain) && liked.includes(b.domain)) return 1;
+      if ((a.status === "liked") && (b.status !== "liked")) return -1;
+      if ((a.status !== "liked") && (b.status === "liked")) return 1;
       // Then sort by total score
-      return getTotalScore(b) - getTotalScore(a);
+      return getTotalScoreV2({
+        domain: b.domain,
+        status: b.status as DomainStatus,
+        scores: b.scores
+      }) - getTotalScoreV2({
+        domain: a.domain,
+        status: a.status as DomainStatus,
+        scores: a.scores
+      });
     });
 
   const howManyUnavailableDomains = sortedDomainOptions.filter(
