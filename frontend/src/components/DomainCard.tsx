@@ -11,7 +11,7 @@ import {
 } from "../assets/scoreExplanations";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useMoreLikeThis } from "../hooks/useDomainGenerationV2";
-import { checkIsPossible } from "../utils/checkIsPossible";
+import { checkCanRegister } from "../utils/statusParsers";
 
 const TotalScoreTile = ({
   totalScore,
@@ -222,6 +222,7 @@ const ScoreDetails = ({ domainWithStatus }: { domainWithStatus: DomainWithStatus
 };
 
 export const DomainCard = (domainWithStatus: DomainWithStatus) => {
+  console.log({ domainWithStatus });
   const { domain, status } = domainWithStatus;
   const { expandedDomain, setExpandedDomain } = useDisplayStateStore();
 
@@ -235,7 +236,7 @@ export const DomainCard = (domainWithStatus: DomainWithStatus) => {
 
   const isRejected = status === "rejected";
   const isLiked = status === "liked";
-  const isValid = checkIsPossible(domainWithStatus);
+  const isValid = checkCanRegister(domainWithStatus);
   const isExpanded = expandedDomain === domain;
 
   const validStyling =
@@ -299,7 +300,7 @@ export const DomainCard = (domainWithStatus: DomainWithStatus) => {
             {domain}
           </h3>
           <StatusMessage
-            isPossible={checkIsPossible(domainWithStatus)}
+            isPossible={checkCanRegister(domainWithStatus)}
             isAvailable={status !== "unavailable"}
             isCheap={status !== "premium"}
           />

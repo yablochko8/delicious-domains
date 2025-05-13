@@ -3,7 +3,7 @@ import { DomainStatus, DomainWithStatus } from "shared/types";
 import { DomainCard } from "./DomainCard";
 import { getTotalScoreV2 } from "../utils/getTotalScore";
 import { useState } from "react";
-import { checkIsPossible } from "../utils/checkIsPossible";
+import { checkIsHidden, checkIsPossible, checkCanRegister } from "../utils/statusParsers";
 
 const ShowUnavailableDomainsButton = ({
   isShowing,
@@ -72,21 +72,42 @@ export const DomainList = ({
       return {
         ...domain,
         stableId: `${domain.domain}-${index}`, // Add stable ID
-        isValid: checkIsPossible(domainWithStatus),
+        canRegister: checkCanRegister(domainWithStatus),
       };
     })
     .sort((a, b) => {
+      // SORT LOGIC - Categories from the bottom up
+      // 
+      // 0 - STILL FETCHING
+      if (a.status === "fetching" && b.status !== "fetching") return -1;
+      if (a.status !== "fetching" && b.status === "fetching") return 1;
+
+      // 1 - INVALID
       // First sort by valid/invalid
       // Valid above invalid
-      if (a.isValid && !b.isValid) return -1;
-      if (!a.isValid && b.isValid) return 1;
+      // Valid will be hidden behind a button
+      if (a.canRegister && !b.canRegister) return -1;
+      if (!a.canRegister && b.canRegister) return 1;
+
+      // 2 - REJECTED
       // Then sort by liked/rejected status
       // Not rejected above rejected
       if ((a.status === "rejected") && (b.status !== "rejected")) return -1;
       if ((a.status !== "rejected") && (b.status === "rejected")) return 1;
+
+      // 3 - UNRATED OLD
+      if (a.status === "unratedOld" && b.status !== "unratedOld") return -1;
+      if (a.status !== "unratedOld" && b.status === "unratedOld") return 1;
+
+      // 4 - LIKED
       // Liked above not liked
       if ((a.status === "liked") && (b.status !== "liked")) return -1;
       if ((a.status !== "liked") && (b.status === "liked")) return 1;
+
+      // 5 - UNRATED NEW
+      // (No need to sort by this, it's the last category)
+
+      // 6 - BY SCORE
       // Then sort by total score
       return getTotalScoreV2({
         domain: b.domain,
@@ -99,19 +120,19 @@ export const DomainList = ({
       });
     });
 
-  const howManyUnavailableDomains = sortedDomainOptions.filter(
-    (domain) => !domain.isValid
+  const howManyHiddenDomains = sortedDomainOptions.filter(
+    (domain) => checkIsHidden(domain)
   ).length;
   // console.log({ sortedDomainOptions });
 
   const displayDomainOptions = isShowingUnavailableDomains
     ? sortedDomainOptions
-    : sortedDomainOptions.filter((domain) => domain.isValid);
+    : sortedDomainOptions.filter((domain) => domain.canRegister);
 
   return (
     <div className="flex flex-col gap-3 w-full pb-20">
       <div className="text-form-subheading-white">
-        We only show unregistered domain names priced under $100/year.
+        All domain names available and priced under $100/year.
       </div>
       <AnimatePresence>
         {displayDomainOptions.map((domainAssessment) => (
@@ -136,7 +157,7 @@ export const DomainList = ({
         <div className="flex w-full justify-center">
           <ShowUnavailableDomainsButton
             isShowing={isShowingUnavailableDomains}
-            howMany={howManyUnavailableDomains}
+            howMany={howManyHiddenDomains}
             onClick={() =>
               setIsShowingUnavailableDomains(!isShowingUnavailableDomains)
             }

@@ -57,6 +57,7 @@ export const useDomainGeneration = () => {
           try {
             await new Promise((resolve) => setTimeout(resolve, index * 200));
             const domainWithStatus = await getDomainWithStatus(domain);
+            // console.log({ domainWithStatus });
             updateStatus(domainWithStatus);
           } catch (error) {
             console.error(`Failed to assess domain ${domain}:`, error);

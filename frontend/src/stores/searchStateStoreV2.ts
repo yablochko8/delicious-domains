@@ -68,7 +68,7 @@ export const useSearchStateStore = create<SearchStateStore>()(
         set((state) => ({
           domains: state.domains.map((domain) =>
             domain.domain === domainWithStatus.domain
-              ? { ...domain, status: domainWithStatus.status }
+              ? { ...domain, ...domainWithStatus }
               : domain
           ),
         })),
