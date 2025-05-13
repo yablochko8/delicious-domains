@@ -49,7 +49,13 @@ export const useSearchStateStore = create<SearchStateStore>()(
       },
       addDomainsFetching: (domains: string[]) =>
         set((state) => {
-          const newDomains = domains.map((domain) => ({
+          // Filter out domains that already exist in the state
+          const existingDomains = new Set(state.domains.map((d) => d.domain));
+          const uniqueNewDomains = domains.filter(
+            (domain) => !existingDomains.has(domain)
+          );
+
+          const newDomains = uniqueNewDomains.map((domain) => ({
             domain,
             status: "fetching" as const,
           }));
