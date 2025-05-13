@@ -20,9 +20,7 @@ Terminal 2:
 
 TO DO:
 
-- Show filters by default
 - Only show Liked & New Domains
-- Make "Under $100" more clear
 - One-click: more like this
 - Build Feedback Survey Integration for Domain Suggestions
 
@@ -48,3 +46,6 @@ IDEA LONGLIST:
 - Create Domain Comparison View with Detailed Criteria Breakdown
 
 DONE:
+
+- Show filters by default
+- Make "Under $100" more clear

@@ -143,7 +143,7 @@ export const InputForm = ({
 }: {
   whiteBackground?: boolean;
 }) => {
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(true);
   const {
     purpose,
     vibeArray,
@@ -181,10 +181,9 @@ export const InputForm = ({
       <div className="flex flex-row w-full justify-start items-center gap-2">
         <button
           className={`pill-button 
-            ${
-              showAdvancedOptions
-                ? "selector-button-selected"
-                : "selector-button"
+            ${showAdvancedOptions
+              ? "selector-button-selected"
+              : "selector-button"
             }`}
           onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
         >
@@ -194,11 +193,10 @@ export const InputForm = ({
       {showAdvancedOptions && (
         <>
           <div
-            className={`${
-              hasDarkBackground
+            className={`${hasDarkBackground
                 ? "text-form-heading-white"
                 : "text-form-heading-black"
-            }`}
+              }`}
           >
             What's your vibe?
           </div>
@@ -225,20 +223,18 @@ export const InputForm = ({
           </div>
           <div>
             <div
-              className={`${
-                hasDarkBackground
+              className={`${hasDarkBackground
                   ? "text-form-heading-white"
                   : "text-form-heading-black"
-              }`}
+                }`}
             >
               Preferred domain extensions?
             </div>
             <div
-              className={`${
-                hasDarkBackground
+              className={`${hasDarkBackground
                   ? "text-form-subheading-white"
                   : "text-form-subheading-black"
-              }`}
+                }`}
             >
               Tick nothing to stick to a longer list of ~350 options
             </div>

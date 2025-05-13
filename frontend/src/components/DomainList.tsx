@@ -98,7 +98,7 @@ export const DomainList = ({
   return (
     <div className="flex flex-col gap-3 w-full pb-20">
       <div className="text-form-subheading-white">
-        Like and reject domains to see better results.
+        We only show unregistered domain names priced under $100/year.
       </div>
       <AnimatePresence>
         {displayDomainOptions.map((domainAssessment) => (
