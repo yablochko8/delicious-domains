@@ -2,7 +2,7 @@
 // {"status":[{"domain":"fmoaceioacmedafdoajcdioa.com","zone":"com","status":"undelegated inactive"}]}
 // All statuses: https://domainr.com/docs/api/v2/status
 
-import { DomainAssessment } from "shared/types";
+import { DomainAssessment, DomainStatus, DomainWithStatus } from "shared/types";
 import { validTlds } from "../tlds";
 import {
   addDomainStatusCache,
@@ -18,7 +18,7 @@ export const getDomainStatusParallel = async (
       // Add a small delay for each request
       await new Promise((resolve) => setTimeout(resolve, index * delayMs));
       try {
-        const status = await getDomainStatus(domain);
+        const status = await getDomainAssessment(domain);
         return status;
       } catch (error) {
         return {
@@ -53,7 +53,7 @@ export const getDomainStatusParallel = async (
   return results;
 };
 
-export const getDomainStatus = async (
+export const getDomainAssessment = async (
   domain: string
 ): Promise<DomainAssessment> => {
   const cachedDomainStatus = checkDomainStatusCache(domain);
@@ -142,4 +142,30 @@ export const getDomainStatus = async (
       status: "Custom status: Error fetching domain status.",
     };
   }
+};
+
+export const turnAssessmentIntoWithStatus = (
+  assessment: DomainAssessment
+): DomainWithStatus => {
+  const status: DomainStatus = (() => {
+    switch (true) {
+      case !assessment.isPossible:
+        return "impossible";
+      case !assessment.isAvailable:
+        return "unavailable";
+      case !assessment.isCheap:
+        return "premium";
+      case !!assessment.error:
+        return "error";
+      default:
+        return "unratedNew";
+    }
+  })();
+
+  return {
+    domain: assessment.domain,
+    status,
+    error: assessment.error,
+    scores: assessment.scores,
+  };
 };

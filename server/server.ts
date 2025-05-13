@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
 import { getDomainCandidates } from "./processors/getDomainCandidates";
-import { getDomainStatus } from "./processors/checkDomainAvailable";
+import {
+  getDomainAssessment,
+  turnAssessmentIntoWithStatus,
+} from "./processors/checkDomainAvailable";
 import { addScoresToDomain } from "./processors/assessDomain";
 import { CandidatesRequest } from "shared/types";
 import { createCandidatesRequest } from "dbCreators/createCandidatesRequest";
@@ -38,9 +41,21 @@ app.post("/domain-candidates", async (req, res) => {
 
 app.post("/domain-assessment", async (req, res) => {
   const domain = req.body.domain;
-  const domainWithStatus = await getDomainStatus(domain);
+  const domainWithStatus = await getDomainAssessment(domain);
   const domainAssessment = await addScoresToDomain(domainWithStatus);
   res.json({ domainAssessment });
+});
+
+app.post("/domain-with-status", async (req, res) => {
+  const domain = req.body.domain;
+  const domainAssessmentOnly = await getDomainAssessment(domain);
+  const domainAssessmentWithScores = await addScoresToDomain(
+    domainAssessmentOnly
+  );
+  const domainWithStatus = turnAssessmentIntoWithStatus(
+    domainAssessmentWithScores
+  );
+  res.json({ domainWithStatus });
 });
 
 app.listen(PORT, () => {

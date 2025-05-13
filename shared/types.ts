@@ -4,6 +4,24 @@ export type DomainScores = {
   [key in ScoreId]: number;
 };
 
+export type DomainStatus =
+  | "fetching"
+  | "unratedNew"
+  | "unratedOld"
+  | "liked"
+  | "rejected"
+  | "impossible"
+  | "unavailable"
+  | "premium"
+  | "error";
+
+export type DomainWithStatus = {
+  domain: string;
+  status: DomainStatus;
+  scores?: DomainScores;
+  error?: string;
+};
+
 export type DomainAssessment = {
   domain: string;
   isPossible: boolean;
