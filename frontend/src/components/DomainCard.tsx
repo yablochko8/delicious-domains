@@ -11,7 +11,7 @@ import {
 } from "../assets/scoreExplanations";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { useMoreLikeThis } from "../hooks/useDomainGeneration";
-import { checkCanRegister } from "../utils/statusParsers";
+import { checkCanRegister, checkIsPossible } from "../utils/statusParsers";
 
 const TotalScoreTile = ({
   totalScore,
@@ -215,7 +215,7 @@ const ScoreDetails = ({ domainWithStatus }: { domainWithStatus: DomainWithStatus
           ))}
       <div className="flex flex-row justify-end w-full p-4 gap-2">
         <MoreLikeThisButton domain={domainWithStatus.domain} />
-        <RegisterButton domain={domainWithStatus.domain} />
+        {checkCanRegister(domainWithStatus) && <RegisterButton domain={domainWithStatus.domain} />}
       </div>
     </>
   );
@@ -300,7 +300,7 @@ export const DomainCard = (domainWithStatus: DomainWithStatus) => {
             {domain}
           </h3>
           <StatusMessage
-            isPossible={checkCanRegister(domainWithStatus)}
+            isPossible={checkIsPossible(domainWithStatus)}
             isAvailable={status !== "unavailable"}
             isCheap={status !== "premium"}
           />
