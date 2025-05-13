@@ -22,3 +22,9 @@ export const checkIsHidden = (domainWithStatus: DomainWithStatus) => {
   if (domainWithStatus.status === "premium") return true;
   return false;
 };
+
+export const checkIsPrevious = (domainWithStatus: DomainWithStatus) => {
+  if (domainWithStatus.status === "unratedOld") return true;
+  if (domainWithStatus.status === "rejected") return true;
+  return false;
+};

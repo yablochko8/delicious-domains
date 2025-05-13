@@ -3,16 +3,18 @@ import { DomainStatus, DomainWithStatus } from "shared/types";
 import { DomainCard } from "./DomainCard";
 import { getTotalScoreV2 } from "../utils/getTotalScore";
 import { useState } from "react";
-import { checkIsHidden, checkIsPossible, checkCanRegister } from "../utils/statusParsers";
+import { checkIsHidden, checkIsPossible, checkCanRegister, checkIsPrevious } from "../utils/statusParsers";
 
-const ShowUnavailableDomainsButton = ({
+const ShowHiddenDomainsButton = ({
   isShowing,
   howMany,
   onClick,
+  description,
 }: {
   isShowing: boolean;
   howMany: number;
   onClick: () => void;
+  description: string;
 }) => {
   if (howMany === 0) return null;
 
@@ -20,13 +22,13 @@ const ShowUnavailableDomainsButton = ({
   if (isShowing)
     return (
       <button className={buttonStyle} onClick={onClick}>
-        Hide Unavailable / Premium
+        Hide {description}
       </button>
     );
 
   return (
     <button className={buttonStyle} onClick={onClick}>
-      Show {howMany} Unavailable / Premium
+      Show {howMany} {description}
     </button>
   );
 };
@@ -36,8 +38,8 @@ export const DomainList = ({
 }: {
   domainOptions: DomainWithStatus[];
 }) => {
-  const [isShowingUnavailableDomains, setIsShowingUnavailableDomains] =
-    useState(false);
+  const [isShowingUnavailable, setIsShowingUnavailable] = useState(false);
+  const [isShowingPrevious, setIsShowingPrevious] = useState(false);
   // Filter out impossible domains (mainly hallucinated TLDs)
   const filteredDomainOptions = domainOptions.filter(
     (domain) => checkIsPossible(domain)
@@ -89,23 +91,30 @@ export const DomainList = ({
       if (a.canRegister && !b.canRegister) return -1;
       if (!a.canRegister && b.canRegister) return 1;
 
-      // 2 - REJECTED
-      // Then sort by liked/rejected status
-      // Not rejected above rejected
-      if ((a.status === "rejected") && (b.status !== "rejected")) return -1;
-      if ((a.status !== "rejected") && (b.status === "rejected")) return 1;
-
-      // 3 - UNRATED OLD
-      if (a.status === "unratedOld" && b.status !== "unratedOld") return -1;
-      if (a.status !== "unratedOld" && b.status === "unratedOld") return 1;
+      // 5 - UNRATED NEW
+      if (a.status === "unratedNew" && b.status !== "unratedNew") return -1;
+      if (a.status !== "unratedNew" && b.status === "unratedNew") return 1;
 
       // 4 - LIKED
       // Liked above not liked
       if ((a.status === "liked") && (b.status !== "liked")) return -1;
       if ((a.status !== "liked") && (b.status === "liked")) return 1;
 
-      // 5 - UNRATED NEW
-      // (No need to sort by this, it's the last category)
+
+
+      // 2 - REJECTED
+      // Then sort by liked/rejected status
+      // Not rejected above rejected
+      if ((a.status === "rejected") && (b.status !== "rejected")) return -1;
+      if ((a.status !== "rejected") && (b.status === "rejected")) return 1;
+
+
+      // 3 - UNRATED OLD
+      if (a.status === "unratedOld" && b.status !== "unratedOld") return -1;
+      if (a.status !== "unratedOld" && b.status === "unratedOld") return 1;
+
+
+
 
       // 6 - BY SCORE
       // Then sort by total score
@@ -125,9 +134,17 @@ export const DomainList = ({
   ).length;
   // console.log({ sortedDomainOptions });
 
-  const displayDomainOptions = isShowingUnavailableDomains
+  const howManyPreviousDomains = sortedDomainOptions.filter(
+    (domain) => checkIsPrevious(domain)
+  ).length;
+
+  const displayDomainOptions = isShowingUnavailable
     ? sortedDomainOptions
     : sortedDomainOptions.filter((domain) => domain.canRegister);
+
+  const displayDomainOptionsRound2 = isShowingPrevious
+    ? displayDomainOptions
+    : displayDomainOptions.filter((domain) => !checkIsPrevious(domain));
 
   return (
     <div className="flex flex-col gap-3 w-full pb-20">
@@ -135,7 +152,7 @@ export const DomainList = ({
         All domain names available and priced under $100/year.
       </div>
       <AnimatePresence>
-        {displayDomainOptions.map((domainAssessment) => (
+        {displayDomainOptionsRound2.map((domainAssessment) => (
           <motion.div
             key={domainAssessment.stableId}
             layout
@@ -155,12 +172,23 @@ export const DomainList = ({
           </motion.div>
         ))}
         <div className="flex w-full justify-center">
-          <ShowUnavailableDomainsButton
-            isShowing={isShowingUnavailableDomains}
+          <ShowHiddenDomainsButton
+            isShowing={isShowingPrevious}
+            howMany={howManyPreviousDomains}
+            onClick={() =>
+              setIsShowingPrevious(!isShowingPrevious)
+            }
+            description={"Previous / Rejected"}
+          />
+        </div>
+        <div className="flex w-full justify-center">
+          <ShowHiddenDomainsButton
+            isShowing={isShowingUnavailable}
             howMany={howManyHiddenDomains}
             onClick={() =>
-              setIsShowingUnavailableDomains(!isShowingUnavailableDomains)
+              setIsShowingUnavailable(!isShowingUnavailable)
             }
+            description={"Unavailable / Premium"}
           />
         </div>
       </AnimatePresence>
