@@ -1,4 +1,4 @@
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import { WEBSITE_NAME } from "../config";
 import { trackEventSafe } from "../utils/plausible";
 import { openModal } from "../utils/openModal";

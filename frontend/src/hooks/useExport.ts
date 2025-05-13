@@ -1,9 +1,9 @@
-import { useSearchStateStore } from "../stores/searchStateStore";
+import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import { WEBSITE_NAME } from "../config";
 import { trackEventSafe } from "../utils/plausible";
 
 export const useExport = () => {
-  const { liked } = useSearchStateStore();
+  const { domains } = useSearchStateStore();
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -16,21 +16,25 @@ export const useExport = () => {
   };
 
   const trackEventShared = () => {
-    trackEventSafe("ClickExport", { domainCount: liked.length });
+    trackEventSafe("ClickExport", { domainCount: domains.length });
   };
 
   const handleDesktopExport = async () => {
     trackEventShared();
-    if (liked.length === 0) return;
-    const likedDomainsText = liked.join("\n");
+    if (domains.length === 0) return;
+    const likedDomainsText = domains
+      .filter((domain) => domain.status === "liked")
+      .join("\n");
     const copyPrefix = `${WEBSITE_NAME} - My Liked Domains: \n`;
     await copyToClipboard(copyPrefix + likedDomainsText);
   };
 
   const handleMobileExport = async () => {
     trackEventShared();
-    if (liked.length === 0) return;
-    const likedDomainsText = liked.join("\n");
+    if (domains.length === 0) return;
+    const likedDomainsText = domains
+      .filter((domain) => domain.status === "liked")
+      .join("\n");
 
     if (navigator.share) {
       try {
@@ -52,6 +56,7 @@ export const useExport = () => {
   return {
     handleDesktopExport,
     handleMobileExport,
-    hasLikedDomains: liked.length > 0,
+    hasLikedDomains:
+      domains.filter((domain) => domain.status === "liked").length > 0,
   };
 };
