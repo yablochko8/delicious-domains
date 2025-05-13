@@ -155,18 +155,18 @@ h4 {
 }
 
 .input-background {
-  background: #eff6ff;
-  opacity: 0.8;
+  background: rgba(239, 246, 255, 0.8);
+  /* opacity: 0.85; */
 }
 
 .rejected-background {
-  background: #ff5d41;
-  opacity: 0.5;
+  background: rgba(255, 93, 65, 0.8);
+  opacity: 0.8;
 }
 
 .liked-background {
-  background: #04bd7c;
-  opacity: 0.8;
+  background: rgba(4, 189, 124, 0.8);
+  /* opacity: 0.8; */
 }
 
 .circle-button {
@@ -232,13 +232,13 @@ h4 {
   background: #a7a7a7;
 }
 
+/* Define the bg colour in tailwind tags */
 .accent-action-button {
-  background: #09090b;
-  border-color: #345;
+  opacity: 1 !important;
   color: #fff;
   font-size: 0.875rem;
   border-radius: 0.75rem;
-  border: 1px solid #a6adba;
+  border: 1px solid #fff;
 }
 
 .accent-action-button:hover {

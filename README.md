@@ -21,8 +21,8 @@ Terminal 2:
 TO DO:
 
 - Only show Liked & New Domains
-- One-click: more like this
 - Build Feedback Survey Integration for Domain Suggestions
+- Generate Now button should not shrink when generating
 
 FE BACKLOG:
 
@@ -49,3 +49,4 @@ DONE:
 
 - Show filters by default
 - Make "Under $100" more clear
+- One-click: more like this

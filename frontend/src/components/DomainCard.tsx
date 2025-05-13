@@ -128,7 +128,7 @@ const MoreLikeThisButton = ({ domain }: { domain: string }) => {
   };
 
   return (
-    <button className="pill-button accent-action-button" onClick={handleClick}>
+    <button className="pill-button accent-action-button bg-neutral bg-opacity-100" onClick={handleClick}>
       {ActionIcons.generate}
       More like this
     </button>
