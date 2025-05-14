@@ -38,7 +38,7 @@ export const AddDomainsButton = ({
   );
 };
 
-export const ClearAllButtonRevised = () => {
+export const ClearAllButton = () => {
   const { clearAll } = useSearchStateStore();
 
   const handleClick = () => {
@@ -47,11 +47,12 @@ export const ClearAllButtonRevised = () => {
     window.scrollTo(0, 0);
   };
 
-  const cta = "Start Again";
+  // Currently this is only displayed on the About modal
+  const cta = "New Domain Search";
 
   return (
     <button
-      className="pill-button secondary-action-button"
+      className="pill-button primary-action-button"
       onClick={handleClick}
       title={cta}
     >

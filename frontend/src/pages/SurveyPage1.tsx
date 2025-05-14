@@ -172,7 +172,7 @@ export const SurveyPage = () => {
   return (
     <div className="flex flex-col w-full max-w-2xl mx-auto min-h-[100dvh] space-y-6 px-4 py-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Help me choose a domain name!</h1>
+        <h2>Help choose a domain name!</h2>
         <div className="text-gray-500" aria-live="polite">
           {currentIndex + 1} of {shuffledDomains.length}
         </div>
