@@ -13,6 +13,7 @@ import { Footer } from "./components/Footer";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { SurveyPage } from "./pages/SurveyPage1";
 import { ResultsPage } from "./pages/ResultsPage1";
+import { CreateSurveyModal } from "./modals/CreateSurveyModal";
 
 const DefaultHomepage = () => {
   const { domains } = useSearchStateStore();
@@ -68,6 +69,7 @@ const DefaultHomepage = () => {
       )}
       {/* MODALS */}
       <RefineModal />
+      <CreateSurveyModal />
       <Footer />
     </div>
   );
