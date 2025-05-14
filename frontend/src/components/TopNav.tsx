@@ -3,6 +3,7 @@ import { WEBSITE_NAME } from "../config";
 import { trackEventSafe } from "../utils/plausible";
 import { openModal } from "../utils/openModal";
 import { useInputStateStore } from "../stores/inputStateStore";
+import { useNavigate } from "react-router";
 
 const AboutButton = () => {
   const handleClick = () => {
@@ -22,12 +23,13 @@ const AboutButton = () => {
 export const TopNav = () => {
   const { clearAll } = useSearchStateStore();
   const { clearAllInputs } = useInputStateStore();
-
+  const navigate = useNavigate();
   const handleRestartClick = () => {
     trackEventSafe("ClickRestart");
     clearAll();
     clearAllInputs();
     window.scrollTo(0, 0);
+    navigate("/");
   };
 
   return (
