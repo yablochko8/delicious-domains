@@ -2,6 +2,8 @@ import {
   CandidatesRequest,
   DomainAssessment,
   DomainWithStatus,
+  Survey,
+  SurveyVoteRequest,
 } from "shared/types";
 
 const SERVER_PATH = import.meta.env.VITE_SERVER_URL;
@@ -46,4 +48,41 @@ export const getDomainWithStatus = async (
   });
   const json = await response.json();
   return json.domainWithStatus;
+};
+
+export const createSurvey = async (options: string[]): Promise<Survey> => {
+  const response = await fetch(`${SERVER_PATH}/survey-create`, {
+    method: "POST",
+    body: JSON.stringify({ options }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.json();
+  return json.survey;
+};
+
+export const postSurveyVote = async (
+  vote: SurveyVoteRequest
+): Promise<boolean> => {
+  const response = await fetch(`${SERVER_PATH}/survey-vote`, {
+    method: "POST",
+    body: JSON.stringify(vote),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.json();
+  return json.success;
+};
+
+export const getSurvey = async (surveyId: string): Promise<Survey> => {
+  const response = await fetch(`${SERVER_PATH}/survey/${surveyId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.json();
+  return json.survey;
 };
