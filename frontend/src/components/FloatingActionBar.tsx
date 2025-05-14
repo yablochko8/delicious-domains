@@ -2,8 +2,8 @@ import { useSearchStateStore } from "../stores/searchStateStoreV2";
 import {
   AddDomainsButton,
   ClearAllButtonRevised,
+  CreateSurveyButton,
   EditInputsButtonRevised,
-  ExportSavedButton,
 } from "./Buttons";
 
 /**
@@ -23,16 +23,16 @@ export const FloatingActionBar = () => {
       <div className="flex flex-row justify-center items-center pointer-events-none">
         <div className="flex justify-center items-center bg-neutral p-3 rounded-2xl pointer-events-auto">
           <div className="hidden md:flex gap-3">
-            <ClearAllButtonRevised />
+            {/* <ClearAllButtonRevised /> */}
             <EditInputsButtonRevised />
             <AddDomainsButton isPrimary={false} />
-            {showExport && <ExportSavedButton />}
+            {showExport && <CreateSurveyButton />}
           </div>
           <div className="flex md:hidden gap-3">
             {showStartAgain && <ClearAllButtonRevised />}
             <EditInputsButtonRevised />
             {showGenerate && <AddDomainsButton isPrimary={false} />}
-            {showExport && <ExportSavedButton />}
+            {showExport && <CreateSurveyButton />}
           </div>
         </div>
       </div>

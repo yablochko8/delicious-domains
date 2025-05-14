@@ -6,9 +6,11 @@ import {
 import { Socials } from "../components/Socials";
 import { ModalTemplate } from "./ModalTemplate";
 
+export const ABOUT_MODAL_ID = "about-modal";
+
 export const AboutModal = () => {
   return (
-    <ModalTemplate>
+    <ModalTemplate id={ABOUT_MODAL_ID}>
       <div className="flex flex-col gap-4 text-sm text-justify text-about">
         <p className="text-lg font-bold text-left">{ABOUT_TEXT_A}</p>
         <p>{ABOUT_TEXT_B}</p>

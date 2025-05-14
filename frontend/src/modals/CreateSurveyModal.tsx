@@ -5,6 +5,7 @@ import { ActionIcons } from "../assets/Icons";
 import { ModalTemplate } from "./ModalTemplate";
 
 const MAX_OPTIONS = 10;
+export const CREATE_SURVEY_MODAL_ID = "create-survey-modal";
 
 export const CreateSurveyModal = () => {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ export const CreateSurveyModal = () => {
   };
 
   return (
-    <ModalTemplate>
+    <ModalTemplate id={CREATE_SURVEY_MODAL_ID}>
       <div className="flex flex-col space-y-6 p-6 max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold">Create Survey</h1>
 

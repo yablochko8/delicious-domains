@@ -4,11 +4,12 @@ import { trackEventSafe } from "../utils/plausible";
 import { openModal } from "../utils/openModal";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useNavigate } from "react-router";
+import { ABOUT_MODAL_ID } from "../modals/AboutModal";
 
 const AboutButton = () => {
   const handleClick = () => {
     trackEventSafe("ClickAbout");
-    openModal(`about-modal`);
+    openModal(ABOUT_MODAL_ID);
   };
   return (
     <button

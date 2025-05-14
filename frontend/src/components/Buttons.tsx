@@ -5,6 +5,7 @@ import { openModal } from "../utils/openModal";
 import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { useExport } from "../hooks/useExport";
 import { trackEventSafe } from "../utils/plausible";
+import { CREATE_SURVEY_MODAL_ID } from "../modals/CreateSurveyModal";
 
 export const AddDomainsButton = ({
   isPrimary = true,
@@ -17,8 +18,9 @@ export const AddDomainsButton = ({
 
   return (
     <button
-      className={`pill-button ${isPrimary ? "primary-action-button" : "secondary-action-button"
-        }`}
+      className={`pill-button ${
+        isPrimary ? "primary-action-button" : "secondary-action-button"
+      }`}
       onClick={generateDomains}
       disabled={isLoading || isDisabled}
     >
@@ -140,6 +142,17 @@ export const ExportSavedButton = () => {
         </button>
       </div>
     </>
+  );
+};
+export const CreateSurveyButton = () => {
+  const handleClick = () => {
+    trackEventSafe("ClickCreateSurvey");
+    openModal(CREATE_SURVEY_MODAL_ID);
+  };
+  return (
+    <button className="pill-button primary-action-button" onClick={handleClick}>
+      {ActionIcons.export} Create Survey
+    </button>
   );
 };
 
