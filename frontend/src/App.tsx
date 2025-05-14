@@ -1,6 +1,6 @@
 import "./App.css";
 import { DomainList } from "./components/DomainList";
-import { useSearchStateStore } from "./stores/searchStateStoreV2";
+import { useSearchStateStore } from "./stores/searchStateStore";
 import { TopNav } from "./components/TopNav";
 import { InputForm } from "./components/InputForm";
 import { useDisplayStateStore } from "./stores/displayStateStore";

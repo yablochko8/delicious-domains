@@ -1,4 +1,4 @@
-import { useSearchStateStore } from "../stores/searchStateStoreV2";
+import { useSearchStateStore } from "../stores/searchStateStore";
 import { useInputStateStore } from "../stores/inputStateStore";
 import { useDisplayStateStore } from "../stores/displayStateStore";
 import { getDomainCandidates, getDomainWithStatus } from "../serverCalls";

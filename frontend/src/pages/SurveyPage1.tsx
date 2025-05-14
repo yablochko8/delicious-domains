@@ -187,9 +187,9 @@ export const SurveyPage = () => {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center space-y-6"
         >
-          <h2 className="text-3xl font-bold text-center break-all">
+          <div className="text-3xl font-bold text-center break-all text-base-content">
             {shuffledDomains[currentIndex]}
-          </h2>
+          </div>
           <p className="text-gray-500 text-center">
             How do you rate this domain?
           </p>

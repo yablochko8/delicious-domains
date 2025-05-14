@@ -1,4 +1,4 @@
-import { useSearchStateStore } from "../stores/searchStateStoreV2";
+import { useSearchStateStore } from "../stores/searchStateStore";
 import {
   AddDomainsButton,
   // ClearAllButton,
