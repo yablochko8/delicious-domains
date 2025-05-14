@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getSurvey, postSurveyVote } from "../serverCalls";
 import { Survey, SurveyVoteRequest } from "shared/types";
@@ -8,17 +8,24 @@ import { ActionIcons } from "../assets/Icons";
 const StarRating = ({
   rating,
   onRate,
+  isSubmitting,
 }: {
   rating: number;
   onRate: (rating: number) => void;
+  isSubmitting: boolean;
 }) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2" role="radiogroup" aria-label="Rate this domain">
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
           onClick={() => onRate(star)}
-          className="text-3xl transition-transform hover:scale-110"
+          disabled={isSubmitting}
+          className="text-3xl transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary rounded-full p-1"
+          role="radio"
+          aria-checked={star === rating}
+          aria-label={`${star} stars`}
+          tabIndex={0}
         >
           {star <= rating ? "★" : "☆"}
         </button>
@@ -28,13 +35,21 @@ const StarRating = ({
 };
 
 export const SurveyPage = () => {
-  const { surveyId } = useParams();
+  const { surveyId } = useParams<{ surveyId: string }>();
   const [survey, setSurvey] = useState<Survey | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [shuffledDomains, setShuffledDomains] = useState<string[]>([]);
   const [hasVoted, setHasVoted] = useState(false);
+
+  // Memoize shuffled domains to prevent unnecessary re-shuffling
+  const shuffledDomains = useMemo(() => {
+    if (!survey) return [];
+    return [...survey.results.map((r) => r.domain)].sort(
+      () => Math.random() - 0.5
+    );
+  }, [survey]);
 
   useEffect(() => {
     const fetchSurvey = async () => {
@@ -49,11 +64,12 @@ export const SurveyPage = () => {
         setError(null);
         const result = await getSurvey(surveyId);
         setSurvey(result);
-        // Shuffle domains
-        const domains = result.results.map((r) => r.domain);
-        setShuffledDomains(domains.sort(() => Math.random() - 0.5));
       } catch (err) {
-        setError("Failed to load survey. Please try again later.");
+        const errorMessage =
+          err instanceof Error
+            ? `Failed to load survey: ${err.message}`
+            : "Failed to load survey. Please try again later.";
+        setError(errorMessage);
         console.error("Error fetching survey:", err);
       } finally {
         setIsLoading(false);
@@ -64,9 +80,10 @@ export const SurveyPage = () => {
   }, [surveyId]);
 
   const handleVote = async (rating: number) => {
-    if (!surveyId || !shuffledDomains[currentIndex]) return;
+    if (!surveyId || !shuffledDomains[currentIndex] || isSubmitting) return;
 
     try {
+      setIsSubmitting(true);
       const vote: SurveyVoteRequest = {
         surveyId,
         domain: shuffledDomains[currentIndex],
@@ -81,13 +98,18 @@ export const SurveyPage = () => {
         setHasVoted(true);
       }
     } catch (err) {
+      const errorMessage =
+        err instanceof Error
+          ? `Failed to submit vote: ${err.message}`
+          : "Failed to submit vote. Please try again.";
+      setError(errorMessage);
       console.error("Error submitting vote:", err);
-      setError("Failed to submit vote. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleVoteAgain = () => {
-    setShuffledDomains((prev) => prev.sort(() => Math.random() - 0.5));
     setCurrentIndex(0);
     setHasVoted(false);
   };
@@ -95,7 +117,12 @@ export const SurveyPage = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col w-full max-w-2xl mx-auto min-h-[100dvh] items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <div
+          className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"
+          role="status"
+        >
+          <span className="sr-only">Loading...</span>
+        </div>
         <p className="mt-4 text-gray-600">Loading survey...</p>
       </div>
     );
@@ -108,6 +135,7 @@ export const SurveyPage = () => {
         <button
           onClick={() => window.location.reload()}
           className="pill-button primary-action-button"
+          aria-label="Try loading the survey again"
         >
           Try Again
         </button>
@@ -123,6 +151,7 @@ export const SurveyPage = () => {
           <button
             onClick={handleVoteAgain}
             className="pill-button secondary-action-button flex items-center gap-2"
+            aria-label="Vote on the domains again"
           >
             {ActionIcons.enter}
             Vote Again
@@ -130,6 +159,7 @@ export const SurveyPage = () => {
           <Link
             to={`/survey/${surveyId}/results`}
             className="pill-button primary-action-button flex items-center gap-2"
+            aria-label="View survey results"
           >
             {ActionIcons.enter}
             See Results
@@ -143,7 +173,7 @@ export const SurveyPage = () => {
     <div className="flex flex-col w-full max-w-2xl mx-auto min-h-[100dvh] space-y-6 px-4 py-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Help me choose a domain name!</h1>
-        <div className="text-gray-500">
+        <div className="text-gray-500" aria-live="polite">
           {currentIndex + 1} of {shuffledDomains.length}
         </div>
       </div>
@@ -163,7 +193,14 @@ export const SurveyPage = () => {
           <p className="text-gray-500 text-center">
             How do you rate this domain?
           </p>
-          <StarRating rating={0} onRate={handleVote} />
+          <StarRating
+            rating={0}
+            onRate={handleVote}
+            isSubmitting={isSubmitting}
+          />
+          {isSubmitting && (
+            <div className="text-sm text-gray-500">Submitting vote...</div>
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
