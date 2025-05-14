@@ -1,5 +1,9 @@
-import { ABOUT_TEXT_A, ABOUT_TEXT_B, ABOUT_TEXT_C } from "./HomepageInfo";
-import { Socials } from "./Socials";
+import {
+  ABOUT_TEXT_A,
+  ABOUT_TEXT_B,
+  ABOUT_TEXT_C,
+} from "../components/HomepageInfo";
+import { Socials } from "../components/Socials";
 
 export const AboutModal = () => {
   return (
