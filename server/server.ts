@@ -6,8 +6,11 @@ import {
   turnAssessmentIntoWithStatus,
 } from "./processors/checkDomainAvailable";
 import { addScoresToDomain } from "./processors/assessDomain";
-import { CandidatesRequest } from "shared/types";
+import { CandidatesRequest, SurveyVoteRequest } from "shared/types";
 import { createCandidatesRequest } from "dbCreators/createCandidatesRequest";
+import { createSurvey } from "./dbCreators/createSurvey";
+import { postSurveyVote } from "./surveys/postSurveyVote";
+import { getSurvey } from "./surveys/getSurvey";
 
 export const PORT = 4101;
 
@@ -56,6 +59,26 @@ app.post("/domain-with-status", async (req, res) => {
     domainAssessmentWithScores
   );
   res.json({ domainWithStatus });
+});
+
+app.post("/survey-create", async (req, res) => {
+  const { options } = req.body as { options: string[] };
+  const survey = await createSurvey(options);
+  res.json({ survey });
+});
+
+app.post("/survey-vote", async (req, res) => {
+  const vote = req.body as SurveyVoteRequest;
+  const success = await postSurveyVote(vote);
+  res.json({ success });
+});
+
+app.get("/survey/:surveyId", async (req, res) => {
+  const { surveyId } = req.params;
+  console.log("GET /survey/:surveyId endpoint called for surveyId", surveyId);
+  const survey = await getSurvey(surveyId);
+  console.log("Survey fetched successfully:", survey);
+  res.json({ survey });
 });
 
 app.listen(PORT, () => {

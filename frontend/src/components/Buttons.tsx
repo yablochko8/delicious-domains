@@ -1,10 +1,11 @@
 import { ActionIcons } from "../assets/Icons";
 import { useDisplayStateStore } from "../stores/displayStateStore";
-import { useSearchStateStore } from "../stores/searchStateStoreV2";
+import { useSearchStateStore } from "../stores/searchStateStore";
 import { openModal } from "../utils/openModal";
 import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { useExport } from "../hooks/useExport";
 import { trackEventSafe } from "../utils/plausible";
+import { CREATE_SURVEY_MODAL_ID } from "../modals/CreateSurveyModal";
 
 export const AddDomainsButton = ({
   isPrimary = true,
@@ -36,7 +37,7 @@ export const AddDomainsButton = ({
   );
 };
 
-export const ClearAllButtonRevised = () => {
+export const ClearAllButton = () => {
   const { clearAll } = useSearchStateStore();
 
   const handleClick = () => {
@@ -45,11 +46,12 @@ export const ClearAllButtonRevised = () => {
     window.scrollTo(0, 0);
   };
 
-  const cta = "Start Again";
+  // Currently this is only displayed on the About modal
+  const cta = "New Domain Search";
 
   return (
     <button
-      className="pill-button secondary-action-button"
+      className="pill-button primary-action-button"
       onClick={handleClick}
       title={cta}
     >
@@ -140,6 +142,17 @@ export const ExportSavedButton = () => {
         </button>
       </div>
     </>
+  );
+};
+export const CreateSurveyButton = () => {
+  const handleClick = () => {
+    trackEventSafe("CreateSurveyStart");
+    openModal(CREATE_SURVEY_MODAL_ID);
+  };
+  return (
+    <button className="pill-button primary-action-button" onClick={handleClick}>
+      {ActionIcons.export} Create Survey
+    </button>
   );
 };
 

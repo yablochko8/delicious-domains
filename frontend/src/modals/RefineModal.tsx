@@ -1,5 +1,5 @@
-import { InputForm } from "./InputForm";
-import { AddDomainsButton } from "./Buttons";
+import { InputForm } from "../components/InputForm";
+import { AddDomainsButton } from "../components/Buttons";
 
 export const RefineModal = () => {
   return (

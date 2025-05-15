@@ -24,7 +24,31 @@ model CandidatesRequest {
   updatedAt       DateTime? @updatedAt
   likedDomains    String[]
   rejectedDomains String[]
-  unratedDomains  String[] // domains that have been viewed but not yet rated
+  unratedDomains  String[] // domains that have been viewed but not rated
 
   @@map("candidates_request")
+}
+
+model DomainSurvey {
+  id        Int      @id @default(autoincrement())
+  publicId  String   @unique
+  createdAt DateTime @default(now())
+  domains   String[] // The domains being voted on
+
+  votes DomainSurveyVote[]
+
+  @@index([publicId])
+  @@map("domain_survey")
+}
+
+model DomainSurveyVote {
+  id        Int      @id @default(autoincrement())
+  surveyId  Int
+  domain    String
+  rating    Int
+  createdAt DateTime @default(now())
+
+  survey DomainSurvey @relation(fields: [surveyId], references: [id])
+
+  @@map("domain_survey_vote")
 }

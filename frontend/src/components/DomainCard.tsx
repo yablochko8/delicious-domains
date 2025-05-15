@@ -1,7 +1,7 @@
 import { getTotalScore } from "../utils/getTotalScore";
 import { ActionIcons } from "../assets/Icons";
 import { DomainWithStatus } from "shared/types";
-import { useSearchStateStore } from "../stores/searchStateStoreV2";
+import { useSearchStateStore } from "../stores/searchStateStore";
 import { NETIM_PARTNER_ID } from "../config";
 import { trackEventSafe } from "../utils/plausible";
 import {
@@ -121,7 +121,6 @@ export const LikeCircle = ({
   );
 };
 
-
 const MoreLikeThisButton = ({ domain }: { domain: string }) => {
   const { likeAndGenerate } = useMoreLikeThis();
   const handleClick = () => {
@@ -129,7 +128,10 @@ const MoreLikeThisButton = ({ domain }: { domain: string }) => {
   };
 
   return (
-    <button className="pill-button accent-action-button bg-neutral bg-opacity-100" onClick={handleClick}>
+    <button
+      className="pill-button accent-action-button bg-neutral bg-opacity-100"
+      onClick={handleClick}
+    >
       {ActionIcons.generate}
       More like this
     </button>
@@ -197,25 +199,34 @@ const SingleScoreDetail = ({
   );
 };
 
-const ScoreDetails = ({ domainWithStatus }: { domainWithStatus: DomainWithStatus }) => {
+const ScoreDetails = ({
+  domainWithStatus,
+}: {
+  domainWithStatus: DomainWithStatus;
+}) => {
   return (
     <>
       {domainWithStatus.scores &&
         [...scoreIds]
           .sort(
             (a: ScoreId, b: ScoreId) =>
-              (domainWithStatus.scores?.[b] ?? 0) - (domainWithStatus.scores?.[a] ?? 0)
+              (domainWithStatus.scores?.[b] ?? 0) -
+              (domainWithStatus.scores?.[a] ?? 0)
           )
           .map((scoreId: ScoreId) => (
             <SingleScoreDetail
               scoreId={scoreId}
-              score={domainWithStatus.scores ? domainWithStatus.scores[scoreId] : 0}
+              score={
+                domainWithStatus.scores ? domainWithStatus.scores[scoreId] : 0
+              }
               domain={domainWithStatus.domain}
             />
           ))}
       <div className="flex flex-row justify-end w-full p-4 gap-2">
         <MoreLikeThisButton domain={domainWithStatus.domain} />
-        {checkCanRegister(domainWithStatus) && <RegisterButton domain={domainWithStatus.domain} />}
+        {checkCanRegister(domainWithStatus) && (
+          <RegisterButton domain={domainWithStatus.domain} />
+        )}
       </div>
     </>
   );
@@ -311,8 +322,9 @@ export const DomainCard = (domainWithStatus: DomainWithStatus) => {
           )}
         </div>
         <div
-          className={`overflow-hidden transition-all duration-200 ease-in-out ${isExpanded ? "max-h-[500px] opacity-100 pt-2" : "max-h-0 opacity-0"
-            }`}
+          className={`overflow-hidden transition-all duration-200 ease-in-out ${
+            isExpanded ? "max-h-[500px] opacity-100 pt-2" : "max-h-0 opacity-0"
+          }`}
         >
           <div className="flex flex-row" />
           <ScoreDetails domainWithStatus={domainWithStatus} />

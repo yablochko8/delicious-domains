@@ -17,7 +17,7 @@ import { FaBluesky as BlueskyIcon } from "react-icons/fa6";
 import { FaEnvelope as EmailIcon } from "react-icons/fa";
 import { FaHome as HomeIcon } from "react-icons/fa";
 import { FaChevronRight as EnterIcon } from "react-icons/fa";
-
+import { FaChevronLeft as BackIcon } from "react-icons/fa";
 // Action Icons
 import {
   MdFavoriteBorder as LikeIcon,
@@ -74,6 +74,7 @@ export const ActionIcons = {
   generate: <GenerateIcon />,
   about: <AboutIcon />,
   enter: <EnterIcon />,
+  back: <BackIcon />,
   thumbsUp: <ThumbsUpIcon className="text-sm" />,
   thumbsDown: <ThumbsDownIcon className="text-sm" />,
   feedback: <FeedbackIcon />,

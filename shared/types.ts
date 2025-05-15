@@ -49,3 +49,32 @@ export type CandidatesRequest = {
   rejectedDomains?: string[];
   unratedDomains?: string[];
 };
+
+export type SurveyCreateRequest = {
+  options: string[];
+};
+
+export type SurveyVoteRequest = {
+  surveyId: string;
+  domain: string;
+  rating: number;
+};
+
+export type SurveyRawData = {
+  surveyId: string;
+  votes: {
+    domain: string;
+    rating: number;
+  }[];
+};
+
+export type SurveyResultSingle = {
+  domain: string;
+  averageRating: number;
+  voteCount: number;
+};
+
+export type Survey = {
+  surveyId: string;
+  results: SurveyResultSingle[];
+};

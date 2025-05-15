@@ -1,13 +1,15 @@
-import { useSearchStateStore } from "../stores/searchStateStoreV2";
+import { useSearchStateStore } from "../stores/searchStateStore";
 import { WEBSITE_NAME } from "../config";
 import { trackEventSafe } from "../utils/plausible";
 import { openModal } from "../utils/openModal";
 import { useInputStateStore } from "../stores/inputStateStore";
+import { useNavigate } from "react-router";
+import { ABOUT_MODAL_ID } from "../modals/AboutModal";
 
 const AboutButton = () => {
   const handleClick = () => {
     trackEventSafe("ClickAbout");
-    openModal(`about-modal`);
+    openModal(ABOUT_MODAL_ID);
   };
   return (
     <button
@@ -22,12 +24,13 @@ const AboutButton = () => {
 export const TopNav = () => {
   const { clearAll } = useSearchStateStore();
   const { clearAllInputs } = useInputStateStore();
-
+  const navigate = useNavigate();
   const handleRestartClick = () => {
     trackEventSafe("ClickRestart");
     clearAll();
     clearAllInputs();
     window.scrollTo(0, 0);
+    navigate("/");
   };
 
   return (

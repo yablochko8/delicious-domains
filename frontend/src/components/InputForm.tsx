@@ -4,7 +4,7 @@ import { InputMultiCheckbox } from "./InputMultiCheckbox";
 // import { ActionIcons } from "../assets/Icons";
 import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { EnterButton } from "./Buttons";
-import { useSearchStateStore } from "../stores/searchStateStoreV2";
+import { useSearchStateStore } from "../stores/searchStateStore";
 
 const EXAMPLE_PURPOSES = [
   "linkedin for cats",
@@ -193,10 +193,11 @@ export const InputForm = ({
       {showAdvancedOptions && (
         <>
           <div
-            className={`${hasDarkBackground
-              ? "text-form-heading-white"
-              : "text-form-heading-black"
-              }`}
+            className={`${
+              hasDarkBackground
+                ? "text-form-heading-white"
+                : "text-form-heading-black"
+            }`}
           >
             What's your vibe?
           </div>
@@ -223,18 +224,20 @@ export const InputForm = ({
           </div>
           <div>
             <div
-              className={`${hasDarkBackground
-                ? "text-form-heading-white"
-                : "text-form-heading-black"
-                }`}
+              className={`${
+                hasDarkBackground
+                  ? "text-form-heading-white"
+                  : "text-form-heading-black"
+              }`}
             >
               Preferred domain extensions?
             </div>
             <div
-              className={`${hasDarkBackground
-                ? "text-form-subheading-white"
-                : "text-form-subheading-black"
-                }`}
+              className={`${
+                hasDarkBackground
+                  ? "text-form-subheading-white"
+                  : "text-form-subheading-black"
+              }`}
             >
               Tick nothing to stick to a longer list of ~350 options
             </div>
