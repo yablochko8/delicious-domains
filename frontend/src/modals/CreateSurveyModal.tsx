@@ -10,42 +10,42 @@ export const CREATE_SURVEY_MODAL_ID = "create-survey-modal";
 
 export const CreateSurveyModal = () => {
   const navigate = useNavigate();
-  const [domains, setDomains] = useState<string[]>([]);
+  const [surveyDomains, setSurveyDomains] = useState<string[]>([]);
   const [newDomain, setNewDomain] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { getLiked } = useSearchStateStore();
+  const { domains, getLiked } = useSearchStateStore();
 
   // Load liked domains from localStorage or your state management
   useEffect(() => {
     const likedDomains = getLiked();
-    setDomains(likedDomains);
-  }, []);
+    setSurveyDomains(likedDomains);
+  }, [domains, getLiked]);
 
   const handleAddDomain = () => {
     if (!newDomain.trim()) return;
 
-    if (domains.length >= MAX_OPTIONS) {
+    if (surveyDomains.length >= MAX_OPTIONS) {
       setError(`Maximum ${MAX_OPTIONS} options allowed`);
       return;
     }
 
-    if (domains.includes(newDomain.trim())) {
+    if (surveyDomains.includes(newDomain.trim())) {
       setError("This domain is already in the list");
       return;
     }
 
-    setDomains((prev) => [...prev, newDomain.trim()]);
+    setSurveyDomains((prev) => [...prev, newDomain.trim()]);
     setNewDomain("");
     setError(null);
   };
 
   const handleRemoveDomain = (domainToRemove: string) => {
-    setDomains((prev) => prev.filter((d) => d !== domainToRemove));
+    setSurveyDomains((prev) => prev.filter((d) => d !== domainToRemove));
   };
 
   const handleSubmit = async () => {
-    if (domains.length === 0) {
+    if (surveyDomains.length === 0) {
       setError("Please add at least one domain");
       return;
     }
@@ -53,7 +53,7 @@ export const CreateSurveyModal = () => {
     try {
       setIsSubmitting(true);
       setError(null);
-      const survey = await createSurvey(domains);
+      const survey = await createSurvey(surveyDomains);
       navigate(`/survey/${survey.surveyId}`);
     } catch (err) {
       setError("Failed to create survey. Please try again.");
@@ -69,7 +69,7 @@ export const CreateSurveyModal = () => {
         <p className="text-lg font-bold text-left">Create Survey</p>
 
         <div className="space-y-2">
-          {domains.map((domain) => (
+          {surveyDomains.map((domain) => (
             <div
               key={domain}
               className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
@@ -95,11 +95,11 @@ export const CreateSurveyModal = () => {
               onKeyDown={(e) => e.key === "Enter" && handleAddDomain()}
               placeholder="Add another option (e.g. mydomain.com)"
               className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              disabled={isSubmitting || domains.length >= MAX_OPTIONS}
+              disabled={isSubmitting || surveyDomains.length >= MAX_OPTIONS}
             />
             <button
               onClick={handleAddDomain}
-              disabled={isSubmitting || domains.length >= MAX_OPTIONS}
+              disabled={isSubmitting || surveyDomains.length >= MAX_OPTIONS}
               className="pill-button primary-action-button"
             >
               Add
@@ -109,7 +109,7 @@ export const CreateSurveyModal = () => {
           {error && <div className="text-red-500 text-sm">{error}</div>}
 
           <div className="text-sm text-gray-500">
-            {domains.length} of {MAX_OPTIONS} options
+            {surveyDomains.length} of {MAX_OPTIONS} options
           </div>
         </div>
 
@@ -126,7 +126,7 @@ export const CreateSurveyModal = () => {
 
         <button
           onClick={handleSubmit}
-          disabled={isSubmitting || domains.length === 0}
+          disabled={isSubmitting || surveyDomains.length === 0}
           className="pill-button primary-action-button w-full flex items-center justify-center gap-2"
         >
           {isSubmitting ? (
