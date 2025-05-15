@@ -11,7 +11,8 @@ type PlausibleEvent =
   | "ClickLike"
   | "ClickRegister"
   | "ClickExport"
-  | "ClickCreateSurvey";
+  | "CreateSurveyStart"
+  | "CreateSurveyComplete";
 
 // Define a mapping from event name to its props (if any)
 type PlausibleEventProps = {
@@ -23,7 +24,8 @@ type PlausibleEventProps = {
   ClickLike: { domain: string };
   ClickRegister: { domain: string };
   ClickExport: { domainCount: number };
-  ClickCreateSurvey: undefined;
+  CreateSurveyStart: undefined;
+  CreateSurveyComplete: undefined;
 };
 
 // Utility function to trigger events (type-safe)

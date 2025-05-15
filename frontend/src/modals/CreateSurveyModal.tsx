@@ -4,6 +4,7 @@ import { createSurvey } from "../serverCalls";
 import { ActionIcons } from "../assets/Icons";
 import { ModalTemplate } from "./ModalTemplate";
 import { useSearchStateStore } from "../stores/searchStateStore";
+import { trackEventSafe } from "../utils/plausible";
 
 const MAX_OPTIONS = 10;
 export const CREATE_SURVEY_MODAL_ID = "create-survey-modal";
@@ -45,6 +46,7 @@ export const CreateSurveyModal = () => {
   };
 
   const handleSubmit = async () => {
+    trackEventSafe("CreateSurveyComplete");
     if (surveyDomains.length === 0) {
       setError("Please add at least one domain");
       return;

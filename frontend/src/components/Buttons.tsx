@@ -18,9 +18,8 @@ export const AddDomainsButton = ({
 
   return (
     <button
-      className={`pill-button ${
-        isPrimary ? "primary-action-button" : "secondary-action-button"
-      }`}
+      className={`pill-button ${isPrimary ? "primary-action-button" : "secondary-action-button"
+        }`}
       onClick={generateDomains}
       disabled={isLoading || isDisabled}
     >
@@ -147,7 +146,7 @@ export const ExportSavedButton = () => {
 };
 export const CreateSurveyButton = () => {
   const handleClick = () => {
-    trackEventSafe("ClickCreateSurvey");
+    trackEventSafe("CreateSurveyStart");
     openModal(CREATE_SURVEY_MODAL_ID);
   };
   return (
