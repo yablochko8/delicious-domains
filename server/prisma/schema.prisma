@@ -29,26 +29,26 @@ model CandidatesRequest {
   @@map("candidates_request")
 }
 
-model Survey {
+model DomainSurvey {
   id        Int      @id @default(autoincrement())
   publicId  String   @unique
   createdAt DateTime @default(now())
-  options   String[] // The domains being voted on
+  domains   String[] // The domains being voted on
 
-  votes SurveyVote[]
+  votes DomainSurveyVote[]
 
   @@index([publicId])
-  @@map("survey")
+  @@map("domain_survey")
 }
 
-model SurveyVote {
+model DomainSurveyVote {
   id        Int      @id @default(autoincrement())
   surveyId  Int
   domain    String
   rating    Int
   createdAt DateTime @default(now())
 
-  survey Survey @relation(fields: [surveyId], references: [id])
+  survey DomainSurvey @relation(fields: [surveyId], references: [id])
 
-  @@map("survey_vote")
+  @@map("domain_survey_vote")
 }
