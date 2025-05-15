@@ -1,9 +1,10 @@
 import { Link, useParams } from "react-router";
 import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getSurvey, postSurveyVote } from "../serverCalls";
-import { Survey, SurveyVoteRequest } from "shared/types";
+import { getSurvey } from "../serverCalls";
+import { Survey } from "shared/types";
 import { ActionIcons } from "../assets/Icons";
+import { useVoteStore } from "../stores/voteStateStore";
 
 const StarRating = ({
   rating,
@@ -39,11 +40,10 @@ export const SurveyPage = () => {
   const [survey, setSurvey] = useState<Survey | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hasVoted, setHasVoted] = useState(false);
-  const [voteQueue, setVoteQueue] = useState<SurveyVoteRequest[]>([]);
-  const [failedVotes, setFailedVotes] = useState<SurveyVoteRequest[]>([]);
+
+  const { voteQueue, failedVotes, isSubmitting, addVote } = useVoteStore();
 
   // Memoize shuffled domains to prevent unnecessary re-shuffling
   const shuffledDomains = useMemo(() => {
@@ -80,53 +80,18 @@ export const SurveyPage = () => {
 
     fetchSurvey();
   }, [surveyId]);
-  // Process vote queue in the background
-  useEffect(() => {
-    let isMounted = true;
-
-    const processVoteQueue = async () => {
-      if (voteQueue.length === 0 || isSubmitting) return;
-
-      const currentVote = voteQueue[0];
-      try {
-        setIsSubmitting(true);
-        await postSurveyVote(currentVote);
-        // Remove the processed vote from the queue
-        if (isMounted) {
-          setVoteQueue(prev => prev.slice(1));
-        }
-      } catch (err) {
-        console.error("Error submitting vote:", err);
-        // Move failed vote to failedVotes array
-        if (isMounted) {
-          setFailedVotes(prev => [...prev, currentVote]);
-          setVoteQueue(prev => prev.slice(1));
-        }
-      } finally {
-        if (isMounted) {
-          setIsSubmitting(false);
-        }
-      }
-    };
-
-    processVoteQueue();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [voteQueue, isSubmitting]);
 
   const handleVote = async (rating: number) => {
     if (!surveyId || !shuffledDomains[currentIndex]) return;
 
-    const vote: SurveyVoteRequest = {
+    const vote = {
       surveyId,
       domain: shuffledDomains[currentIndex],
       rating,
     };
 
-    // Add vote to queue
-    setVoteQueue(prev => [...prev, vote]);
+    // Add vote to queue using the store
+    addVote(vote);
 
     // Move to next domain immediately
     if (currentIndex < shuffledDomains.length - 1) {
@@ -223,7 +188,7 @@ export const SurveyPage = () => {
           <StarRating
             rating={0}
             onRate={handleVote}
-            isSubmitting={false}
+            isSubmitting={isSubmitting}
           />
         </motion.div>
       </AnimatePresence>

@@ -11,8 +11,8 @@ import { FloatingActionBar } from "./components/FloatingActionBar";
 import { HomepageInfo } from "./components/HomepageInfo";
 import { Footer } from "./components/Footer";
 import { BrowserRouter, Routes, Route } from "react-router";
-import { SurveyPage } from "./pages/SurveyPage1";
-import { ResultsPage } from "./pages/ResultsPage1";
+import { SurveyPage } from "./pages/SurveyPage";
+import { ResultsPage } from "./pages/ResultsPage";
 import { CreateSurveyModal } from "./modals/CreateSurveyModal";
 
 const DefaultHomepage = () => {
