@@ -42,6 +42,8 @@ export const SurveyPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hasVoted, setHasVoted] = useState(false);
+  const [voteQueue, setVoteQueue] = useState<SurveyVoteRequest[]>([]);
+  const [failedVotes, setFailedVotes] = useState<SurveyVoteRequest[]>([]);
 
   // Memoize shuffled domains to prevent unnecessary re-shuffling
   const shuffledDomains = useMemo(() => {
@@ -79,33 +81,47 @@ export const SurveyPage = () => {
     fetchSurvey();
   }, [surveyId]);
 
-  const handleVote = async (rating: number) => {
-    if (!surveyId || !shuffledDomains[currentIndex] || isSubmitting) return;
+  // Process vote queue in the background
+  useEffect(() => {
+    const processVoteQueue = async () => {
+      if (voteQueue.length === 0 || isSubmitting) return;
 
-    try {
-      setIsSubmitting(true);
-      const vote: SurveyVoteRequest = {
-        surveyId,
-        domain: shuffledDomains[currentIndex],
-        rating,
-      };
-
-      await postSurveyVote(vote);
-
-      if (currentIndex < shuffledDomains.length - 1) {
-        setCurrentIndex((prev) => prev + 1);
-      } else {
-        setHasVoted(true);
+      const currentVote = voteQueue[0];
+      try {
+        setIsSubmitting(true);
+        await postSurveyVote(currentVote);
+        // Remove the processed vote from the queue
+        setVoteQueue(prev => prev.slice(1));
+      } catch (err) {
+        console.error("Error submitting vote:", err);
+        // Move failed vote to failedVotes array
+        setFailedVotes(prev => [...prev, currentVote]);
+        setVoteQueue(prev => prev.slice(1));
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? `Failed to submit vote: ${err.message}`
-          : "Failed to submit vote. Please try again.";
-      setError(errorMessage);
-      console.error("Error submitting vote:", err);
-    } finally {
-      setIsSubmitting(false);
+    };
+
+    processVoteQueue();
+  }, [voteQueue, isSubmitting]);
+
+  const handleVote = async (rating: number) => {
+    if (!surveyId || !shuffledDomains[currentIndex]) return;
+
+    const vote: SurveyVoteRequest = {
+      surveyId,
+      domain: shuffledDomains[currentIndex],
+      rating,
+    };
+
+    // Add vote to queue
+    setVoteQueue(prev => [...prev, vote]);
+
+    // Move to next domain immediately
+    if (currentIndex < shuffledDomains.length - 1) {
+      setCurrentIndex(prev => prev + 1);
+    } else {
+      setHasVoted(true);
     }
   };
 
@@ -153,7 +169,7 @@ export const SurveyPage = () => {
             className="pill-button secondary-action-button flex items-center gap-2"
             aria-label="Vote on the domains again"
           >
-            {ActionIcons.enter}
+            {ActionIcons.back}
             Vote Again
           </button>
           <Link
@@ -161,8 +177,8 @@ export const SurveyPage = () => {
             className="pill-button primary-action-button flex items-center gap-2"
             aria-label="View survey results"
           >
-            {ActionIcons.enter}
             See Results
+            {ActionIcons.enter}
           </Link>
         </div>
       </div>
@@ -196,13 +212,20 @@ export const SurveyPage = () => {
           <StarRating
             rating={0}
             onRate={handleVote}
-            isSubmitting={isSubmitting}
+            isSubmitting={false}
           />
-          {isSubmitting && (
-            <div className="text-sm text-gray-500">Submitting vote...</div>
-          )}
         </motion.div>
       </AnimatePresence>
+      {voteQueue.length > 0 && (
+        <div className="text-sm text-gray-500">
+          Submitting {voteQueue.length} vote{voteQueue.length !== 1 ? 's' : ''}...
+        </div>
+      )}
+      {failedVotes.length > 0 && (
+        <div className="text-sm text-red-500">
+          {failedVotes.length} vote{failedVotes.length !== 1 ? 's' : ''} failed to submit
+        </div>
+      )}
     </div>
   );
 };

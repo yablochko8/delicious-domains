@@ -73,14 +73,23 @@ export const ResultsPage = () => {
   return (
     <div className="flex flex-col w-full max-w-2xl mx-auto min-h-[100dvh] space-y-6 px-4 py-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Survey Results</h1>
-        <Link
-          className="pill-button secondary-action-button flex items-center gap-2"
-          to={`/survey/${surveyId}`}
-        >
-          {ActionIcons.enter}
-          Back to Survey
-        </Link>
+        <h2>Survey Results</h2>
+        <div className="flex flex-row gap-4">
+          <Link
+            className="pill-button secondary-action-button flex items-center gap-2"
+            to={`/survey/${surveyId}`}
+          >
+            {ActionIcons.back}
+            Vote Again
+          </Link>
+          <Link
+            className="pill-button primary-action-button flex items-center gap-2"
+            to={`/`}
+          >
+            Create New Survey
+            {ActionIcons.enter}
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
