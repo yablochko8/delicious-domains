@@ -56,12 +56,12 @@ const DefaultHomepage = () => {
               {/* IN PROGRESS */}
               {domains.filter((domain) => domain.status === "fetching").length >
                 0 && (
-                <ProgressMessage
-                  domains={domains
-                    .filter((domain) => domain.status === "fetching")
-                    .map((domain) => domain.domain)}
-                />
-              )}
+                  <ProgressMessage
+                    domains={domains
+                      .filter((domain) => domain.status === "fetching")
+                      .map((domain) => domain.domain)}
+                  />
+                )}
             </div>
           </div>
           <FloatingActionBar />

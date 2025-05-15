@@ -60,6 +60,14 @@ export type SurveyVoteRequest = {
   rating: number;
 };
 
+export type SurveyRawData = {
+  surveyId: string;
+  votes: {
+    domain: string;
+    rating: number;
+  }[];
+};
+
 export type SurveyResultSingle = {
   domain: string;
   averageRating: number;
