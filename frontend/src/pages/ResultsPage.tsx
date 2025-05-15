@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getSurvey } from "../serverCalls";
 import { Survey } from "shared/types";
 import { ActionIcons } from "../assets/Icons";
+import { ShareSurveyButton } from "../components/Buttons";
 
 export const ResultsPage = () => {
   const { surveyId } = useParams();
@@ -74,22 +75,6 @@ export const ResultsPage = () => {
     <div className="flex flex-col w-full max-w-2xl mx-auto min-h-[100dvh] space-y-6 px-4 py-8">
       <div className="flex justify-between items-center">
         <h2>Survey Results</h2>
-        <div className="flex flex-row gap-4">
-          <Link
-            className="pill-button secondary-action-button flex items-center gap-2"
-            to={`/survey/${surveyId}`}
-          >
-            {ActionIcons.back}
-            Vote Again
-          </Link>
-          <Link
-            className="pill-button primary-action-button flex items-center gap-2"
-            to={`/`}
-          >
-            Create New Survey
-            {ActionIcons.enter}
-          </Link>
-        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
@@ -121,9 +106,15 @@ export const ResultsPage = () => {
           ))}
         </div>
       </div>
-
-      <div className="text-center text-sm text-gray-500">
-        Survey ID: {survey.surveyId}
+      <div className="flex flex-row justify-center gap-4">
+        <ShareSurveyButton />
+        <Link
+          className="pill-button primary-action-button flex items-center gap-2"
+          to={`/`}
+        >
+          Create New Survey
+          {ActionIcons.enter}
+        </Link>
       </div>
     </div>
   );
