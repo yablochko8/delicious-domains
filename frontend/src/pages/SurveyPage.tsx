@@ -6,6 +6,7 @@ import { Survey } from "shared/types";
 import { ActionIcons } from "../assets/Icons";
 import { useVoteStore } from "../stores/voteStateStore";
 import { Helmet } from "react-helmet"
+import { ShareSurveyButton } from "../components/Buttons";
 
 const StarRating = ({
   rating,
@@ -209,6 +210,9 @@ export const SurveyPage = () => {
             />
           </motion.div>
         </AnimatePresence>
+        <div className="flex justify-center">
+          <ShareSurveyButton />
+        </div>
         {voteQueue.length > 0 && (
           <div className="text-sm text-gray-500">
             Submitting {voteQueue.length} vote{voteQueue.length !== 1 ? 's' : ''}...
