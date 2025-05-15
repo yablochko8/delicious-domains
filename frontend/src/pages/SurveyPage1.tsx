@@ -80,9 +80,10 @@ export const SurveyPage = () => {
 
     fetchSurvey();
   }, [surveyId]);
-
   // Process vote queue in the background
   useEffect(() => {
+    let isMounted = true;
+
     const processVoteQueue = async () => {
       if (voteQueue.length === 0 || isSubmitting) return;
 
@@ -91,18 +92,28 @@ export const SurveyPage = () => {
         setIsSubmitting(true);
         await postSurveyVote(currentVote);
         // Remove the processed vote from the queue
-        setVoteQueue(prev => prev.slice(1));
+        if (isMounted) {
+          setVoteQueue(prev => prev.slice(1));
+        }
       } catch (err) {
         console.error("Error submitting vote:", err);
         // Move failed vote to failedVotes array
-        setFailedVotes(prev => [...prev, currentVote]);
-        setVoteQueue(prev => prev.slice(1));
+        if (isMounted) {
+          setFailedVotes(prev => [...prev, currentVote]);
+          setVoteQueue(prev => prev.slice(1));
+        }
       } finally {
-        setIsSubmitting(false);
+        if (isMounted) {
+          setIsSubmitting(false);
+        }
       }
     };
 
     processVoteQueue();
+
+    return () => {
+      isMounted = false;
+    };
   }, [voteQueue, isSubmitting]);
 
   const handleVote = async (rating: number) => {
