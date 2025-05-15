@@ -143,7 +143,7 @@ export const DomainList = ({
   return (
     <div className="flex flex-col gap-3 w-full pb-20">
       <div className="text-form-subheading-white">
-        All domain names available and priced under $100/year.
+        All domain names available and priced under $100/year. To create a survey for friends, click Like on multiple domains.
       </div>
       <AnimatePresence>
         {displayDomainOptionsRound2.map((domainAssessment) => (

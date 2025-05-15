@@ -6,6 +6,8 @@ import { useDomainGeneration } from "../hooks/useDomainGeneration";
 import { useExport } from "../hooks/useExport";
 import { trackEventSafe } from "../utils/plausible";
 import { CREATE_SURVEY_MODAL_ID } from "../modals/CreateSurveyModal";
+import { useLocation } from "react-router";
+import React from "react";
 
 export const AddDomainsButton = ({
   isPrimary = true,
@@ -171,6 +173,36 @@ export const EnterButton = () => {
       ) : (
         <>{ActionIcons.enter}</>
       )}
+    </button>
+  );
+};
+
+
+/** Shares the current page as a link  */
+export const ShareSurveyButton = () => {
+  const { pathname } = useLocation();
+  const url = `${window.location.origin}${pathname}`;
+  const [copied, setCopied] = React.useState(false);
+
+  const handleClick = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      // Reset the copied state after 2 seconds
+      setTimeout(() => setCopied(false), 2000);
+      trackEventSafe("ClickShareSurvey");
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  return (
+    <button
+      className="pill-button secondary-action-button"
+      onClick={handleClick}
+      title={copied ? "Copied!" : "Copy link to clipboard"}
+    >
+      {ActionIcons.share} {copied ? "Copied!" : "Share Survey"}
     </button>
   );
 };

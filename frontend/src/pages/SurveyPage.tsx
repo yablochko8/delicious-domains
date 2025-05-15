@@ -5,6 +5,8 @@ import { getSurvey } from "../serverCalls";
 import { Survey } from "shared/types";
 import { ActionIcons } from "../assets/Icons";
 import { useVoteStore } from "../stores/voteStateStore";
+import { Helmet } from "react-helmet"
+import { ShareSurveyButton } from "../components/Buttons";
 
 const StarRating = ({
   rating,
@@ -161,47 +163,67 @@ export const SurveyPage = () => {
     );
   }
 
-  return (
-    <div className="flex flex-col w-full max-w-2xl mx-auto min-h-[100dvh] space-y-6 px-4 py-8">
-      <div className="flex justify-between items-center">
-        <h2>Help choose a domain name!</h2>
-        <div className="text-gray-500" aria-live="polite">
-          {currentIndex + 1} of {shuffledDomains.length}
-        </div>
-      </div>
+  const PAGE_SUMMARY = "Help me choose a domain name!"
+  const PAGE_TITLE = "Survey - Dreamy Domains"
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ x: 300, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -300, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center space-y-6"
-        >
-          <div className="text-3xl font-bold text-center break-all text-base-content">
-            {shuffledDomains[currentIndex]}
+  return (
+    <>
+      <Helmet>
+        <title>{PAGE_TITLE}</title>
+        <meta
+          name="description"
+          content={PAGE_SUMMARY}
+        />
+        <meta property="og:title" content={PAGE_TITLE} />
+        <meta
+          property="og:description"
+          content={PAGE_SUMMARY}
+        />
+      </Helmet>
+      <div className="flex flex-col w-full max-w-2xl mx-auto min-h-[100dvh] space-y-6 px-4 py-8">
+        <div className="flex justify-between items-center">
+          <h2>{PAGE_SUMMARY}</h2>
+          <div className="text-gray-500" aria-live="polite">
+            {currentIndex + 1} of {shuffledDomains.length}
           </div>
-          <p className="text-gray-500 text-center">
-            How do you rate this domain?
-          </p>
-          <StarRating
-            rating={0}
-            onRate={handleVote}
-            isSubmitting={isSubmitting}
-          />
-        </motion.div>
-      </AnimatePresence>
-      {voteQueue.length > 0 && (
-        <div className="text-sm text-gray-500">
-          Submitting {voteQueue.length} vote{voteQueue.length !== 1 ? 's' : ''}...
         </div>
-      )}
-      {failedVotes.length > 0 && (
-        <div className="text-sm text-red-500">
-          {failedVotes.length} vote{failedVotes.length !== 1 ? 's' : ''} failed to submit
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ x: 300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -300, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center space-y-6"
+          >
+            <div className="text-3xl font-bold text-center break-all text-base-content">
+              {shuffledDomains[currentIndex]}
+            </div>
+            <p className="text-gray-500 text-center">
+              How do you rate this domain?
+            </p>
+            <StarRating
+              rating={0}
+              onRate={handleVote}
+              isSubmitting={isSubmitting}
+            />
+          </motion.div>
+        </AnimatePresence>
+        <div className="flex justify-center">
+          <ShareSurveyButton />
         </div>
-      )}
-    </div>
+        {voteQueue.length > 0 && (
+          <div className="text-sm text-gray-500">
+            Submitting {voteQueue.length} vote{voteQueue.length !== 1 ? 's' : ''}...
+          </div>
+        )}
+        {failedVotes.length > 0 && (
+          <div className="text-sm text-red-500">
+            {failedVotes.length} vote{failedVotes.length !== 1 ? 's' : ''} failed to submit
+          </div>
+        )}
+      </div>
+    </>
   );
 };
