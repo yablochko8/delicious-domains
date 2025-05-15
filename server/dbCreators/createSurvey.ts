@@ -18,7 +18,7 @@ import { dbClient } from "./dbClient";
 // };
 
 /** Creates a pretty survey id that serves as a public slug*/
-const getUniqueSurveyId = (length: number = 5) => {
+const getUniqueSurveyId = (length: number = 8) => {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   const charsLength = chars.length;
   const result = [];

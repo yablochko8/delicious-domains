@@ -75,7 +75,9 @@ app.post("/survey-vote", async (req, res) => {
 
 app.get("/survey/:surveyId", async (req, res) => {
   const { surveyId } = req.params;
+  console.log("GET /survey/:surveyId endpoint called for surveyId", surveyId);
   const survey = await getSurvey(surveyId);
+  console.log("Survey fetched successfully:", survey);
   res.json({ survey });
 });
 

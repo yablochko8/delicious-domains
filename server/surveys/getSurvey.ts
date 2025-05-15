@@ -3,6 +3,7 @@ import { dbClient } from "../dbCreators/dbClient";
 
 const calcSurvey = (rawData: {
   publicId: string;
+  domains: string[];
   votes: { domain: string; rating: number }[];
 }): Survey => {
   // First, group votes by domain and calculate totals
@@ -16,16 +17,27 @@ const calcSurvey = (rawData: {
   }, {} as Record<string, { totalRating: number; voteCount: number }>);
 
   // Convert to the expected Survey format
-  const results = Object.entries(domainStats).map(([domain, stats]) => ({
-    domain,
-    averageRating:
-      stats.voteCount > 0 ? stats.totalRating / stats.voteCount : 0,
-    voteCount: stats.voteCount,
-  }));
+  const resultsWithVotes = Object.entries(domainStats).map(
+    ([domain, stats]) => ({
+      domain,
+      averageRating:
+        stats.voteCount > 0 ? stats.totalRating / stats.voteCount : 0,
+      voteCount: stats.voteCount,
+    })
+  );
+
+  // Any domains that did not get votes should be included with an average rating of 0 and a vote count of 0
+  const domainsWithNoVotes = rawData.domains
+    .filter((domain: string) => !domainStats[domain])
+    .map((domain: string) => ({
+      domain,
+      averageRating: 0,
+      voteCount: 0,
+    }));
 
   return {
     surveyId: rawData.publicId,
-    results,
+    results: [...resultsWithVotes, ...domainsWithNoVotes],
   };
 };
 
